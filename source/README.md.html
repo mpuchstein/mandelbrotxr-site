@@ -24,10 +24,111 @@
 </header>
 <main id="main" class="">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../">Home</a></li><li><a href="../transcripts/">Transcripts</a></li><li><a href="../source/">Source files</a></li><li><span aria-current="page">README.md</span></li></ol></nav>
-<h1 class="src-path">README.md</h1><ul class="tx-meta src-meta"><li><code>README.md</code></li><li>0 lines · 0 B</li><li>in <a href="../source/">repository root</a></li><li><a href="https://github.com/mpuchstein/MandelbrotXR/blob/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a/README.md" rel="noopener">Original on GitHub at 75d36a0</a></li></ul><p class="note">This file is empty in the repository.</p>
+<h1 class="src-path">README.md</h1><ul class="tx-meta src-meta"><li><code>README.md</code></li><li>70 lines · 3.9 kB</li><li>in <a href="../source/">repository root</a></li><li><a href="https://github.com/mpuchstein/MandelbrotXR/blob/5fd9330ed6c8bf0a0f4d3747936d949c023a93e1/README.md" rel="noopener">Original on GitHub at 5fd9330</a></li></ul><section class="src-doc" aria-label="Rendered Markdown"><div class="md"><h2 id="md-mandelbrotxr">MandelbrotXR</h2>
+<p>Five AI assistants (Claude, ChatGPT, Gemini, Mistral and GitHub Copilot) were asked for a standalone HTML page
+that puts the Mandelbrot set in a virtual room you can enter with a VR headset, AR glasses or a phone. Eight
+chats produced eight pages. Blind agents reviewed each page from its HTML, its chat transcript and in the
+browser, then five blind judges ranked all eight.</p>
+<p>The results site lets you sort the rankings, read every review and judgment, and play each page:
+<strong><a href="https://mandelbrotxr.puchstein.dev" rel="noopener">https://mandelbrotxr.puchstein.dev</a></strong></p>
+<h3 id="md-result">Result</h3>
+<p>Mean rank across the five judges (1 = best), from <a href="../source/Judge/README.md.html">Judge/README.md</a>, which also lists each
+judge&#x27;s ranks:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table>
+<thead>
+<tr>
+<th>Folder</th>
+<th>Prompt</th>
+<th class="num">Mean rank</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../source/Anthropic-Web-Opus5.5-Max-v1/"><code>Anthropic-Web-Opus5.5-Max-v1</code></a></td>
+<td>v1</td>
+<td class="num">1.8</td>
+</tr>
+<tr>
+<td><a href="../source/Anthropic-Web-Opus5.5-Max-v0/"><code>Anthropic-Web-Opus5.5-Max-v0</code></a></td>
+<td>v0</td>
+<td class="num">1.8</td>
+</tr>
+<tr>
+<td><a href="../source/OpenAI-Web-GPT6-Pro-v1/"><code>OpenAI-Web-GPT6-Pro-v1</code></a></td>
+<td>v1</td>
+<td class="num">3.0</td>
+</tr>
+<tr>
+<td><a href="../source/OpenAI-Web-GPT6-Pro-v0/"><code>OpenAI-Web-GPT6-Pro-v0</code></a></td>
+<td>v0</td>
+<td class="num">3.4</td>
+</tr>
+<tr>
+<td><a href="../source/Google-Web-Gemini4Argon-High-v1/"><code>Google-Web-Gemini4Argon-High-v1</code></a></td>
+<td>v1</td>
+<td class="num">5.6</td>
+</tr>
+<tr>
+<td><a href="../source/Mistral-VibeCode-MistralLarge4-Default-v1/"><code>Mistral-VibeCode-MistralLarge4-Default-v1</code></a></td>
+<td>v1</td>
+<td class="num">5.8</td>
+</tr>
+<tr>
+<td><a href="../source/GitHub-CopilotTasks-Auto-Autopilot-v1/"><code>GitHub-CopilotTasks-Auto-Autopilot-v1</code></a></td>
+<td>v1</td>
+<td class="num">6.8</td>
+</tr>
+<tr>
+<td><a href="../source/GitHub-CopilotTasks-Auto-Interactive-v1/"><code>GitHub-CopilotTasks-Auto-Interactive-v1</code></a></td>
+<td>v1</td>
+<td class="num">7.8</td>
+</tr>
+</tbody>
+</table></div>
+<p>The two Opus builds tie. The judges&#x27; agreement, as Judge/README.md puts it:</p>
+<blockquote>
+<ul>
+<li><strong>Top four:</strong> the two Opus 5.5 builds, then the two GPT6 Pro builds, in every judge&#x27;s list.</li>
+<li><strong>Bottom two:</strong> the two Copilot builds, in every list except the transcript judge&#x27;s.</li>
+<li><strong>Exceptions:</strong>
+<ul>
+<li>The <strong>browser judge</strong> put GPT6-Pro-v1 first and Opus-v1 fourth, based on what a desktop user sees first: the room&#x27;s polish and the XR-info dialog.</li>
+<li>The <strong>transcript judge</strong> put Gemini last, because it shipped a shader that failed to compile and was never verified.</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>The phase-1 review scores (1–10, per review type) are in <a href="../source/ReviewOrchestrator/README.md.html">ReviewOrchestrator/README.md</a> §4.</p>
+<h3 id="md-caveats">Caveats</h3>
+<ul>
+<li>The prompts differ. <a href="../source/prompt0.txt.html">prompt0.txt</a> (v0) asks for three.js and three.xr.js; <a href="../source/prompt1.txt.html">prompt1.txt</a>
+(v1) asks for WebXR and &quot;the highest possible visual wow effect and good usability&quot;. Each page was judged
+against its own prompt, in one combined ranking.</li>
+<li>No real VR or AR session was entered. Everything was tested in desktop Chrome, without an XR device or emulator.</li>
+<li>All reviewers and judges were Opus 5.5 agents, and two of the eight pages are Opus 5.5 builds.</li>
+</ul>
+<p>Deviations and incidents, such as the effort setting, a rerun browser review, a blocking <code>alert()</code> and a privacy
+rewrite, are in <a href="../source/ReviewOrchestrator/README.md.html">ReviewOrchestrator/README.md</a> §3 and <a href="../source/Judge/README.md.html">Judge/README.md</a>.</p>
+<h3 id="md-repository-layout">Repository layout</h3>
+<pre><code>&lt;Vendor&gt;-&lt;Product&gt;-&lt;Model&gt;-&lt;Effort&gt;-v&lt;N&gt;/   one per chat: the page (HTML) and TRANSCRIPTION.md
+prompt0.txt, prompt1.txt                    the two task prompts, verbatim
+Review/                                     phase 1: 24 blind reviews (HTML, transcript, browser)
+Judge/                                      phase 2: 5 blind rankings and their aggregate
+ReviewOrchestrator/                         how it was run: plan, prompts, session log, incidents, tools
+site/                                       generator for the results site
+</code></pre>
+<h3 id="md-build-the-site">Build the site</h3>
+<p>Standard library only, Python 3.12 or newer, from the repository root:</p>
+<pre><code class="language-bash">python3 -I site/build.py        # writes site/dist/
+python3 -I site/test_build.py   # checks the data, links, determinism and extensibility
+</code></pre>
+<p><a href="../source/site/README.md.html">site/README.md</a> covers the data model and how to add a judgment, and <a href="../source/site/DEPLOY.md.html">site/DEPLOY.md</a>
+the hosting notes. A Claude Code cloud session built the generator from <a href="../source/site/BRIEF.md.html">site/BRIEF.md</a> and
+<a href="../source/site/BRIEF-ADDENDUM.md.html">site/BRIEF-ADDENDUM.md</a>.</p>
+</div></section><details class="src-view"><summary>Source with line numbers</summary><pre class="src"><code><span id="L1"># MandelbrotXR</span><span id="L2"></span><span id="L3">Five AI assistants (Claude, ChatGPT, Gemini, Mistral and GitHub Copilot) were asked for a standalone HTML page</span><span id="L4">that puts the Mandelbrot set in a virtual room you can enter with a VR headset, AR glasses or a phone. Eight</span><span id="L5">chats produced eight pages. Blind agents reviewed each page from its HTML, its chat transcript and in the</span><span id="L6">browser, then five blind judges ranked all eight.</span><span id="L7"></span><span id="L8">The results site lets you sort the rankings, read every review and judgment, and play each page:</span><span id="L9">**&lt;https://mandelbrotxr.puchstein.dev&gt;**</span><span id="L10"></span><span id="L11">## Result</span><span id="L12"></span><span id="L13">Mean rank across the five judges (1 = best), from [Judge/README.md](Judge/README.md), which also lists each</span><span id="L14">judge&#x27;s ranks:</span><span id="L15"></span><span id="L16">| Folder | Prompt | Mean rank |</span><span id="L17">|---|---|---|</span><span id="L18">| [`Anthropic-Web-Opus5.5-Max-v1`](Anthropic-Web-Opus5.5-Max-v1/) | v1 | 1.8 |</span><span id="L19">| [`Anthropic-Web-Opus5.5-Max-v0`](Anthropic-Web-Opus5.5-Max-v0/) | v0 | 1.8 |</span><span id="L20">| [`OpenAI-Web-GPT6-Pro-v1`](OpenAI-Web-GPT6-Pro-v1/) | v1 | 3.0 |</span><span id="L21">| [`OpenAI-Web-GPT6-Pro-v0`](OpenAI-Web-GPT6-Pro-v0/) | v0 | 3.4 |</span><span id="L22">| [`Google-Web-Gemini4Argon-High-v1`](Google-Web-Gemini4Argon-High-v1/) | v1 | 5.6 |</span><span id="L23">| [`Mistral-VibeCode-MistralLarge4-Default-v1`](Mistral-VibeCode-MistralLarge4-Default-v1/) | v1 | 5.8 |</span><span id="L24">| [`GitHub-CopilotTasks-Auto-Autopilot-v1`](GitHub-CopilotTasks-Auto-Autopilot-v1/) | v1 | 6.8 |</span><span id="L25">| [`GitHub-CopilotTasks-Auto-Interactive-v1`](GitHub-CopilotTasks-Auto-Interactive-v1/) | v1 | 7.8 |</span><span id="L26"></span><span id="L27">The two Opus builds tie. The judges&#x27; agreement, as Judge/README.md puts it:</span><span id="L28"></span><span id="L29">&gt; - **Top four:** the two Opus 5.5 builds, then the two GPT6 Pro builds, in every judge&#x27;s list.</span><span id="L30">&gt; - **Bottom two:** the two Copilot builds, in every list except the transcript judge&#x27;s.</span><span id="L31">&gt; - **Exceptions:**</span><span id="L32">&gt;   - The **browser judge** put GPT6-Pro-v1 first and Opus-v1 fourth, based on what a desktop user sees first: the room&#x27;s polish and the XR-info dialog.</span><span id="L33">&gt;   - The **transcript judge** put Gemini last, because it shipped a shader that failed to compile and was never verified.</span><span id="L34"></span><span id="L35">The phase-1 review scores (1–10, per review type) are in [ReviewOrchestrator/README.md](ReviewOrchestrator/README.md) §4.</span><span id="L36"></span><span id="L37">## Caveats</span><span id="L38"></span><span id="L39">- The prompts differ. [prompt0.txt](prompt0.txt) (v0) asks for three.js and three.xr.js; [prompt1.txt](prompt1.txt)</span><span id="L40">  (v1) asks for WebXR and &quot;the highest possible visual wow effect and good usability&quot;. Each page was judged</span><span id="L41">  against its own prompt, in one combined ranking.</span><span id="L42">- No real VR or AR session was entered. Everything was tested in desktop Chrome, without an XR device or emulator.</span><span id="L43">- All reviewers and judges were Opus 5.5 agents, and two of the eight pages are Opus 5.5 builds.</span><span id="L44"></span><span id="L45">Deviations and incidents, such as the effort setting, a rerun browser review, a blocking `alert()` and a privacy</span><span id="L46">rewrite, are in [ReviewOrchestrator/README.md](ReviewOrchestrator/README.md) §3 and [Judge/README.md](Judge/README.md).</span><span id="L47"></span><span id="L48">## Repository layout</span><span id="L49"></span><span id="L50">```</span><span id="L51">&lt;Vendor&gt;-&lt;Product&gt;-&lt;Model&gt;-&lt;Effort&gt;-v&lt;N&gt;/   one per chat: the page (HTML) and TRANSCRIPTION.md</span><span id="L52">prompt0.txt, prompt1.txt                    the two task prompts, verbatim</span><span id="L53">Review/                                     phase 1: 24 blind reviews (HTML, transcript, browser)</span><span id="L54">Judge/                                      phase 2: 5 blind rankings and their aggregate</span><span id="L55">ReviewOrchestrator/                         how it was run: plan, prompts, session log, incidents, tools</span><span id="L56">site/                                       generator for the results site</span><span id="L57">```</span><span id="L58"></span><span id="L59">## Build the site</span><span id="L60"></span><span id="L61">Standard library only, Python 3.12 or newer, from the repository root:</span><span id="L62"></span><span id="L63">```bash</span><span id="L64">python3 -I site/build.py        # writes site/dist/</span><span id="L65">python3 -I site/test_build.py   # checks the data, links, determinism and extensibility</span><span id="L66">```</span><span id="L67"></span><span id="L68">[site/README.md](site/README.md) covers the data model and how to add a judgment, and [site/DEPLOY.md](site/DEPLOY.md)</span><span id="L69">the hosting notes. A Claude Code cloud session built the generator from [site/BRIEF.md](site/BRIEF.md) and</span><span id="L70">[site/BRIEF-ADDENDUM.md](site/BRIEF-ADDENDUM.md).</span></code></pre></details>
 </main>
 <footer class="site-footer">
-<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/5fd9330ed6c8bf0a0f4d3747936d949c023a93e1" rel="noopener"><code>5fd9330ed6c8</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
 Static site; no cookies, no analytics, no third-party requests.</p>
 <p><a href="../data/">Data &amp; schema</a> · <a href="../data/changelog/">Changelog</a> · <a href="../feed.xml">Atom feed</a> · <a href="../methodology/">Methodology &amp; caveats</a></p>
 </footer>

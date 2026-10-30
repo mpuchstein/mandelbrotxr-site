@@ -1,11 +1,11 @@
 {
  "schema": "mandelbrotxr-results/1",
  "build": {
-  "commit": "75d36a02e1f0f969e9bc37c6d970cf519fc1f30a",
-  "sha": "75d36a02e1f0f969e9bc37c6d970cf519fc1f30a",
+  "commit": "5fd9330ed6c8bf0a0f4d3747936d949c023a93e1",
+  "sha": "5fd9330ed6c8bf0a0f4d3747936d949c023a93e1",
   "dirty": false,
-  "date": "2026-10-30T11:16:35+01:00",
-  "github": "https://github.com/mpuchstein/MandelbrotXR/tree/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a"
+  "date": "2026-10-30T11:38:45+01:00",
+  "github": "https://github.com/mpuchstein/MandelbrotXR/tree/5fd9330ed6c8bf0a0f4d3747936d949c023a93e1"
  },
  "candidates": [
   {

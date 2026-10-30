@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BRIEF-ADDENDUM.md · site · MandelbrotXR results</title>
+<meta name="description" content="Rendered copy of site/BRIEF-ADDENDUM.md from the MandelbrotXR repository.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/source/site/BRIEF-ADDENDUM.md.html">
+<link rel="icon" href="../../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../../feed.xml">
+<script src="../../assets/js/theme.js?v=7a718e6155"></script>
+<script src="../../assets/js/transcripts.js?v=54e22884d0" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../../">Home</a></li><li><a href="../../rankings/">Rankings</a></li><li><a href="../../candidates/">Candidates</a></li><li><a href="../../compare/">Compare</a></li><li><a href="../../techniques/">Techniques</a></li><li><a href="../../judges/">Judges &amp; reviews</a></li><li><a href="../../transcripts/" aria-current="page">Transcripts</a></li><li><a href="../../methodology/">Methodology</a></li><li><a href="../../data/">Data</a></li><li><a href="../../search/">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../">Home</a></li><li><a href="../../transcripts/">Transcripts</a></li><li><a href="../../source/">Source files</a></li><li><a href="../../source/site/">site</a></li><li><span aria-current="page">BRIEF-ADDENDUM.md</span></li></ol></nav>
+<h1 class="src-path">BRIEF-ADDENDUM.md</h1><ul class="tx-meta src-meta"><li><code>site/<wbr>BRIEF-<wbr>ADDENDUM.md</code></li><li>39 lines · 3.1 kB</li><li>in <a href="../../source/site/">site/</a></li><li><a href="https://github.com/mpuchstein/MandelbrotXR/blob/5fd9330ed6c8bf0a0f4d3747936d949c023a93e1/site/BRIEF-ADDENDUM.md" rel="noopener">Original on GitHub at 5fd9330</a></li></ul><section class="src-doc" aria-label="Rendered Markdown"><div class="md"><h2 id="md-brief-addendum-design-and-accessibility">Brief addendum: design and accessibility</h2>
+<p><em>The repository owner sent this to the Claude Code cloud session that built the site on 2026-10-30, while
+it was working from <a href="../../source/site/BRIEF.md.html">BRIEF.md</a>. It is kept verbatim below. The description of
+<a href="https://github.com/mpuchstein/MandelbrotXR/pull/1" rel="noopener">PR #1</a> says how each point was handled, under &quot;How each
+addendum point was handled&quot;.</em></p>
+<p>Design and accessibility addendum to site/BRIEF.md, from the repo owner. Treat it as part of the brief; where it is more specific than the brief, follow the addendum. Don&#x27;t edit BRIEF.md itself. Note in the PR how each point was handled.</p>
+<h3 id="md-visual-direction">Visual direction</h3>
+<ul>
+<li><strong>Feel:</strong> a well-typeset research report, like Distill.pub or Our World in Data. Not a SaaS landing page.</li>
+<li><strong>Avoid:</strong> glassmorphism, neon glow, gradient text, emoji icons, decorative animation.</li>
+<li><strong>Tokens:</strong> define every color, the spacing scale (4px steps), radii and type sizes as CSS custom properties on <code>:root</code>, with one set for dark and one for light.</li>
+<li><strong>Color:</strong> neutral surfaces. One accent taken from the classic Mandelbrot palette (deep blue → gold), used only for emphasis and focus.</li>
+<li><strong>Type:</strong>
+<ul>
+<li><code>system-ui</code> for text, <code>ui-monospace</code> for code;</li>
+<li>16–17px body text with 1.5–1.6 line height;</li>
+<li>prose and transcripts capped at about 70ch;</li>
+<li><code>font-variant-numeric: tabular-nums</code> in every column of numbers.</li>
+</ul>
+</li>
+<li><strong>Candidate labels:</strong> add a short <code>label</code> per candidate in <code><span class="nw">site</span>/<wbr><span class="nw">candidates.toml</span></code> (e.g. &quot;Opus 5.5 · v1&quot;) and use it in tables and charts. Full folder names appear only on detail pages.</li>
+<li><strong>Charts:</strong>
+<ul>
+<li>Give each candidate one fixed, colorblind-safe color, the same in every chart. Use Okabe–Ito; past 8 candidates, extend deterministically, e.g. by adding a dash pattern or marker shape.</li>
+<li>Always pair color with a direct label. Never rely on color alone.</li>
+</ul>
+</li>
+<li><strong>Heatmap:</strong> a single-hue sequential scale, with the rank number printed in each cell and a legend that says &quot;1 = best&quot;.</li>
+<li><strong>Mobile:</strong> matrix tables get a sticky header and a sticky first column, and scroll inside their own container.</li>
+</ul>
+<h3 id="md-accessibility-checks-add-these-to-done-when">Accessibility checks (add these to &quot;Done when&quot;)</h3>
+<ul>
+<li><strong>axe-core:</strong> run it (pinned <code>axe-core</code> npm package, injected through Playwright in <code><span class="nw">site</span>/<wbr><span class="nw">check_site.py</span></code>) on every page type in both light and dark themes. It must report zero serious or critical violations.</li>
+<li><strong>Keyboard-only pass:</strong>
+<ul>
+<li>Must work without a mouse: sorting, filters, the heatmap and Blind/Reveal toggles, search, compare, and the theme toggle.</li>
+<li>Toggles are <code>&lt;button&gt;</code> elements with <code>aria-pressed</code>.</li>
+<li>Focus is visible everywhere.</li>
+<li>Every page has a skip link, landmarks, and exactly one h1.</li>
+</ul>
+</li>
+<li><strong>Announcements:</strong> search results and sort changes are announced through an <code>aria-live=&quot;polite&quot;</code> region.</li>
+<li><strong>Charts:</strong> every SVG chart has <code>role=&quot;img&quot;</code>, a <code>&lt;title&gt;</code> and a <code>&lt;desc&gt;</code>, and a table equivalent.</li>
+</ul>
+<h3 id="md-visual-qa-loop">Visual QA loop</h3>
+<ul>
+<li>After producing the screenshots (390 and 1440 px, light and dark), have an agent with fresh context critique them for hierarchy, spacing, alignment, overflow, truncation, contrast and chart legibility.</li>
+<li>Fix what it finds, and put before/after screenshots in the PR.</li>
+</ul>
+</div></section><details class="src-view"><summary>Source with line numbers</summary><pre class="src"><code><span id="L1"># Brief addendum: design and accessibility</span><span id="L2"></span><span id="L3">*The repository owner sent this to the Claude Code cloud session that built the site on 2026-10-30, while</span><span id="L4">it was working from [BRIEF.md](BRIEF.md). It is kept verbatim below. The description of</span><span id="L5">[PR #1](https://github.com/mpuchstein/MandelbrotXR/pull/1) says how each point was handled, under &quot;How each</span><span id="L6">addendum point was handled&quot;.*</span><span id="L7"></span><span id="L8">Design and accessibility addendum to site/BRIEF.md, from the repo owner. Treat it as part of the brief; where it is more specific than the brief, follow the addendum. Don&#x27;t edit BRIEF.md itself. Note in the PR how each point was handled.</span><span id="L9"></span><span id="L10">## Visual direction</span><span id="L11">- **Feel:** a well-typeset research report, like Distill.pub or Our World in Data. Not a SaaS landing page.</span><span id="L12">- **Avoid:** glassmorphism, neon glow, gradient text, emoji icons, decorative animation.</span><span id="L13">- **Tokens:** define every color, the spacing scale (4px steps), radii and type sizes as CSS custom properties on `:root`, with one set for dark and one for light.</span><span id="L14">- **Color:** neutral surfaces. One accent taken from the classic Mandelbrot palette (deep blue → gold), used only for emphasis and focus.</span><span id="L15">- **Type:**</span><span id="L16">  - `system-ui` for text, `ui-monospace` for code;</span><span id="L17">  - 16–17px body text with 1.5–1.6 line height;</span><span id="L18">  - prose and transcripts capped at about 70ch;</span><span id="L19">  - `font-variant-numeric: tabular-nums` in every column of numbers.</span><span id="L20">- **Candidate labels:** add a short `label` per candidate in `site/candidates.toml` (e.g. &quot;Opus 5.5 · v1&quot;) and use it in tables and charts. Full folder names appear only on detail pages.</span><span id="L21">- **Charts:**</span><span id="L22">  - Give each candidate one fixed, colorblind-safe color, the same in every chart. Use Okabe–Ito; past 8 candidates, extend deterministically, e.g. by adding a dash pattern or marker shape.</span><span id="L23">  - Always pair color with a direct label. Never rely on color alone.</span><span id="L24">- **Heatmap:** a single-hue sequential scale, with the rank number printed in each cell and a legend that says &quot;1 = best&quot;.</span><span id="L25">- **Mobile:** matrix tables get a sticky header and a sticky first column, and scroll inside their own container.</span><span id="L26"></span><span id="L27">## Accessibility checks (add these to &quot;Done when&quot;)</span><span id="L28">- **axe-core:** run it (pinned `axe-core` npm package, injected through Playwright in `site/check_site.py`) on every page type in both light and dark themes. It must report zero serious or critical violations.</span><span id="L29">- **Keyboard-only pass:**</span><span id="L30">  - Must work without a mouse: sorting, filters, the heatmap and Blind/Reveal toggles, search, compare, and the theme toggle.</span><span id="L31">  - Toggles are `&lt;button&gt;` elements with `aria-pressed`.</span><span id="L32">  - Focus is visible everywhere.</span><span id="L33">  - Every page has a skip link, landmarks, and exactly one h1.</span><span id="L34">- **Announcements:** search results and sort changes are announced through an `aria-live=&quot;polite&quot;` region.</span><span id="L35">- **Charts:** every SVG chart has `role=&quot;img&quot;`, a `&lt;title&gt;` and a `&lt;desc&gt;`, and a table equivalent.</span><span id="L36"></span><span id="L37">## Visual QA loop</span><span id="L38">- After producing the screenshots (390 and 1440 px, light and dark), have an agent with fresh context critique them for hierarchy, spacing, alignment, overflow, truncation, contrast and chart legibility.</span><span id="L39">- Fix what it finds, and put before/after screenshots in the PR.</span></code></pre></details>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/5fd9330ed6c8bf0a0f4d3747936d949c023a93e1" rel="noopener"><code>5fd9330ed6c8</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../../data/">Data &amp; schema</a> · <a href="../../data/changelog/">Changelog</a> · <a href="../../feed.xml">Atom feed</a> · <a href="../../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>
