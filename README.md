@@ -6,7 +6,10 @@ Build output of the MandelbrotXR results site (generator: `site/build.py` in
 Served at https://mandelbrotxr.puchstein.dev/ from the VPS as a nested submodule of
 `vps_server/compose/caddy/sites/mandelbrotxr`.
 
-Republish: rebuild into this repo and push. Then in vps_server run
+Republish: build into a scratch dir, never into this checkout. `build.py` deletes `--out` before
+building, and this checkout would qualify once the `.mandelbrotxr-site` marker is committed, so .git
+would be wiped too. Then sync it in and push:
+`python3 -I site/build.py --out "$tmp" && rsync -a --delete --exclude .git --exclude README.md "$tmp"/ ./`. Then in vps_server run
 `git submodule update --remote compose/caddy/sites/mandelbrotxr`, commit and push, and bump
 the hosting pointer. Move the box per the vps_server README (retro rule C6), never with a bare `pull`:
 1. On the box, `git log --oneline HEAD..<sha>`.
