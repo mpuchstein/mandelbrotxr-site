@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REVIEW.md · Review/HTML-Review/GitHub-CopilotTasks-Auto-Autopilot-v1 · MandelbrotXR results</title>
+<meta name="description" content="Rendered copy of Review/HTML-Review/GitHub-CopilotTasks-Auto-Autopilot-v1/REVIEW.md from the MandelbrotXR repository.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/source/Review/HTML-Review/GitHub-CopilotTasks-Auto-Autopilot-v1/REVIEW.md.html">
+<link rel="icon" href="../../../../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../../../../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../../../../feed.xml">
+<script src="../../../../assets/js/theme.js?v=7a718e6155"></script>
+<script src="../../../../assets/js/transcripts.js?v=54e22884d0" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../../../../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../../../../">Home</a></li><li><a href="../../../../rankings/">Rankings</a></li><li><a href="../../../../candidates/">Candidates</a></li><li><a href="../../../../compare/">Compare</a></li><li><a href="../../../../techniques/">Techniques</a></li><li><a href="../../../../judges/" aria-current="page">Judges &amp; reviews</a></li><li><a href="../../../../transcripts/">Transcripts</a></li><li><a href="../../../../methodology/">Methodology</a></li><li><a href="../../../../data/">Data</a></li><li><a href="../../../../search/">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../">Home</a></li><li><a href="../../../../judges/">Judges &amp; reviews</a></li><li><a href="../../../../source/">Source files</a></li><li><a href="../../../../source/Review/">Review</a></li><li><a href="../../../../source/Review/HTML-Review/">HTML-Review</a></li><li><a href="../../../../source/Review/HTML-Review/GitHub-CopilotTasks-Auto-Autopilot-v1/">GitHub-CopilotTasks-Auto-Autopilot-v1</a></li><li><span aria-current="page">REVIEW.md</span></li></ol></nav>
+<h1 class="src-path">REVIEW.md</h1><ul class="tx-meta src-meta"><li><code>Review/<wbr>HTML-<wbr>Review/<wbr>GitHub-<wbr>CopilotTasks-<wbr>Auto-<wbr>Autopilot-<wbr>v1/<wbr>REVIEW.md</code></li><li>84 lines · 10.9 kB</li><li>in <a href="../../../../source/Review/HTML-Review/GitHub-CopilotTasks-Auto-Autopilot-v1/">Review/HTML-Review/GitHub-CopilotTasks-Auto-Autopilot-v1/</a></li><li><a href="https://github.com/mpuchstein/MandelbrotXR/blob/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a/Review/HTML-Review/GitHub-CopilotTasks-Auto-Autopilot-v1/REVIEW.md" rel="noopener">Original on GitHub at 75d36a0</a></li></ul><section class="src-doc" aria-label="Rendered Markdown"><div class="md"><h2 id="md-html-review-candidate-04">HTML Review — candidate-04</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table class="jr-crit">
+<thead>
+<tr>
+<th>Criterion</th>
+<th class="num">Score</th>
+<th>One-line reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Done-when fulfilment</td>
+<td class="num">2</td>
+<td>The XR render loop throws after its first frame (<code>frame</code> parameter shadows the function, l.163/167), so no device gets a working immersive room. Only the non-XR orbit view works.</td>
+</tr>
+<tr>
+<td>2. Device/XR compatibility</td>
+<td class="num">3</td>
+<td>It asks for <code>immersive-vr</code>/<code>immersive-ar</code> with <code>xrCompatible</code>, but <code>local-floor</code> is required with no fallback, there is no XR input at all, AR is cleared opaque, and iPhone gets only the flat fallback.</td>
+</tr>
+<tr>
+<td>3. Visual wow effect</td>
+<td class="num">3</td>
+<td>A 120×120 CPU heightfield in three hard colour bands, simple diffuse/rim shading, 650 point &quot;stars&quot; and a flat floor plane. The viewer spawns under a plateau 1.85 m high.</td>
+</tr>
+<tr>
+<td>4. Usability &amp; controls</td>
+<td class="num">3</td>
+<td>The landing panel is good-looking, but XR has no controls, no exit button and no locomotion. The hint promises pinch-zoom that isn&#x27;t implemented, and Explore mode has no way back to the menu.</td>
+</tr>
+<tr>
+<td>5. Code quality &amp; robustness</td>
+<td class="num">3</td>
+<td>Compact raw WebGL2 with shader error checks. But it has a fatal shadowing bug, a per-view full-framebuffer clear, no try/catch in <code>enter()</code>, canvas resize on every frame, and a stale XR framebuffer binding.</td>
+</tr>
+<tr>
+<td>6. Prompt adherence</td>
+<td class="num">6</td>
+<td>A true single file with no dependencies that uses WebXR, but it falls far short of &quot;highest possible wow&quot; and the &quot;virtual room&quot;.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Overall score: 2 / 10</strong></p>
+<h3 id="md-notes-per-criterion">Notes per criterion</h3>
+<h4 id="md-1-done-when-fulfilment">1. Done-when fulfilment</h4>
+<ul>
+<li><code>enter()</code> (l.169–176) starts the loop with <code>xrSession.requestAnimationFrame(frame)</code> at l.175, and there <code>frame</code> is the function. Inside <code>function frame(t, frame)</code> (l.163), the second parameter (the <code>XRFrame</code>) shadows the function name. So <code>xrSession.requestAnimationFrame(frame)</code> at l.167 passes an <code>XRFrame</code> object, which throws a TypeError, and the loop never runs a second time. A quick check confirms it: <code>function frame(t, frame){ typeof frame }</code> → <code>&quot;object&quot;</code>. The user gets one frame and then a frozen or black immersive view on every headset and on Android AR.</li>
+<li>Even with that fixed, stereo VR would still be broken. <code>draw()</code> calls <code>gl.clear(COLOR|DEPTH)</code> (l.155) once per view, with no scissor test, and <code>gl.clear</code> ignores the viewport. Drawing the right eye therefore wipes the left eye of the side-by-side framebuffer, leaving one eye black.</li>
+<li>Only &quot;Explore on screen&quot; (l.183–190) works: a mouse/touch orbit camera around the terrain. That isn&#x27;t an immersive room.</li>
+</ul>
+<h4 id="md-2-device-xr-compatibility">2. Device/XR compatibility</h4>
+<ul>
+<li>Good: <code>getContext(&#x27;webgl2&#x27;, {xrCompatible:true})</code> (l.52). <code>isSessionSupported</code> is checked before <code>requestSession</code>, and the optional features include <code>local-floor</code>, <code>bounded-floor</code>, <code>hand-tracking</code> and <code>dom-overlay</code> (l.172). That request shape is fine for Quest 3, Pico 4 Ultra and Steam Frame browsers.</li>
+<li><code>requestReferenceSpace(&#x27;local-floor&#x27;)</code> (l.175) is mandatory even though the feature was optional. There is no fallback to <code>local</code>, so a rejection leaves an immersive session open with no loop and an unhandled promise rejection.</li>
+<li>AR: <code>alpha:false</code> (l.52) plus an opaque clear colour on every view (l.155) hide the camera passthrough on Android ARCore and Quest passthrough. The <code>arMode</code> argument is passed but never used (l.154/166).</li>
+<li>No XR input handling at all: no <code>inputSources</code>, no <code>select</code>/<code>squeeze</code> events, and <code>hand-tracking</code> is requested but never used. No gaze or transient-pointer handling either.</li>
+<li>iPhone: there&#x27;s no <code>navigator.xr</code>, so both XR buttons are disabled (l.178) and only the flat view remains. That fallback is acceptable on its own, but the pinch zoom advertised in the hint doesn&#x27;t exist there.</li>
+<li>Phones and VR: Android Chrome mostly reports <code>immersive-vr</code> unsupported, and the response is an <code>alert()</code> (l.171). The secure-context requirement isn&#x27;t mentioned or detected.</li>
+</ul>
+<h4 id="md-3-visual-wow-effect">3. Visual wow effect</h4>
+<ul>
+<li>The fractal is sampled on the CPU at 121×121 vertices over 10.5 m (l.133–137), with 72 iterations and smooth escape-time height. Detail is coarse, at about 9 cm per vertex.</li>
+<li>Colour comes from a three-step band (l.118: pink / blue / navy), not a smooth palette, so the fractal&#x27;s colour structure is lost. The intro text says &quot;the black hole at its heart is the Mandelbrot set&quot; (l.39), but the set itself is drawn bright pink (<code>h &gt; .83</code>).</li>
+<li>Shading is a single point light with <code>pow(...,.35)</code> &quot;glow&quot;, an up-vector rim and a time pulse (l.76–83). There is no fog, bloom, post-processing, reflections or animation of the fractal.</li>
+<li>The &quot;room&quot; is one flat 42 m plane at about y = −2.59 m (l.138, l.158): below the real floor, with no walls. Around it is a ring of fixed-pixel-size points (l.140, l.87).</li>
+<li>Placement: the terrain centre (c = −0.68+0i, inside the cardioid) sits at height 1.85 m (computed: <code>h*2.5-.65 = 1.85</code>). The XR origin is at the terrain centre with no offset, so a standing user&#x27;s head (~1.6 m) is under the plateau, looking at its unculled underside, and the terrain bottom lies about 0.6 m below the real floor.</li>
+</ul>
+<h4 id="md-4-usability-controls">4. Usability &amp; controls</h4>
+<ul>
+<li>The landing panel (l.13–43) looks polished and has clear buttons. The XR buttons are relabelled &quot;NOT DETECTED&quot; when there&#x27;s no <code>navigator.xr</code>.</li>
+<li>Inside XR there&#x27;s no interaction, no exit button, no locomotion and no way to scale or reposition the fractal.</li>
+<li>Screen mode: drag to orbit, wheel to zoom, double-click to reset (l.184–188). Pinch zoom is promised by the hint (l.45) but not implemented. The only touch gesture is a one-finger drag, and <code>pointerup</code> ignores <code>pointercancel</code>.</li>
+<li>After &quot;Explore&quot; hides the panel there is no way back to Enter VR or AR without reloading.</li>
+<li>Errors are shown via <code>alert()</code>, which works poorly inside headset browsers.</li>
+</ul>
+<h4 id="md-5-code-quality-robustness">5. Code quality &amp; robustness</h4>
+<ul>
+<li>Structure is compact (about 145 lines of JS, one IIFE, <code>&#x27;use strict&#x27;</code>) and shader compile/link errors throw with the info log (l.92–100). The script passes <code>node --check</code>.</li>
+<li><code>enter()</code> has no try/catch. A failing <code>requestSession</code>, <code>updateRenderState</code> or reference-space request becomes an unhandled rejection, and a half-initialised session is never ended.</li>
+<li>Inside <code>frame()</code>, <code>if (!pose) return;</code> (l.164) also skips re-scheduling, so one frame of lost tracking would kill the loop even once the shadowing is fixed.</li>
+<li><code>screenFrame</code> calls <code>resize()</code> every frame (l.189). Assigning <code>canvas.width</code>/<code>height</code> reallocates the WebGL drawing buffer on each frame, which hurts performance on phones.</li>
+<li>After an XR session ends, the binding is never reset with <code>gl.bindFramebuffer(gl.FRAMEBUFFER, null)</code>, and the viewport is left at the per-eye value. Returning to screen mode renders into the dead XR framebuffer.</li>
+<li>Each <code>draw()</code> allocates new matrices (<code>I()</code> and an IIFE that builds the room model matrix, l.157–158), plus <code>mul()</code>/<code>inverse.matrix</code> per view, so there is avoidable GC pressure in the XR loop.</li>
+<li>Blending is on while depth writes stay enabled for the soft point sprites (l.155/159), so the transparent corners of the sprites occlude stars behind them.</li>
+<li>Explore is wired twice, via <code>onclick</code> (l.183) and <code>addEventListener</code> (l.190). It works, but it&#x27;s confusing.</li>
+</ul>
+<h4 id="md-6-prompt-adherence">6. Prompt adherence</h4>
+<ul>
+<li>It is genuinely standalone: no CDN or external assets, raw WebGL2 and WebXR. That is a legitimate choice.</li>
+<li>The &quot;highest possible visual wow&quot; and the &quot;virtual room&quot; are barely attempted, and the core XR path doesn&#x27;t work.</li>
+</ul>
+<h3 id="md-bugs-found">Bugs found</h3>
+<ol>
+<li><strong>l.163/167</strong>: the <code>frame(t, frame)</code> parameter shadows the callback name, so <code>requestAnimationFrame</code> gets an <code>XRFrame</code> and throws. The XR loop dies after one frame.</li>
+<li><strong>l.155 (called per view at l.166)</strong>: the full-framebuffer <code>gl.clear</code> inside the per-view loop erases the previous eye, so only the last view is visible in stereo.</li>
+<li><strong>l.164</strong>: an early <code>return</code> on a null pose skips the next <code>requestAnimationFrame</code>, so losing tracking permanently stops rendering.</li>
+<li><strong>l.175</strong>: <code>local-floor</code> is required with no <code>local</code> fallback and no try/catch, so the session can be left open with no render loop.</li>
+<li><strong>l.52 + l.155</strong>: <code>alpha:false</code> and an opaque clear in AR hide the passthrough, so AR shows a solid scene with no camera feed. <code>arMode</code> is unused.</li>
+<li><strong>l.133–138, l.158</strong>: scene placement relative to the XR origin. The user spawns inside or under a 1.85 m-high plateau, and the &quot;room&quot; floor sits 2.6 m below the real floor.</li>
+<li><strong>l.45 vs l.184–188</strong>: &quot;pinch to zoom&quot; is advertised but not implemented, and <code>pointercancel</code> isn&#x27;t handled.</li>
+<li><strong>l.189</strong>: <code>resize()</code> runs every frame and reallocates the drawing buffer each time.</li>
+<li><strong>l.173 / l.189</strong>: after XR ends, the framebuffer and viewport are never reset for screen rendering.</li>
+<li><strong>l.39 vs l.118</strong>: the text calls the set a &quot;black hole&quot;, but the code colours it bright pink.</li>
+</ol>
+<h3 id="md-top-5-issues">Top 5 issues</h3>
+<ol>
+<li><strong>Critical: the XR loop dies after its first frame</strong> (l.163, l.167). Rename the parameter (<code>function onXRFrame(t, xrFrame)</code>) and call <code>session.requestAnimationFrame(onXRFrame)</code> at the start of the callback.</li>
+<li><strong>Critical: one eye is blank in stereo</strong> (l.155 called per view). Clear once per frame after binding the layer framebuffer, before the view loop, or enable <code>SCISSOR_TEST</code> with a per-view scissor.</li>
+<li><strong>Major: the user spawns under the fractal plateau and the room is a lone sub-floor plane</strong> (l.133–138, l.158). Lay the fractal out as a floor-level table or diorama about 1–2 m in front of the user, place the floor at y = 0, and build actual walls or a dome with smooth palette colouring.</li>
+<li><strong>Major: no XR interaction, no fallback reference space, no error handling</strong> (l.169–176). Wrap <code>enter()</code> in try/catch, fall back from <code>local-floor</code> to <code>local</code>, handle <code>select</code>/<code>squeeze</code> and controller rays for zoom/pan, and add an in-XR exit.</li>
+<li><strong>Major: AR is opaque and phone controls are incomplete</strong> (l.52, l.155, l.45). Clear with alpha 0 in <code>immersive-ar</code> (context <code>alpha:true</code>), skip the room geometry there, implement two-pointer pinch zoom, and stop resizing the canvas every frame.</li>
+</ol>
+<h3 id="md-strengths">Strengths</h3>
+<ul>
+<li>A true single file with zero dependencies. Raw WebGL2 keeps the payload tiny (13 KB).</li>
+<li>Correct basics for starting XR: <code>xrCompatible</code> context, <code>isSessionSupported</code> check, a sensible list of optional features, and <code>XRWebGLLayer</code> with <code>depthNear</code>/<code>depthFar</code>.</li>
+<li>Smooth escape-time height and finite-difference normals give a plausible fractal heightfield.</li>
+<li>A polished, responsive landing panel with feature detection that disables the XR buttons when WebXR is missing.</li>
+<li>A non-XR &quot;Explore on screen&quot; fallback with orbit, zoom and reset, so iPhone and desktop users see something.</li>
+</ul>
+<h3 id="md-verdict">Verdict</h3>
+<p>The candidate is a tidy-looking but very thin raw-WebGL prototype. Its immersive path is broken: a name-shadowing bug kills the XR frame loop after one frame, and a per-view clear would blank one eye even if the loop ran. On top of that, the scene puts the viewer under the fractal, has no XR input, and makes AR opaque, so the done-when criterion is not met on any headset or phone. Only the flat on-screen orbit view works.</p>
+</div></section><details class="src-view"><summary>Source with line numbers</summary><pre class="src"><code><span id="L1"># HTML Review — candidate-04</span><span id="L2"></span><span id="L3">| Criterion | Score | One-line reason |</span><span id="L4">|---|---|---|</span><span id="L5">| 1. Done-when fulfilment | 2 | The XR render loop throws after its first frame (`frame` parameter shadows the function, l.163/167), so no device gets a working immersive room. Only the non-XR orbit view works. |</span><span id="L6">| 2. Device/XR compatibility | 3 | It asks for `immersive-vr`/`immersive-ar` with `xrCompatible`, but `local-floor` is required with no fallback, there is no XR input at all, AR is cleared opaque, and iPhone gets only the flat fallback. |</span><span id="L7">| 3. Visual wow effect | 3 | A 120×120 CPU heightfield in three hard colour bands, simple diffuse/rim shading, 650 point &quot;stars&quot; and a flat floor plane. The viewer spawns under a plateau 1.85 m high. |</span><span id="L8">| 4. Usability &amp; controls | 3 | The landing panel is good-looking, but XR has no controls, no exit button and no locomotion. The hint promises pinch-zoom that isn&#x27;t implemented, and Explore mode has no way back to the menu. |</span><span id="L9">| 5. Code quality &amp; robustness | 3 | Compact raw WebGL2 with shader error checks. But it has a fatal shadowing bug, a per-view full-framebuffer clear, no try/catch in `enter()`, canvas resize on every frame, and a stale XR framebuffer binding. |</span><span id="L10">| 6. Prompt adherence | 6 | A true single file with no dependencies that uses WebXR, but it falls far short of &quot;highest possible wow&quot; and the &quot;virtual room&quot;. |</span><span id="L11"></span><span id="L12">**Overall score: 2 / 10**</span><span id="L13"></span><span id="L14">## Notes per criterion</span><span id="L15"></span><span id="L16">### 1. Done-when fulfilment</span><span id="L17">- `enter()` (l.169–176) starts the loop with `xrSession.requestAnimationFrame(frame)` at l.175, and there `frame` is the function. Inside `function frame(t, frame)` (l.163), the second parameter (the `XRFrame`) shadows the function name. So `xrSession.requestAnimationFrame(frame)` at l.167 passes an `XRFrame` object, which throws a TypeError, and the loop never runs a second time. A quick check confirms it: `function frame(t, frame){ typeof frame }` → `&quot;object&quot;`. The user gets one frame and then a frozen or black immersive view on every headset and on Android AR.</span><span id="L18">- Even with that fixed, stereo VR would still be broken. `draw()` calls `gl.clear(COLOR|DEPTH)` (l.155) once per view, with no scissor test, and `gl.clear` ignores the viewport. Drawing the right eye therefore wipes the left eye of the side-by-side framebuffer, leaving one eye black.</span><span id="L19">- Only &quot;Explore on screen&quot; (l.183–190) works: a mouse/touch orbit camera around the terrain. That isn&#x27;t an immersive room.</span><span id="L20"></span><span id="L21">### 2. Device/XR compatibility</span><span id="L22">- Good: `getContext(&#x27;webgl2&#x27;, {xrCompatible:true})` (l.52). `isSessionSupported` is checked before `requestSession`, and the optional features include `local-floor`, `bounded-floor`, `hand-tracking` and `dom-overlay` (l.172). That request shape is fine for Quest 3, Pico 4 Ultra and Steam Frame browsers.</span><span id="L23">- `requestReferenceSpace(&#x27;local-floor&#x27;)` (l.175) is mandatory even though the feature was optional. There is no fallback to `local`, so a rejection leaves an immersive session open with no loop and an unhandled promise rejection.</span><span id="L24">- AR: `alpha:false` (l.52) plus an opaque clear colour on every view (l.155) hide the camera passthrough on Android ARCore and Quest passthrough. The `arMode` argument is passed but never used (l.154/166).</span><span id="L25">- No XR input handling at all: no `inputSources`, no `select`/`squeeze` events, and `hand-tracking` is requested but never used. No gaze or transient-pointer handling either.</span><span id="L26">- iPhone: there&#x27;s no `navigator.xr`, so both XR buttons are disabled (l.178) and only the flat view remains. That fallback is acceptable on its own, but the pinch zoom advertised in the hint doesn&#x27;t exist there.</span><span id="L27">- Phones and VR: Android Chrome mostly reports `immersive-vr` unsupported, and the response is an `alert()` (l.171). The secure-context requirement isn&#x27;t mentioned or detected.</span><span id="L28"></span><span id="L29">### 3. Visual wow effect</span><span id="L30">- The fractal is sampled on the CPU at 121×121 vertices over 10.5 m (l.133–137), with 72 iterations and smooth escape-time height. Detail is coarse, at about 9 cm per vertex.</span><span id="L31">- Colour comes from a three-step band (l.118: pink / blue / navy), not a smooth palette, so the fractal&#x27;s colour structure is lost. The intro text says &quot;the black hole at its heart is the Mandelbrot set&quot; (l.39), but the set itself is drawn bright pink (`h &gt; .83`).</span><span id="L32">- Shading is a single point light with `pow(...,.35)` &quot;glow&quot;, an up-vector rim and a time pulse (l.76–83). There is no fog, bloom, post-processing, reflections or animation of the fractal.</span><span id="L33">- The &quot;room&quot; is one flat 42 m plane at about y = −2.59 m (l.138, l.158): below the real floor, with no walls. Around it is a ring of fixed-pixel-size points (l.140, l.87).</span><span id="L34">- Placement: the terrain centre (c = −0.68+0i, inside the cardioid) sits at height 1.85 m (computed: `h*2.5-.65 = 1.85`). The XR origin is at the terrain centre with no offset, so a standing user&#x27;s head (~1.6 m) is under the plateau, looking at its unculled underside, and the terrain bottom lies about 0.6 m below the real floor.</span><span id="L35"></span><span id="L36">### 4. Usability &amp; controls</span><span id="L37">- The landing panel (l.13–43) looks polished and has clear buttons. The XR buttons are relabelled &quot;NOT DETECTED&quot; when there&#x27;s no `navigator.xr`.</span><span id="L38">- Inside XR there&#x27;s no interaction, no exit button, no locomotion and no way to scale or reposition the fractal.</span><span id="L39">- Screen mode: drag to orbit, wheel to zoom, double-click to reset (l.184–188). Pinch zoom is promised by the hint (l.45) but not implemented. The only touch gesture is a one-finger drag, and `pointerup` ignores `pointercancel`.</span><span id="L40">- After &quot;Explore&quot; hides the panel there is no way back to Enter VR or AR without reloading.</span><span id="L41">- Errors are shown via `alert()`, which works poorly inside headset browsers.</span><span id="L42"></span><span id="L43">### 5. Code quality &amp; robustness</span><span id="L44">- Structure is compact (about 145 lines of JS, one IIFE, `&#x27;use strict&#x27;`) and shader compile/link errors throw with the info log (l.92–100). The script passes `node --check`.</span><span id="L45">- `enter()` has no try/catch. A failing `requestSession`, `updateRenderState` or reference-space request becomes an unhandled rejection, and a half-initialised session is never ended.</span><span id="L46">- Inside `frame()`, `if (!pose) return;` (l.164) also skips re-scheduling, so one frame of lost tracking would kill the loop even once the shadowing is fixed.</span><span id="L47">- `screenFrame` calls `resize()` every frame (l.189). Assigning `canvas.width`/`height` reallocates the WebGL drawing buffer on each frame, which hurts performance on phones.</span><span id="L48">- After an XR session ends, the binding is never reset with `gl.bindFramebuffer(gl.FRAMEBUFFER, null)`, and the viewport is left at the per-eye value. Returning to screen mode renders into the dead XR framebuffer.</span><span id="L49">- Each `draw()` allocates new matrices (`I()` and an IIFE that builds the room model matrix, l.157–158), plus `mul()`/`inverse.matrix` per view, so there is avoidable GC pressure in the XR loop.</span><span id="L50">- Blending is on while depth writes stay enabled for the soft point sprites (l.155/159), so the transparent corners of the sprites occlude stars behind them.</span><span id="L51">- Explore is wired twice, via `onclick` (l.183) and `addEventListener` (l.190). It works, but it&#x27;s confusing.</span><span id="L52"></span><span id="L53">### 6. Prompt adherence</span><span id="L54">- It is genuinely standalone: no CDN or external assets, raw WebGL2 and WebXR. That is a legitimate choice.</span><span id="L55">- The &quot;highest possible visual wow&quot; and the &quot;virtual room&quot; are barely attempted, and the core XR path doesn&#x27;t work.</span><span id="L56"></span><span id="L57">## Bugs found</span><span id="L58">1. **l.163/167**: the `frame(t, frame)` parameter shadows the callback name, so `requestAnimationFrame` gets an `XRFrame` and throws. The XR loop dies after one frame.</span><span id="L59">2. **l.155 (called per view at l.166)**: the full-framebuffer `gl.clear` inside the per-view loop erases the previous eye, so only the last view is visible in stereo.</span><span id="L60">3. **l.164**: an early `return` on a null pose skips the next `requestAnimationFrame`, so losing tracking permanently stops rendering.</span><span id="L61">4. **l.175**: `local-floor` is required with no `local` fallback and no try/catch, so the session can be left open with no render loop.</span><span id="L62">5. **l.52 + l.155**: `alpha:false` and an opaque clear in AR hide the passthrough, so AR shows a solid scene with no camera feed. `arMode` is unused.</span><span id="L63">6. **l.133–138, l.158**: scene placement relative to the XR origin. The user spawns inside or under a 1.85 m-high plateau, and the &quot;room&quot; floor sits 2.6 m below the real floor.</span><span id="L64">7. **l.45 vs l.184–188**: &quot;pinch to zoom&quot; is advertised but not implemented, and `pointercancel` isn&#x27;t handled.</span><span id="L65">8. **l.189**: `resize()` runs every frame and reallocates the drawing buffer each time.</span><span id="L66">9. **l.173 / l.189**: after XR ends, the framebuffer and viewport are never reset for screen rendering.</span><span id="L67">10. **l.39 vs l.118**: the text calls the set a &quot;black hole&quot;, but the code colours it bright pink.</span><span id="L68"></span><span id="L69">## Top 5 issues</span><span id="L70">1. **Critical: the XR loop dies after its first frame** (l.163, l.167). Rename the parameter (`function onXRFrame(t, xrFrame)`) and call `session.requestAnimationFrame(onXRFrame)` at the start of the callback.</span><span id="L71">2. **Critical: one eye is blank in stereo** (l.155 called per view). Clear once per frame after binding the layer framebuffer, before the view loop, or enable `SCISSOR_TEST` with a per-view scissor.</span><span id="L72">3. **Major: the user spawns under the fractal plateau and the room is a lone sub-floor plane** (l.133–138, l.158). Lay the fractal out as a floor-level table or diorama about 1–2 m in front of the user, place the floor at y = 0, and build actual walls or a dome with smooth palette colouring.</span><span id="L73">4. **Major: no XR interaction, no fallback reference space, no error handling** (l.169–176). Wrap `enter()` in try/catch, fall back from `local-floor` to `local`, handle `select`/`squeeze` and controller rays for zoom/pan, and add an in-XR exit.</span><span id="L74">5. **Major: AR is opaque and phone controls are incomplete** (l.52, l.155, l.45). Clear with alpha 0 in `immersive-ar` (context `alpha:true`), skip the room geometry there, implement two-pointer pinch zoom, and stop resizing the canvas every frame.</span><span id="L75"></span><span id="L76">## Strengths</span><span id="L77">- A true single file with zero dependencies. Raw WebGL2 keeps the payload tiny (13 KB).</span><span id="L78">- Correct basics for starting XR: `xrCompatible` context, `isSessionSupported` check, a sensible list of optional features, and `XRWebGLLayer` with `depthNear`/`depthFar`.</span><span id="L79">- Smooth escape-time height and finite-difference normals give a plausible fractal heightfield.</span><span id="L80">- A polished, responsive landing panel with feature detection that disables the XR buttons when WebXR is missing.</span><span id="L81">- A non-XR &quot;Explore on screen&quot; fallback with orbit, zoom and reset, so iPhone and desktop users see something.</span><span id="L82"></span><span id="L83">## Verdict</span><span id="L84">The candidate is a tidy-looking but very thin raw-WebGL prototype. Its immersive path is broken: a name-shadowing bug kills the XR frame loop after one frame, and a per-view clear would blank one eye even if the loop ran. On top of that, the scene puts the viewer under the fractal, has no XR input, and makes AR opaque, so the done-when criterion is not met on any headset or phone. Only the flat on-screen orbit view works.</span></code></pre></details>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../../../../data/">Data &amp; schema</a> · <a href="../../../../data/changelog/">Changelog</a> · <a href="../../../../feed.xml">Atom feed</a> · <a href="../../../../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>

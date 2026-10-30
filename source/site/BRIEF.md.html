@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BRIEF.md · site · MandelbrotXR results</title>
+<meta name="description" content="Rendered copy of site/BRIEF.md from the MandelbrotXR repository.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/source/site/BRIEF.md.html">
+<link rel="icon" href="../../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../../feed.xml">
+<script src="../../assets/js/theme.js?v=7a718e6155"></script>
+<script src="../../assets/js/transcripts.js?v=54e22884d0" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../../">Home</a></li><li><a href="../../rankings/">Rankings</a></li><li><a href="../../candidates/">Candidates</a></li><li><a href="../../compare/">Compare</a></li><li><a href="../../techniques/">Techniques</a></li><li><a href="../../judges/">Judges &amp; reviews</a></li><li><a href="../../transcripts/" aria-current="page">Transcripts</a></li><li><a href="../../methodology/">Methodology</a></li><li><a href="../../data/">Data</a></li><li><a href="../../search/">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../">Home</a></li><li><a href="../../transcripts/">Transcripts</a></li><li><a href="../../source/">Source files</a></li><li><a href="../../source/site/">site</a></li><li><span aria-current="page">BRIEF.md</span></li></ol></nav>
+<h1 class="src-path">BRIEF.md</h1><ul class="tx-meta src-meta"><li><code>site/<wbr>BRIEF.md</code></li><li>166 lines · 14.3 kB</li><li>in <a href="../../source/site/">site/</a></li><li><a href="https://github.com/mpuchstein/MandelbrotXR/blob/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a/site/BRIEF.md" rel="noopener">Original on GitHub at 75d36a0</a></li></ul><section class="src-doc" aria-label="Rendered Markdown"><div class="md"><h2 id="md-brief-mandelbrotxr-results-site">Brief: MandelbrotXR results site</h2>
+<h3 id="md-goal">Goal</h3>
+<p>Build a static website, to be served at <a href="https://mandelbrotxr.puchstein.dev" rel="noopener">https://mandelbrotxr.puchstein.dev</a>, that presents this repo&#x27;s experiment. Eight AI coding assistants each built a standalone WebXR Mandelbrot page. Those pages were then reviewed blind (phase 1) and ranked by 5 blind judges (phase 2).</p>
+<p>Visitors must be able to:</p>
+<ol>
+<li>see the results at a glance;</li>
+<li>sort and explore the rankings;</li>
+<li>play every product;</li>
+<li>follow any number back to the evidence that produced it.</li>
+</ol>
+<p>The site must stay maintainable: adding a judge, review type or candidate must not require code changes. Deployment (VPS, Caddy, DNS) is NOT your job. Your job is a build that is correct, complete and ready to serve.</p>
+<h3 id="md-read-first">Read first</h3>
+<ul>
+<li><code><span class="nw">ReviewOrchestrator</span>/<wbr><span class="nw">README.md</span></code>: process, incidents, file map.</li>
+<li><code><span class="nw">Judge</span>/<wbr><span class="nw">README.md</span></code>: phase-2 method and the aggregated rank table. Your build must reproduce this table exactly.</li>
+<li><code>prompt0.txt</code>, <code>prompt1.txt</code>: the two task prompts (v0 and v1).</li>
+<li>One example of each data file:
+<ul>
+<li><code>Judge/HTML-Judge/{PROMPT.txt,RANKING.md,MAPPING.md}</code></li>
+<li><code><span class="nw">Review</span>/<wbr><span class="nw">HTML-Review</span>/<wbr><span class="nw">&lt;folder&gt;</span>/<wbr><span class="nw">REVIEW.md</span></code> and <code><span class="nw">Review</span>/<wbr><span class="nw">Browser-Review</span>/<wbr><span class="nw">&lt;folder&gt;</span>/<wbr><span class="nw">REVIEW.md</span></code></li>
+<li><code><span class="nw">&lt;folder&gt;</span>/<wbr><span class="nw">TRANSCRIPTION.md</span></code></li>
+</ul>
+</li>
+<li><code><span class="nw">ReviewOrchestrator</span>/<wbr><span class="nw">tools</span>/<wbr><span class="nw">judge_aggregate.py</span></code> and <code>judge_finalize.py:check_ranking</code>: the existing parsers. Reuse their logic, but they hardcode 8 candidates (A–H) and the 5 judge folders. Don&#x27;t edit them.</li>
+</ul>
+<h3 id="md-data-sources-all-committed-render-nothing-else-ignore-pycache">Data sources (all committed; render nothing else, ignore <code><span class="nw">__pycache__</span>/<wbr></code>)</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table>
+<thead>
+<tr>
+<th>What</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Candidates (8)</td>
+<td>Top-level folders <code>&lt;Vendor&gt;-&lt;Product&gt;-&lt;Model&gt;-&lt;Effort&gt;-v&lt;N&gt;/</code>, each with one product <code>.html</code> and <code>TRANSCRIPTION.md</code> (the chat transcript; its header has source URL, model and effort).</td>
+</tr>
+<tr>
+<td>Phase-1 reviews (3 types × 8)</td>
+<td><code>Review/<wbr>{HTML,TRANSCRIPT,Browser}-<wbr>Review/<wbr>&lt;folder&gt;/<wbr></code>: <code>PROMPT.txt</code>, <code>REVIEW.md</code> (6-criterion 1–10 table plus an overall score), <code>TRANSCRIPT.md</code>, and <code><span class="nw">screenshots</span>/<wbr></code> (browser reviews only).</td>
+</tr>
+<tr>
+<td>Phase-2 judges (5)</td>
+<td><code>Judge/<wbr>&lt;Type&gt;-<wbr>Judge/<wbr></code>: <code>PROMPT.txt</code>, <code>RANKING.md</code> (criteria, ranked table by letter, special elements, summary), <code>MAPPING.md</code>, <code>TRANSCRIPT.md</code>, and <code><span class="nw">screenshots</span>/<wbr></code> (browser judges only).</td>
+</tr>
+<tr>
+<td>Letter → candidate</td>
+<td><code>Judge/<wbr>judge-<wbr>mapping.json</code>, keyed by judge id. A folder&#x27;s id is its name lowercased with <code>-Judge</code> stripped (<code>HTML_TRANSCRIPT-Judge</code> → <code>html_transcript</code>). Phase-1 blinding: <code><span class="nw">ReviewOrchestrator</span>/<wbr><span class="nw">blind-mapping.json</span></code> (candidate-NN → folder).</td>
+</tr>
+<tr>
+<td>Integrity</td>
+<td><code>ReviewOrchestrator/<wbr>blind/<wbr>source-<wbr>html.sha256</code> (<code>&lt;sha&gt;  &lt;folder&gt;/&lt;file&gt;</code>).</td>
+</tr>
+<tr>
+<td>Process record</td>
+<td><code>ReviewOrchestrator/<wbr>{README,PLAN,PROMPT,PROMPTS,TRANSCRIPT}.md</code>, <code><span class="nw">server-logs</span>/<wbr></code>, <code><span class="nw">discarded</span>/<wbr></code>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Parsing gotchas, already verified:</p>
+<ul>
+<li>Overall-score lines in <code>REVIEW.md</code> are formatted inconsistently: <code>Overall score: **4 / 10**</code>, <code>8 / 10**</code>, <code><span class="nw">5</span>/<wbr><span class="nw">10</span></code>, <code>2.5 / 10 (rounded: 3)</code>, and in <code><span class="nw">TRANSCRIPT-Review</span>/<wbr><span class="nw">Mistral…</span></code> a table row <code>| **Overall** | **7** |</code>.
+<ul>
+<li>Write a tolerant parser and take the first number. For example, Copilot-Interactive&#x27;s HTML score is 2.5, not 3.</li>
+<li><code><span class="nw">ReviewOrchestrator</span>/<wbr><span class="nw">README.md</span></code> §4 is the ground truth.</li>
+</ul>
+</li>
+<li>Transcripts are large. The biggest is <code><span class="nw">ReviewOrchestrator</span>/<wbr><span class="nw">TRANSCRIPT.md</span></code> at about 10.9k lines; the judge logs are about 4.5k lines each.</li>
+</ul>
+<h3 id="md-hard-constraints">Hard constraints</h3>
+<ul>
+<li><strong>Generator:</strong> <code>site/build.py --out &lt;dir&gt;</code> (default <code><span class="nw">site</span>/<wbr><span class="nw">dist</span>/<wbr></code>, gitignored) writes the complete site.
+<ul>
+<li>Stdlib first. If you need a library (Markdown rendering, QR codes), pin it via <code>uv run --with &lt;pkg&gt;==&lt;exact version&gt; python -I site/build.py …</code>, and document that one-line build command in <code><span class="nw">site</span>/<wbr><span class="nw">README.md</span></code>. Never assume a global install.</li>
+<li>Under <code>python -I</code>, the script&#x27;s own directory is NOT on <code>sys.path</code>. If you split the build into modules, insert that directory explicitly, as <code>judge_aggregate.py</code> does.</li>
+<li><code>--base-url</code> (default <code><span class="nw">https:</span>/<wbr>/<wbr><span class="nw">mandelbrotxr.puchstein.dev</span>/<wbr></code>) is used only for QR codes, the Atom feed and canonical links. Everything else uses relative URLs.</li>
+</ul>
+</li>
+<li><strong>Determinism:</strong> the same commit must give byte-identical output.
+<ul>
+<li>Take the date from the commit, never from the wall clock.</li>
+<li>Take the SHA from <code>git rev-parse HEAD</code>, with <code>-dirty</code> appended if the tree is dirty.</li>
+<li>If the clone is shallow, run <code>git fetch --unshallow</code> first, since the changelog needs history.</li>
+</ul>
+</li>
+<li><strong>Static output only:</strong> plain HTML, CSS and JS that works under <code>python3 -m http.server</code> at any root. No server code, cookies or analytics, and no runtime requests to third parties from site pages. Vendor any JS library into the output, with a pinned version and its license file.
+<ul>
+<li>Prefer charts rendered as inline SVG at build time: they work without JS and need no chart library. Use JS only for interactivity.</li>
+</ul>
+</li>
+<li><strong>Site-page CSP:</strong> no inline <code>&lt;script&gt;</code> and no <code>on*=</code> handlers, so every site page passes <code>Content-Security-Policy: default-src &#x27;self&#x27;; img-src &#x27;self&#x27; data:; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27;; script-src &#x27;self&#x27;; frame-ancestors &#x27;self&#x27;</code>.</li>
+<li><strong>Products:</strong>
+<ul>
+<li>Copy each product HTML byte-for-byte to <code><span class="nw">play</span>/<wbr><span class="nw">&lt;slug&gt;</span>/<wbr><span class="nw">index.html</span></code>, never modify it, and show its sha256. The sha must match <code>source-html.sha256</code>; the build fails otherwise.</li>
+<li>Products are inline single files, so they need a different CSP (see DEPLOY.md).</li>
+<li>On their pages, flag that the Gemini product loads three.js r128 and Tailwind from CDNs, and that the Copilot-Autopilot product calls <code>alert()</code>. Present both as facts from the reviews.</li>
+</ul>
+</li>
+<li><strong>No-JS baseline:</strong> every table is rendered server-side in a sensible default order. JS adds sorting, filters, toggles and search.</li>
+<li><strong>Faithfulness:</strong>
+<ul>
+<li>Quote judges and reviewers. Never paraphrase a verdict into a stronger claim.</li>
+<li>Mark derived metrics (mean rank, spread, Kendall τ) as derived and show how each is computed. Show ties as ties (the two Opus builds share mean rank 1.8).</li>
+<li>State these caveats prominently:
+<ul>
+<li>v0 and v1 are different prompts, and each candidate was judged against its own.</li>
+<li>No real VR or AR session was entered; everything was tested in desktop Chrome.</li>
+<li>All reviewers and judges were Opus 5.5 agents, and two candidates are Opus 5.5 builds. Put this on the methodology page and keep it neutral.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="md-extensibility-discover-don-t-hardcode">Extensibility (discover, don&#x27;t hardcode)</h3>
+<ul>
+<li><strong>Judges:</strong> every <code><span class="nw">Judge</span>/<wbr><span class="nw">*-Judge</span>/<wbr></code> folder that has a <code>RANKING.md</code> and an entry in <code>judge-mapping.json</code>. The letter set comes from the mapping, so any number of candidates works.</li>
+<li><strong>Review types:</strong> every <code><span class="nw">Review</span>/<wbr><span class="nw">*-Review</span>/<wbr></code> folder.</li>
+<li><strong>Candidates:</strong> <code><span class="nw">site</span>/<wbr><span class="nw">candidates.toml</span></code> (parse with stdlib <code>tomllib</code>). This is the ONLY hand-edited data file. Fields: slug, folder, vendor, product, model, effort, prompt version, product filename, source chat URL, date. Pre-fill it from the folder names, the <code>TRANSCRIPTION.md</code> headers and README §1.</li>
+<li><strong>Validation:</strong> fail loudly, naming the file, on inconsistent data:
+<ul>
+<li>a letter missing from the mapping;</li>
+<li>a candidate in a ranking but not in <code>candidates.toml</code>;</li>
+<li>an unparsable score;</li>
+<li>a sha mismatch.</li>
+</ul>
+Never skip anything silently.
+</li>
+<li><strong>Docs:</strong> <code><span class="nw">site</span>/<wbr><span class="nw">README.md</span></code> has a short section on how to add a new judgment, review type or candidate, with exact steps.</li>
+</ul>
+<h3 id="md-information-architecture">Information architecture</h3>
+<ol>
+<li><strong>Home:</strong>
+<ul>
+<li>A one-paragraph explainer of the experiment.</li>
+<li>The headline result as in <code><span class="nw">Judge</span>/<wbr><span class="nw">README.md</span></code>: consensus top 4, bottom 2, and the two notable dissents.</li>
+<li>Overview cards for all 8 candidates: thumbnail, mean rank, phase-1 scores, prompt badge, Play button.</li>
+<li>A compact ranking.</li>
+</ul>
+</li>
+<li><strong>Rankings:</strong>
+<ul>
+<li>A sortable judge × candidate matrix with mean rank and the phase-1 overall scores. Every column sorts ascending/descending with <code>aria-sort</code>, and the sort state lives in the URL hash.</li>
+<li>Filters: prompt v0/v1, and judge material (static vs. browser).</li>
+<li>A heatmap toggle.</li>
+<li>Rank spread (min–max and σ) as a controversy indicator.</li>
+<li>Below the matrix: a Kendall-τ agreement matrix between judges and a bump chart of ranks across judges.</li>
+<li>A &quot;how to read this&quot; note.</li>
+</ul>
+</li>
+<li><strong>Candidate pages</strong> (<code><span class="nw">candidates</span>/<wbr><span class="nw">&lt;slug&gt;</span>/<wbr></code>):
+<ul>
+<li>A Play button. It opens the full-page <code><span class="nw">play</span>/<wbr><span class="nw">&lt;slug&gt;</span>/<wbr></code>, since WebXR needs a top-level page.</li>
+<li>A QR code for the product&#x27;s absolute URL.</li>
+<li>A gallery of all reviewer and judge screenshots.</li>
+<li>A radar or bar chart of the 6 phase-1 criteria per review type, with the reviewers&#x27; one-line reasons.</li>
+<li>Every judge&#x27;s rank and verbatim justification, each linked to its source.</li>
+<li>The special elements credited to this candidate.</li>
+<li>Facts: bytes, sha256, external dependencies, prompt version, model and effort as recorded.</li>
+<li>Links to the chat transcript and the reviews.</li>
+</ul>
+</li>
+<li><strong>Compare:</strong> pick any 2 candidates and see them side by side: scores, ranks, justifications, screenshots. The selection lives in the URL.</li>
+<li><strong>Special-elements catalog:</strong>
+<ul>
+<li>Every &quot;Special elements&quot; bullet from every judge, grouped by technique (perturbation deep zoom, Cardboard stereo, gaze-dwell, …) and cross-linked to candidates.</li>
+<li>A section on claim-vs-code mismatches and hallucinations reported by the transcript and HTML+transcript judges and reviewers, quoted and linked.</li>
+</ul>
+</li>
+<li><strong>Judges and reviews:</strong>
+<ul>
+<li>One page per judge: material, prompt, criteria, ranking, summary, transcript.</li>
+<li>A <strong>Blind/Reveal toggle</strong> on each judge page: first the letters A–H as the judge saw them, then the names revealed via the mapping.</li>
+<li>One page per review. Show the phase-1 candidate-NN blinding the same way.</li>
+</ul>
+</li>
+<li><strong>Transcripts:</strong> rendered chat transcripts and agent logs. Split them or render them lazily, collapse thinking and tool output, and add an anchor per message.</li>
+<li><strong>Methodology:</strong>
+<ul>
+<li>A pipeline diagram: extract → blind → review → judge → aggregate.</li>
+<li>Blinding, the effort deviation, serving, and environment limits.</li>
+<li>Every incident from both READMEs, stated plainly: over-redaction, the cached c02 run, <code>alert()</code>, the privacy rewrite.</li>
+<li>Both prompts verbatim, with links to the orchestrator prompts and log.</li>
+</ul>
+</li>
+<li><strong>Search:</strong> client-side full-text search over reviews, rankings, judge summaries and transcripts, from an index built at build time. Use a small vendored library or hand-roll one. It must stay fast on a phone.</li>
+<li><strong>Data and changes:</strong>
+<ul>
+<li><code><span class="nw">data</span>/<wbr><span class="nw">results.json</span></code> plus CSVs (ranks, scores, criteria) with a documented schema, linked from a Data page.</li>
+<li>A Changelog page and <code>feed.xml</code> (Atom) generated from the git history of <code><span class="nw">Judge</span>/<wbr></code> and <code><span class="nw">Review</span>/<wbr></code>, with one entry per added judgment.</li>
+</ul>
+</li>
+<li><strong>Every page:</strong> a footer with the build commit SHA and date. Evidence links go to <code><span class="nw">https:</span>/<wbr>/<wbr><span class="nw">github.com</span>/<wbr><span class="nw">mpuchstein</span>/<wbr><span class="nw">MandelbrotXR</span>/<wbr><span class="nw">blob</span>/<wbr><span class="nw">&lt;sha&gt;</span>/<wbr><span class="nw">&lt;path&gt;</span></code>, alongside the locally rendered copy.</li>
+</ol>
+<h3 id="md-design">Design</h3>
+<p>Beautiful, calm and data-first: this is a results report, not a landing page.</p>
+<ul>
+<li>Dark and light themes (<code>prefers-color-scheme</code> plus a toggle). Use a Mandelbrot-inspired palette with restraint. The hero may use a product screenshot or a tiny local canvas render, never a CDN.</li>
+<li>Mobile-first: the site must be fully usable at 390 px. Tables scroll inside their own container, never the page.</li>
+<li>WCAG 2.1 AA:
+<ul>
+<li>contrast, keyboard-sortable headers, focus rings, alt text on screenshots, and <code>prefers-reduced-motion</code>;</li>
+<li>every chart has a table or text equivalent and colorblind-safe colors.</li>
+</ul>
+</li>
+<li>Fast: lazy images, no layout shift, and small site JS (products excluded).</li>
+<li>Consistent navigation with breadcrumbs.</li>
+</ul>
+<h3 id="md-deliverables">Deliverables</h3>
+<ul>
+<li><code><span class="nw">site</span>/<wbr><span class="nw">build.py</span></code> (plus modules if needed), <code><span class="nw">site</span>/<wbr><span class="nw">candidates.toml</span></code>, and <code><span class="nw">site</span>/<wbr><span class="nw">assets</span>/<wbr></code> (CSS, JS, vendored libraries with their licenses).</li>
+<li><code><span class="nw">site</span>/<wbr><span class="nw">README.md</span></code>: the build command, the data model, and how to extend the site.</li>
+<li><code><span class="nw">site</span>/<wbr><span class="nw">test_build.py</span></code>: assert-based and stdlib-only, run with <code>python3 -I site/test_build.py</code>. It checks that:
+<ul>
+<li>the mean ranks equal those in <code><span class="nw">Judge</span>/<wbr><span class="nw">README.md</span></code> (1.8, 1.8, 3.0, 3.4, 5.6, 5.8, 6.8, 7.8);</li>
+<li>the phase-1 overall scores equal README §4;</li>
+<li>every product sha matches;</li>
+<li>every internal link in the output resolves;</li>
+<li>a synthetic 6th judge and 9th candidate, added in a temporary copy of the repo, build without code changes.</li>
+</ul>
+</li>
+<li><code><span class="nw">site</span>/<wbr><span class="nw">check_site.py</span></code>: the Playwright check (see Done when).</li>
+<li><code><span class="nw">site</span>/<wbr><span class="nw">DEPLOY.md</span></code>, recommendations only, for the owner to apply:
+<ul>
+<li>Caddy headers: the CSP above for site pages. For <code>/<wbr><span class="nw">play</span>/<wbr><span class="nw">*</span></code>, either no CSP or one that allows inline scripts plus the Gemini CDNs, and a <code>Permissions-Policy</code> that allows <code>xr-spatial-tracking</code>, <code>gyroscope</code>, <code>accelerometer</code> and <code>magnetometer</code> for <code>self</code>.</li>
+<li><code>Cache-Control</code> advice, and <code>hide .git</code>.</li>
+<li>A note that WebXR requires HTTPS.</li>
+<li>The exact build command and output directory.</li>
+</ul>
+</li>
+<li><code>.gitignore</code>: add <code><span class="nw">site</span>/<wbr><span class="nw">dist</span>/<wbr></code>. Never commit build output.</li>
+<li><code><span class="nw">site</span>/<wbr><span class="nw">screenshots</span>/<wbr></code>: PNGs of every page type at 390×844 and 1440×900, in light and dark, so the owner can review without building.</li>
+</ul>
+<h3 id="md-done-when">Done when</h3>
+<ol>
+<li>The documented build command succeeds from a clean clone, and <code>python3 -I site/test_build.py</code> passes.</li>
+<li><code><span class="nw">site</span>/<wbr><span class="nw">check_site.py</span></code> passes. It uses headless Chromium via Playwright, which the environment setup preinstalls; if it is missing, run <code>python3 -m pip install --break-system-packages playwright &amp;&amp; python3 -m playwright install --with-deps chromium</code>. Pass <code>--use-angle=swiftshader --enable-unsafe-swiftshader</code> for WebGL. Against <code>python3 -m http.server</code> serving the build output, it checks that:
+<ul>
+<li>every generated page returns HTTP 200;</li>
+<li>site pages log zero console errors;</li>
+<li>the rankings sort by every column;</li>
+<li>Blind/Reveal toggles;</li>
+<li>a search returns hits;</li>
+<li>Compare opens from its URL;</li>
+<li>every product page loads.</li>
+</ul>
+</li>
+<li>Two consecutive builds are byte-identical.</li>
+<li>Site pages have no inline scripts and make no external requests; assert this from the Playwright network log.</li>
+<li>An independent review pass, by an agent with none of the builder&#x27;s context, checks every requirement in this brief one by one and checks that quoted verdicts are faithful. Fix each finding, or answer it explicitly in the PR description.</li>
+</ol>
+<h3 id="md-process">Process</h3>
+<ul>
+<li>Work on branch <code>site-v1</code>. Make small conventional commits with NO <code>Co-Authored-By</code> or other attribution trailers.</li>
+<li>Open a PR to <code>main</code>. Its description holds the Done-when checklist with evidence, plus screenshots.</li>
+<li>Edit nothing outside <code><span class="nw">site</span>/<wbr></code> and <code>.gitignore</code>, and don&#x27;t edit <code><span class="nw">site</span>/<wbr><span class="nw">BRIEF.md</span></code>. If source data looks wrong, list it in the PR; don&#x27;t fix it.</li>
+<li>If a requirement turns out to be impossible or contradictory, pick the most faithful option, note it in the PR, and continue without stopping to ask.</li>
+</ul>
+</div></section><details class="src-view"><summary>Source with line numbers</summary><pre class="src"><code><span id="L1"># Brief: MandelbrotXR results site</span><span id="L2"></span><span id="L3">## Goal</span><span id="L4">Build a static website, to be served at https://mandelbrotxr.puchstein.dev, that presents this repo&#x27;s experiment. Eight AI coding assistants each built a standalone WebXR Mandelbrot page. Those pages were then reviewed blind (phase 1) and ranked by 5 blind judges (phase 2).</span><span id="L5"></span><span id="L6">Visitors must be able to:</span><span id="L7">1. see the results at a glance;</span><span id="L8">2. sort and explore the rankings;</span><span id="L9">3. play every product;</span><span id="L10">4. follow any number back to the evidence that produced it.</span><span id="L11"></span><span id="L12">The site must stay maintainable: adding a judge, review type or candidate must not require code changes. Deployment (VPS, Caddy, DNS) is NOT your job. Your job is a build that is correct, complete and ready to serve.</span><span id="L13"></span><span id="L14">## Read first</span><span id="L15">- `ReviewOrchestrator/README.md`: process, incidents, file map.</span><span id="L16">- `Judge/README.md`: phase-2 method and the aggregated rank table. Your build must reproduce this table exactly.</span><span id="L17">- `prompt0.txt`, `prompt1.txt`: the two task prompts (v0 and v1).</span><span id="L18">- One example of each data file:</span><span id="L19">  - `Judge/HTML-Judge/{PROMPT.txt,RANKING.md,MAPPING.md}`</span><span id="L20">  - `Review/HTML-Review/&lt;folder&gt;/REVIEW.md` and `Review/Browser-Review/&lt;folder&gt;/REVIEW.md`</span><span id="L21">  - `&lt;folder&gt;/TRANSCRIPTION.md`</span><span id="L22">- `ReviewOrchestrator/tools/judge_aggregate.py` and `judge_finalize.py:check_ranking`: the existing parsers. Reuse their logic, but they hardcode 8 candidates (A–H) and the 5 judge folders. Don&#x27;t edit them.</span><span id="L23"></span><span id="L24">## Data sources (all committed; render nothing else, ignore `__pycache__/`)</span><span id="L25">| What | Where |</span><span id="L26">|---|---|</span><span id="L27">| Candidates (8) | Top-level folders `&lt;Vendor&gt;-&lt;Product&gt;-&lt;Model&gt;-&lt;Effort&gt;-v&lt;N&gt;/`, each with one product `.html` and `TRANSCRIPTION.md` (the chat transcript; its header has source URL, model and effort). |</span><span id="L28">| Phase-1 reviews (3 types × 8) | `Review/{HTML,TRANSCRIPT,Browser}-Review/&lt;folder&gt;/`: `PROMPT.txt`, `REVIEW.md` (6-criterion 1–10 table plus an overall score), `TRANSCRIPT.md`, and `screenshots/` (browser reviews only). |</span><span id="L29">| Phase-2 judges (5) | `Judge/&lt;Type&gt;-Judge/`: `PROMPT.txt`, `RANKING.md` (criteria, ranked table by letter, special elements, summary), `MAPPING.md`, `TRANSCRIPT.md`, and `screenshots/` (browser judges only). |</span><span id="L30">| Letter → candidate | `Judge/judge-mapping.json`, keyed by judge id. A folder&#x27;s id is its name lowercased with `-Judge` stripped (`HTML_TRANSCRIPT-Judge` → `html_transcript`). Phase-1 blinding: `ReviewOrchestrator/blind-mapping.json` (candidate-NN → folder). |</span><span id="L31">| Integrity | `ReviewOrchestrator/blind/source-html.sha256` (`&lt;sha&gt;  &lt;folder&gt;/&lt;file&gt;`). |</span><span id="L32">| Process record | `ReviewOrchestrator/{README,PLAN,PROMPT,PROMPTS,TRANSCRIPT}.md`, `server-logs/`, `discarded/`. |</span><span id="L33"></span><span id="L34">Parsing gotchas, already verified:</span><span id="L35">- Overall-score lines in `REVIEW.md` are formatted inconsistently: `Overall score: **4 / 10**`, `8 / 10**`, `5/10`, `2.5 / 10 (rounded: 3)`, and in `TRANSCRIPT-Review/Mistral…` a table row `| **Overall** | **7** |`.</span><span id="L36">  - Write a tolerant parser and take the first number. For example, Copilot-Interactive&#x27;s HTML score is 2.5, not 3.</span><span id="L37">  - `ReviewOrchestrator/README.md` §4 is the ground truth.</span><span id="L38">- Transcripts are large. The biggest is `ReviewOrchestrator/TRANSCRIPT.md` at about 10.9k lines; the judge logs are about 4.5k lines each.</span><span id="L39"></span><span id="L40">## Hard constraints</span><span id="L41">- **Generator:** `site/build.py --out &lt;dir&gt;` (default `site/dist/`, gitignored) writes the complete site.</span><span id="L42">  - Stdlib first. If you need a library (Markdown rendering, QR codes), pin it via `uv run --with &lt;pkg&gt;==&lt;exact version&gt; python -I site/build.py …`, and document that one-line build command in `site/README.md`. Never assume a global install.</span><span id="L43">  - Under `python -I`, the script&#x27;s own directory is NOT on `sys.path`. If you split the build into modules, insert that directory explicitly, as `judge_aggregate.py` does.</span><span id="L44">  - `--base-url` (default `https://mandelbrotxr.puchstein.dev/`) is used only for QR codes, the Atom feed and canonical links. Everything else uses relative URLs.</span><span id="L45">- **Determinism:** the same commit must give byte-identical output.</span><span id="L46">  - Take the date from the commit, never from the wall clock.</span><span id="L47">  - Take the SHA from `git rev-parse HEAD`, with `-dirty` appended if the tree is dirty.</span><span id="L48">  - If the clone is shallow, run `git fetch --unshallow` first, since the changelog needs history.</span><span id="L49">- **Static output only:** plain HTML, CSS and JS that works under `python3 -m http.server` at any root. No server code, cookies or analytics, and no runtime requests to third parties from site pages. Vendor any JS library into the output, with a pinned version and its license file.</span><span id="L50">  - Prefer charts rendered as inline SVG at build time: they work without JS and need no chart library. Use JS only for interactivity.</span><span id="L51">- **Site-page CSP:** no inline `&lt;script&gt;` and no `on*=` handlers, so every site page passes `Content-Security-Policy: default-src &#x27;self&#x27;; img-src &#x27;self&#x27; data:; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27;; script-src &#x27;self&#x27;; frame-ancestors &#x27;self&#x27;`.</span><span id="L52">- **Products:**</span><span id="L53">  - Copy each product HTML byte-for-byte to `play/&lt;slug&gt;/index.html`, never modify it, and show its sha256. The sha must match `source-html.sha256`; the build fails otherwise.</span><span id="L54">  - Products are inline single files, so they need a different CSP (see DEPLOY.md).</span><span id="L55">  - On their pages, flag that the Gemini product loads three.js r128 and Tailwind from CDNs, and that the Copilot-Autopilot product calls `alert()`. Present both as facts from the reviews.</span><span id="L56">- **No-JS baseline:** every table is rendered server-side in a sensible default order. JS adds sorting, filters, toggles and search.</span><span id="L57">- **Faithfulness:**</span><span id="L58">  - Quote judges and reviewers. Never paraphrase a verdict into a stronger claim.</span><span id="L59">  - Mark derived metrics (mean rank, spread, Kendall τ) as derived and show how each is computed. Show ties as ties (the two Opus builds share mean rank 1.8).</span><span id="L60">  - State these caveats prominently:</span><span id="L61">    - v0 and v1 are different prompts, and each candidate was judged against its own.</span><span id="L62">    - No real VR or AR session was entered; everything was tested in desktop Chrome.</span><span id="L63">    - All reviewers and judges were Opus 5.5 agents, and two candidates are Opus 5.5 builds. Put this on the methodology page and keep it neutral.</span><span id="L64"></span><span id="L65">## Extensibility (discover, don&#x27;t hardcode)</span><span id="L66">- **Judges:** every `Judge/*-Judge/` folder that has a `RANKING.md` and an entry in `judge-mapping.json`. The letter set comes from the mapping, so any number of candidates works.</span><span id="L67">- **Review types:** every `Review/*-Review/` folder.</span><span id="L68">- **Candidates:** `site/candidates.toml` (parse with stdlib `tomllib`). This is the ONLY hand-edited data file. Fields: slug, folder, vendor, product, model, effort, prompt version, product filename, source chat URL, date. Pre-fill it from the folder names, the `TRANSCRIPTION.md` headers and README §1.</span><span id="L69">- **Validation:** fail loudly, naming the file, on inconsistent data:</span><span id="L70">  - a letter missing from the mapping;</span><span id="L71">  - a candidate in a ranking but not in `candidates.toml`;</span><span id="L72">  - an unparsable score;</span><span id="L73">  - a sha mismatch.</span><span id="L74"></span><span id="L75">  Never skip anything silently.</span><span id="L76">- **Docs:** `site/README.md` has a short section on how to add a new judgment, review type or candidate, with exact steps.</span><span id="L77"></span><span id="L78">## Information architecture</span><span id="L79">1. **Home:**</span><span id="L80">   - A one-paragraph explainer of the experiment.</span><span id="L81">   - The headline result as in `Judge/README.md`: consensus top 4, bottom 2, and the two notable dissents.</span><span id="L82">   - Overview cards for all 8 candidates: thumbnail, mean rank, phase-1 scores, prompt badge, Play button.</span><span id="L83">   - A compact ranking.</span><span id="L84">2. **Rankings:**</span><span id="L85">   - A sortable judge × candidate matrix with mean rank and the phase-1 overall scores. Every column sorts ascending/descending with `aria-sort`, and the sort state lives in the URL hash.</span><span id="L86">   - Filters: prompt v0/v1, and judge material (static vs. browser).</span><span id="L87">   - A heatmap toggle.</span><span id="L88">   - Rank spread (min–max and σ) as a controversy indicator.</span><span id="L89">   - Below the matrix: a Kendall-τ agreement matrix between judges and a bump chart of ranks across judges.</span><span id="L90">   - A &quot;how to read this&quot; note.</span><span id="L91">3. **Candidate pages** (`candidates/&lt;slug&gt;/`):</span><span id="L92">   - A Play button. It opens the full-page `play/&lt;slug&gt;/`, since WebXR needs a top-level page.</span><span id="L93">   - A QR code for the product&#x27;s absolute URL.</span><span id="L94">   - A gallery of all reviewer and judge screenshots.</span><span id="L95">   - A radar or bar chart of the 6 phase-1 criteria per review type, with the reviewers&#x27; one-line reasons.</span><span id="L96">   - Every judge&#x27;s rank and verbatim justification, each linked to its source.</span><span id="L97">   - The special elements credited to this candidate.</span><span id="L98">   - Facts: bytes, sha256, external dependencies, prompt version, model and effort as recorded.</span><span id="L99">   - Links to the chat transcript and the reviews.</span><span id="L100">4. **Compare:** pick any 2 candidates and see them side by side: scores, ranks, justifications, screenshots. The selection lives in the URL.</span><span id="L101">5. **Special-elements catalog:**</span><span id="L102">   - Every &quot;Special elements&quot; bullet from every judge, grouped by technique (perturbation deep zoom, Cardboard stereo, gaze-dwell, …) and cross-linked to candidates.</span><span id="L103">   - A section on claim-vs-code mismatches and hallucinations reported by the transcript and HTML+transcript judges and reviewers, quoted and linked.</span><span id="L104">6. **Judges and reviews:**</span><span id="L105">   - One page per judge: material, prompt, criteria, ranking, summary, transcript.</span><span id="L106">   - A **Blind/Reveal toggle** on each judge page: first the letters A–H as the judge saw them, then the names revealed via the mapping.</span><span id="L107">   - One page per review. Show the phase-1 candidate-NN blinding the same way.</span><span id="L108">7. **Transcripts:** rendered chat transcripts and agent logs. Split them or render them lazily, collapse thinking and tool output, and add an anchor per message.</span><span id="L109">8. **Methodology:**</span><span id="L110">   - A pipeline diagram: extract → blind → review → judge → aggregate.</span><span id="L111">   - Blinding, the effort deviation, serving, and environment limits.</span><span id="L112">   - Every incident from both READMEs, stated plainly: over-redaction, the cached c02 run, `alert()`, the privacy rewrite.</span><span id="L113">   - Both prompts verbatim, with links to the orchestrator prompts and log.</span><span id="L114">9. **Search:** client-side full-text search over reviews, rankings, judge summaries and transcripts, from an index built at build time. Use a small vendored library or hand-roll one. It must stay fast on a phone.</span><span id="L115">10. **Data and changes:**</span><span id="L116">    - `data/results.json` plus CSVs (ranks, scores, criteria) with a documented schema, linked from a Data page.</span><span id="L117">    - A Changelog page and `feed.xml` (Atom) generated from the git history of `Judge/` and `Review/`, with one entry per added judgment.</span><span id="L118">11. **Every page:** a footer with the build commit SHA and date. Evidence links go to `https://github.com/mpuchstein/MandelbrotXR/blob/&lt;sha&gt;/&lt;path&gt;`, alongside the locally rendered copy.</span><span id="L119"></span><span id="L120">## Design</span><span id="L121">Beautiful, calm and data-first: this is a results report, not a landing page.</span><span id="L122">- Dark and light themes (`prefers-color-scheme` plus a toggle). Use a Mandelbrot-inspired palette with restraint. The hero may use a product screenshot or a tiny local canvas render, never a CDN.</span><span id="L123">- Mobile-first: the site must be fully usable at 390 px. Tables scroll inside their own container, never the page.</span><span id="L124">- WCAG 2.1 AA:</span><span id="L125">  - contrast, keyboard-sortable headers, focus rings, alt text on screenshots, and `prefers-reduced-motion`;</span><span id="L126">  - every chart has a table or text equivalent and colorblind-safe colors.</span><span id="L127">- Fast: lazy images, no layout shift, and small site JS (products excluded).</span><span id="L128">- Consistent navigation with breadcrumbs.</span><span id="L129"></span><span id="L130">## Deliverables</span><span id="L131">- `site/build.py` (plus modules if needed), `site/candidates.toml`, and `site/assets/` (CSS, JS, vendored libraries with their licenses).</span><span id="L132">- `site/README.md`: the build command, the data model, and how to extend the site.</span><span id="L133">- `site/test_build.py`: assert-based and stdlib-only, run with `python3 -I site/test_build.py`. It checks that:</span><span id="L134">  - the mean ranks equal those in `Judge/README.md` (1.8, 1.8, 3.0, 3.4, 5.6, 5.8, 6.8, 7.8);</span><span id="L135">  - the phase-1 overall scores equal README §4;</span><span id="L136">  - every product sha matches;</span><span id="L137">  - every internal link in the output resolves;</span><span id="L138">  - a synthetic 6th judge and 9th candidate, added in a temporary copy of the repo, build without code changes.</span><span id="L139">- `site/check_site.py`: the Playwright check (see Done when).</span><span id="L140">- `site/DEPLOY.md`, recommendations only, for the owner to apply:</span><span id="L141">  - Caddy headers: the CSP above for site pages. For `/play/*`, either no CSP or one that allows inline scripts plus the Gemini CDNs, and a `Permissions-Policy` that allows `xr-spatial-tracking`, `gyroscope`, `accelerometer` and `magnetometer` for `self`.</span><span id="L142">  - `Cache-Control` advice, and `hide .git`.</span><span id="L143">  - A note that WebXR requires HTTPS.</span><span id="L144">  - The exact build command and output directory.</span><span id="L145">- `.gitignore`: add `site/dist/`. Never commit build output.</span><span id="L146">- `site/screenshots/`: PNGs of every page type at 390×844 and 1440×900, in light and dark, so the owner can review without building.</span><span id="L147"></span><span id="L148">## Done when</span><span id="L149">1. The documented build command succeeds from a clean clone, and `python3 -I site/test_build.py` passes.</span><span id="L150">2. `site/check_site.py` passes. It uses headless Chromium via Playwright, which the environment setup preinstalls; if it is missing, run `python3 -m pip install --break-system-packages playwright &amp;&amp; python3 -m playwright install --with-deps chromium`. Pass `--use-angle=swiftshader --enable-unsafe-swiftshader` for WebGL. Against `python3 -m http.server` serving the build output, it checks that:</span><span id="L151">   - every generated page returns HTTP 200;</span><span id="L152">   - site pages log zero console errors;</span><span id="L153">   - the rankings sort by every column;</span><span id="L154">   - Blind/Reveal toggles;</span><span id="L155">   - a search returns hits;</span><span id="L156">   - Compare opens from its URL;</span><span id="L157">   - every product page loads.</span><span id="L158">3. Two consecutive builds are byte-identical.</span><span id="L159">4. Site pages have no inline scripts and make no external requests; assert this from the Playwright network log.</span><span id="L160">5. An independent review pass, by an agent with none of the builder&#x27;s context, checks every requirement in this brief one by one and checks that quoted verdicts are faithful. Fix each finding, or answer it explicitly in the PR description.</span><span id="L161"></span><span id="L162">## Process</span><span id="L163">- Work on branch `site-v1`. Make small conventional commits with NO `Co-Authored-By` or other attribution trailers.</span><span id="L164">- Open a PR to `main`. Its description holds the Done-when checklist with evidence, plus screenshots.</span><span id="L165">- Edit nothing outside `site/` and `.gitignore`, and don&#x27;t edit `site/BRIEF.md`. If source data looks wrong, list it in the PR; don&#x27;t fix it.</span><span id="L166">- If a requirement turns out to be impossible or contradictory, pick the most faithful option, note it in the PR, and continue without stopping to ask.</span></code></pre></details>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../../data/">Data &amp; schema</a> · <a href="../../data/changelog/">Changelog</a> · <a href="../../feed.xml">Atom feed</a> · <a href="../../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RANKING.md · Judge/Browser-Judge · MandelbrotXR results</title>
+<meta name="description" content="Rendered copy of Judge/Browser-Judge/RANKING.md from the MandelbrotXR repository.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/source/Judge/Browser-Judge/RANKING.md.html">
+<link rel="icon" href="../../../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../../../feed.xml">
+<script src="../../../assets/js/theme.js?v=7a718e6155"></script>
+<script src="../../../assets/js/transcripts.js?v=54e22884d0" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../../../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../../../">Home</a></li><li><a href="../../../rankings/">Rankings</a></li><li><a href="../../../candidates/">Candidates</a></li><li><a href="../../../compare/">Compare</a></li><li><a href="../../../techniques/">Techniques</a></li><li><a href="../../../judges/" aria-current="page">Judges &amp; reviews</a></li><li><a href="../../../transcripts/">Transcripts</a></li><li><a href="../../../methodology/">Methodology</a></li><li><a href="../../../data/">Data</a></li><li><a href="../../../search/">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../../">Home</a></li><li><a href="../../../judges/">Judges &amp; reviews</a></li><li><a href="../../../source/">Source files</a></li><li><a href="../../../source/Judge/">Judge</a></li><li><a href="../../../source/Judge/Browser-Judge/">Browser-Judge</a></li><li><span aria-current="page">RANKING.md</span></li></ol></nav>
+<h1 class="src-path">RANKING.md</h1><ul class="tx-meta src-meta"><li><code>Judge/<wbr>Browser-<wbr>Judge/<wbr>RANKING.md</code></li><li>36 lines · 5.3 kB</li><li>in <a href="../../../source/Judge/Browser-Judge/">Judge/Browser-Judge/</a></li><li><a href="https://github.com/mpuchstein/MandelbrotXR/blob/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a/Judge/Browser-Judge/RANKING.md" rel="noopener">Original on GitHub at 75d36a0</a></li></ul><section class="src-doc" aria-label="Rendered Markdown"><div class="md"><h2 id="md-browser-judge-blind-ranking">Browser Judge — blind ranking</h2>
+<h3 id="md-ranking-criteria">Ranking criteria</h3>
+<ul>
+<li><strong>Works out of the box (30%)</strong>: a recognisable 3D Mandelbrot in a room must appear on a plain desktop or phone browser without errors, because that is the &quot;Done when&quot; bar.</li>
+<li><strong>XR entry and fallback behaviour (20%)</strong>: what Enter VR/AR does when no XR runtime is present (an honest in-page message, a disabled button, or a usable fallback) predicts how the page behaves on unsupported devices.</li>
+<li><strong>Usability and controls (20%)</strong>: orbit, zoom/dive, presets and discoverable help decide whether a person can actually explore the set.</li>
+<li><strong>Visual quality against its prompt (20%)</strong>: v1 is judged on &quot;wow&quot; effect; v0 is judged on a clear, legible 3D room. Each candidate is held only to its own prompt.</li>
+<li><strong>Phone-width layout (10%)</strong>: the prompt names Android and iOS phones, so the UI must stay usable at about 390 px.</li>
+</ul>
+<h3 id="md-ranking">Ranking</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table>
+<thead>
+<tr>
+<th class="num">Rank</th>
+<th>Candidate</th>
+<th>Prompt</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="num">1</td>
+<td>H</td>
+<td>v1</td>
+<td>Polished glowing observatory with contour-traced terrain. Destinations, palette, double-click dive and a rich Controls panel (walk, motion look, sound, gentle motion). Exemplary &quot;XR info&quot; capability dialog. ARIA labels throughout and a clean phone layout. No console errors.</td>
+</tr>
+<tr>
+<td class="num">2</td>
+<td>C</td>
+<td>v0</td>
+<td>Convincing room: plinth landscape, wall display with zoom-box minimap, in-world control signage and a tablet panel. Tour, shape and colour modes all work. Honest WebXR status text, no errors, usable at phone width.</td>
+</tr>
+<tr>
+<td class="num">3</td>
+<td>G</td>
+<td>v0</td>
+<td>Elegant observatory with clickable complex-plane minimap, destinations, palettes, detail levels, walk mode and a Cardboard-style stereo fallback. Disabled &quot;VR unavailable&quot; button, strong accessibility labels and a responsive phone UI. Its terrain is less striking than C&#x27;s, and WASD did nothing in my test.</td>
+</tr>
+<tr>
+<td class="num">4</td>
+<td>A</td>
+<td>v1</td>
+<td>Striking pedestal landscape with live Julia-set inset, click-to-dive, auto-dive to Seahorse Valley and progressive refinement. Clear &quot;no WebXR&quot; message. The &quot;Immerse&quot; mode gave confusing camera views, and the toolbar overflows at phone width.</td>
+</tr>
+<tr>
+<td class="num">5</td>
+<td>D</td>
+<td>v1</td>
+<td>Most features: terrain/Mandelbulb/canyon modes, fly-to presets, sliders, D-pad and a toast on failed VR. The Mandelbulb is the wow moment, but the terrain is noisy and aliased, the phone UI covers the scene, and it depends on the Tailwind CDN.</td>
+</tr>
+<tr>
+<td class="num">6</td>
+<td>E</td>
+<td>v1</td>
+<td>Recognisable cardioid landscape once orbited, but the default view sees a tilted sheet edge-on, the info panel faces away (mirrored), there is no VR/AR button, and the &quot;needs secure context&quot; hint is wrong on localhost.</td>
+</tr>
+<tr>
+<td class="num">7</td>
+<td>F</td>
+<td>v1</td>
+<td>Clean start card with VR/AR/screen buttons, but VR/AR failures use native alert(). The screen view is a magenta extruded blob with no recognisable Mandelbrot, no controls, and the camera can pitch upside down.</td>
+</tr>
+<tr>
+<td class="num">8</td>
+<td>B</td>
+<td>v1</td>
+<td>Attractive landing page, but &quot;Launch 3D room&quot; only tries XR, logs NotSupportedError and suggests a &quot;3D touch view&quot; that never appears. No Mandelbrot is ever shown on desktop, so the done-criterion fails here.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="md-special-elements">Special elements</h3>
+<ul>
+<li><strong>H — &quot;XR info / Step inside&quot; capability dialog</strong>: it lists Interactive 3D room, Immersive VR, Immersive AR and Connection status per device and explains what headsets need, which is the most honest and helpful no-XR fallback of all eight.</li>
+<li><strong>G — Stereo (side-by-side) mode with a landscape hint</strong>: it gives phones without WebXR, such as iOS Safari, a Cardboard-style VR experience, directly addressing the Apple-phone requirement.</li>
+<li><strong>A — Live Julia-set inset (&quot;Julia set at the pointer&quot;)</strong>: it updates as you hover the Mandelbrot terrain, adding real mathematical insight on top of the visuals.</li>
+<li><strong>C — In-world controls signage and a plinth-side tablet panel</strong>: these put the help text and buttons inside the 3D room where a headset user can reach them, rather than in a DOM overlay XR cannot show.</li>
+<li><strong>D — Volumetric Mandelbulb mode</strong>: the most visually spectacular single moment in the set, even though it is a 3D cousin of the Mandelbrot set rather than the set itself.</li>
+<li><strong>C, G, H, A — Guided tour / destination flights to Seahorse Valley</strong>: animated flights to famous regions make deep zoom discoverable for first-time users.</li>
+<li><strong>F — Native alert() for &quot;VR/AR is not supported&quot;</strong>: it is the only candidate whose failure path used a blocking native dialog, which is poor UX and blocks the page in a headset browser.</li>
+</ul>
+<h3 id="md-summary-of-tests-and-approach">Summary of tests and approach</h3>
+<p>I loaded each candidate in its own origin in a single Chrome tab I created (closed at the end) and read the console after a fresh reload. I clicked every start button and toolbar control and tried the main presets, palettes, dive/zoom, orbit by drag, scroll zoom and keyboard where offered. On each I pressed Enter VR/AR (or the equivalent) to see the no-XR behaviour. For B I also hid <code>navigator.xr</code> to simulate a non-XR browser, and the fallback still did not appear. The window manager refused to resize (innerWidth stayed at 1443), so I tested phone width by loading each URL in a 390×844 iframe. Console errors that appeared after that iframe swap came from my test harness tearing down the parent page and were not counted. I read no source code. Environment limits: there was no WebXR runtime or emulator, so no real XR session was entered, and the frame rate may be throttled. 16 screenshots are saved in <code><span class="nw">screenshots</span>/<wbr></code>.</p>
+</div></section><details class="src-view"><summary>Source with line numbers</summary><pre class="src"><code><span id="L1"># Browser Judge — blind ranking</span><span id="L2"></span><span id="L3">## Ranking criteria</span><span id="L4"></span><span id="L5">- **Works out of the box (30%)**: a recognisable 3D Mandelbrot in a room must appear on a plain desktop or phone browser without errors, because that is the &quot;Done when&quot; bar.</span><span id="L6">- **XR entry and fallback behaviour (20%)**: what Enter VR/AR does when no XR runtime is present (an honest in-page message, a disabled button, or a usable fallback) predicts how the page behaves on unsupported devices.</span><span id="L7">- **Usability and controls (20%)**: orbit, zoom/dive, presets and discoverable help decide whether a person can actually explore the set.</span><span id="L8">- **Visual quality against its prompt (20%)**: v1 is judged on &quot;wow&quot; effect; v0 is judged on a clear, legible 3D room. Each candidate is held only to its own prompt.</span><span id="L9">- **Phone-width layout (10%)**: the prompt names Android and iOS phones, so the UI must stay usable at about 390 px.</span><span id="L10"></span><span id="L11">## Ranking</span><span id="L12"></span><span id="L13">| Rank | Candidate | Prompt | Justification |</span><span id="L14">|---|---|---|---|</span><span id="L15">| 1 | H | v1 | Polished glowing observatory with contour-traced terrain. Destinations, palette, double-click dive and a rich Controls panel (walk, motion look, sound, gentle motion). Exemplary &quot;XR info&quot; capability dialog. ARIA labels throughout and a clean phone layout. No console errors. |</span><span id="L16">| 2 | C | v0 | Convincing room: plinth landscape, wall display with zoom-box minimap, in-world control signage and a tablet panel. Tour, shape and colour modes all work. Honest WebXR status text, no errors, usable at phone width. |</span><span id="L17">| 3 | G | v0 | Elegant observatory with clickable complex-plane minimap, destinations, palettes, detail levels, walk mode and a Cardboard-style stereo fallback. Disabled &quot;VR unavailable&quot; button, strong accessibility labels and a responsive phone UI. Its terrain is less striking than C&#x27;s, and WASD did nothing in my test. |</span><span id="L18">| 4 | A | v1 | Striking pedestal landscape with live Julia-set inset, click-to-dive, auto-dive to Seahorse Valley and progressive refinement. Clear &quot;no WebXR&quot; message. The &quot;Immerse&quot; mode gave confusing camera views, and the toolbar overflows at phone width. |</span><span id="L19">| 5 | D | v1 | Most features: terrain/Mandelbulb/canyon modes, fly-to presets, sliders, D-pad and a toast on failed VR. The Mandelbulb is the wow moment, but the terrain is noisy and aliased, the phone UI covers the scene, and it depends on the Tailwind CDN. |</span><span id="L20">| 6 | E | v1 | Recognisable cardioid landscape once orbited, but the default view sees a tilted sheet edge-on, the info panel faces away (mirrored), there is no VR/AR button, and the &quot;needs secure context&quot; hint is wrong on localhost. |</span><span id="L21">| 7 | F | v1 | Clean start card with VR/AR/screen buttons, but VR/AR failures use native alert(). The screen view is a magenta extruded blob with no recognisable Mandelbrot, no controls, and the camera can pitch upside down. |</span><span id="L22">| 8 | B | v1 | Attractive landing page, but &quot;Launch 3D room&quot; only tries XR, logs NotSupportedError and suggests a &quot;3D touch view&quot; that never appears. No Mandelbrot is ever shown on desktop, so the done-criterion fails here. |</span><span id="L23"></span><span id="L24">## Special elements</span><span id="L25"></span><span id="L26">- **H — &quot;XR info / Step inside&quot; capability dialog**: it lists Interactive 3D room, Immersive VR, Immersive AR and Connection status per device and explains what headsets need, which is the most honest and helpful no-XR fallback of all eight.</span><span id="L27">- **G — Stereo (side-by-side) mode with a landscape hint**: it gives phones without WebXR, such as iOS Safari, a Cardboard-style VR experience, directly addressing the Apple-phone requirement.</span><span id="L28">- **A — Live Julia-set inset (&quot;Julia set at the pointer&quot;)**: it updates as you hover the Mandelbrot terrain, adding real mathematical insight on top of the visuals.</span><span id="L29">- **C — In-world controls signage and a plinth-side tablet panel**: these put the help text and buttons inside the 3D room where a headset user can reach them, rather than in a DOM overlay XR cannot show.</span><span id="L30">- **D — Volumetric Mandelbulb mode**: the most visually spectacular single moment in the set, even though it is a 3D cousin of the Mandelbrot set rather than the set itself.</span><span id="L31">- **C, G, H, A — Guided tour / destination flights to Seahorse Valley**: animated flights to famous regions make deep zoom discoverable for first-time users.</span><span id="L32">- **F — Native alert() for &quot;VR/AR is not supported&quot;**: it is the only candidate whose failure path used a blocking native dialog, which is poor UX and blocks the page in a headset browser.</span><span id="L33"></span><span id="L34">## Summary of tests and approach</span><span id="L35"></span><span id="L36">I loaded each candidate in its own origin in a single Chrome tab I created (closed at the end) and read the console after a fresh reload. I clicked every start button and toolbar control and tried the main presets, palettes, dive/zoom, orbit by drag, scroll zoom and keyboard where offered. On each I pressed Enter VR/AR (or the equivalent) to see the no-XR behaviour. For B I also hid `navigator.xr` to simulate a non-XR browser, and the fallback still did not appear. The window manager refused to resize (innerWidth stayed at 1443), so I tested phone width by loading each URL in a 390×844 iframe. Console errors that appeared after that iframe swap came from my test harness tearing down the parent page and were not counted. I read no source code. Environment limits: there was no WebXR runtime or emulator, so no real XR session was entered, and the frame rate may be throttled. 16 screenshots are saved in `screenshots/`.</span></code></pre></details>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../../../data/">Data &amp; schema</a> · <a href="../../../data/changelog/">Changelog</a> · <a href="../../../feed.xml">Atom feed</a> · <a href="../../../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>

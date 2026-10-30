@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RANKING.md · Judge/HTML-Judge · MandelbrotXR results</title>
+<meta name="description" content="Rendered copy of Judge/HTML-Judge/RANKING.md from the MandelbrotXR repository.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/source/Judge/HTML-Judge/RANKING.md.html">
+<link rel="icon" href="../../../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../../../feed.xml">
+<script src="../../../assets/js/theme.js?v=7a718e6155"></script>
+<script src="../../../assets/js/transcripts.js?v=54e22884d0" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../../../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../../../">Home</a></li><li><a href="../../../rankings/">Rankings</a></li><li><a href="../../../candidates/">Candidates</a></li><li><a href="../../../compare/">Compare</a></li><li><a href="../../../techniques/">Techniques</a></li><li><a href="../../../judges/" aria-current="page">Judges &amp; reviews</a></li><li><a href="../../../transcripts/">Transcripts</a></li><li><a href="../../../methodology/">Methodology</a></li><li><a href="../../../data/">Data</a></li><li><a href="../../../search/">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../../">Home</a></li><li><a href="../../../judges/">Judges &amp; reviews</a></li><li><a href="../../../source/">Source files</a></li><li><a href="../../../source/Judge/">Judge</a></li><li><a href="../../../source/Judge/HTML-Judge/">HTML-Judge</a></li><li><span aria-current="page">RANKING.md</span></li></ol></nav>
+<h1 class="src-path">RANKING.md</h1><ul class="tx-meta src-meta"><li><code>Judge/<wbr>HTML-<wbr>Judge/<wbr>RANKING.md</code></li><li>42 lines · 6.6 kB</li><li>in <a href="../../../source/Judge/HTML-Judge/">Judge/HTML-Judge/</a></li><li><a href="https://github.com/mpuchstein/MandelbrotXR/blob/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a/Judge/HTML-Judge/RANKING.md" rel="noopener">Original on GitHub at 75d36a0</a></li></ul><section class="src-doc" aria-label="Rendered Markdown"><div class="md"><h2 id="md-html-judge-blind-ranking">HTML Judge — blind ranking</h2>
+<h3 id="md-ranking-criteria">Ranking criteria</h3>
+<ol>
+<li><strong>XR correctness (30%)</strong>: correct stereo per-view rendering, reference-space fallbacks, a render loop that survives tracking loss. If the headset view is wrong, nothing else matters.</li>
+<li><strong>Device reach (20%)</strong>: Quest/Pico/SteamVR controllers <em>and</em> hands, Android AR, and a real fallback for iOS Safari, which has no WebXR. The prompt names HMDs and both phone families.</li>
+<li><strong>Mandelbrot fidelity in 3D (20%)</strong>: how faithfully and deeply the set is rendered as a 3D object in a room (precision, resolution, zoom depth). This is the core deliverable.</li>
+<li><strong>Usability in and out of XR (15%)</strong>: in-headset controls, onboarding, locomotion, error and support messaging. Needed for &quot;a person … can open … and enter&quot;.</li>
+<li><strong>Prompt-specific goal (10%)</strong>: v1 is judged on its &quot;wow&quot; effect; v0 on using three.js and how it handles three.xr.js. Each candidate is held only to its own prompt.</li>
+<li><strong>Robustness and standalone delivery (5%)</strong>: offline single file, performance adaptation, context-loss handling, and parse/compile checks.</li>
+</ol>
+<h3 id="md-ranking">Ranking</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table>
+<thead>
+<tr>
+<th class="num">Rank</th>
+<th>Candidate</th>
+<th>Prompt</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="num">1</td>
+<td>H</td>
+<td>v1</td>
+<td>Dependency-free WebGL2. Perturbation deep zoom to about 1e-13 with progressive GPU jobs, AR hit-test placement, hands, transient pointers, haptics, Cardboard stereo for iOS, Julia inset, guided tour, procedural sky. All 22 shaders validate. The most complete and correct entry.</td>
+</tr>
+<tr>
+<td class="num">2</td>
+<td>E</td>
+<td>v0</td>
+<td>Bundled tree-shaken three.js r186. Perturbation deep zoom to 1e-12, in-VR canvas panel, hands, snap turn, locomotion, gyro and Cardboard modes, context wall screen. Careful XR edge-case handling. Swaps three.xr.js for WebXRManager, justified only in a code comment.</td>
+</tr>
+<tr>
+<td class="num">3</td>
+<td>D</td>
+<td>v1</td>
+<td>Polished, accessible offline gallery: bundled three.js, worker-built mesh, spatial VR panel, gaze-dwell buttons, teleport, snap turn, hand pinch, haptics, adaptive foveation and quality. CPU mesh limits zoom depth; the minified app code is hard to audit.</td>
+</tr>
+<tr>
+<td class="num">4</td>
+<td>G</td>
+<td>v0</td>
+<td>Bundled three.js r186 with a worker-built relief, minimap, full-size or tabletop AR with placement, floor teleport, split-screen stereo. Explains in-app why three.xr.js is obsolete. Coarse 192×144 relief and minified app code keep it below D.</td>
+</tr>
+<tr>
+<td class="num">5</td>
+<td>B</td>
+<td>v1</td>
+<td>Most features: spatial VR UI, grab-pan, two-hand zoom, Mandelbulb and Julia modes, audio synth, gyro. But it loads three r128 and the Tailwind play CDN at runtime, runs float32 deep zoom, and a 1024-iteration fragment loop is a performance risk on Quest.</td>
+</tr>
+<tr>
+<td class="num">6</td>
+<td>F</td>
+<td>v1</td>
+<td>Clean raw WebGL2: GPU-rendered Mandelbrot texture displaces the mesh in a full room; hand pinch-grab, flying, adaptive quality. Bug: re-rendering the texture inside the XR loop rebinds framebuffer null, so one eye renders off-target whenever you zoom.</td>
+</tr>
+<tr>
+<td class="num">7</td>
+<td>C</td>
+<td>v1</td>
+<td>Minimal WebGL2 heightfield with stars. The XR loop stops for good if <code>getViewerPose</code> returns null once. The viewer spawns inside the 1.85 m plateau. No XR interaction, uses <code>alert()</code>, and the advertised pinch-zoom isn&#x27;t implemented.</td>
+</tr>
+<tr>
+<td class="num">8</td>
+<td>A</td>
+<td>v1</td>
+<td>Raymarched SDF. In XR, the forward vector is the view&#x27;s +Z (it looks backwards), projection matrices are ignored, and per-eye UVs use the full framebuffer size. 96 steps × 80 iterations per pixel can&#x27;t run on headsets. Only on-screen orbit works.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="md-special-elements">Special elements</h3>
+<ul>
+<li><strong>H, E — perturbation-theory deep zoom</strong> (float64 CPU reference orbit in an RG32F texture, float32 GPU deltas, row-scissored progressive jobs, cross-faded buffers): the only candidates that zoom past float32 limits, to roughly 1e-12 to 1e-13.</li>
+<li><strong>H — van Wijk &amp; Nuij smooth zoom-pan flights plus async PBO readback with <code>fenceSync</code></strong> for ray-casting the hologram: no other candidate does stall-free GPU→CPU readback or optimal zoom-pan paths.</li>
+<li><strong>H — handheld-AR detection via <code>interactionMode === &#x27;screen-space&#x27;</code> with hit-test reticle placement</strong>: the only phone-AR flow that places the model on a detected real surface.</li>
+<li><strong>H, E, G — Cardboard/split-screen phone stereo</strong>: the only route to a stereo &quot;headset&quot; view on iPhones, where WebXR doesn&#x27;t exist.</li>
+<li><strong>E — deletes <code>XRWebGLBinding.prototype.createProjectionLayer</code> when the session didn&#x27;t grant <code>layers</code></strong>: an unusual, targeted workaround for a three.js r186 projection-layer pitfall that no one else addresses.</li>
+<li><strong>E — context &quot;wall screen&quot; at 3× the terrain span</strong>: the only candidate that shows where you are in the set while you&#x27;re zoomed in.</li>
+<li><strong>D — gaze-dwell activation (&quot;look at a button for 3 seconds&quot;)</strong>: the only accessibility path for headsets with no controllers or hand tracking.</li>
+<li><strong>D, G — inline Blob Web Worker building the fractal mesh, inside a minified bundled build</strong>: the only candidates that move fractal computation off the main thread.</li>
+<li><strong>G — in-app explanation that three.xr.js is archived, with links</strong>: the only v0 candidate that tells users in the UI why that part of the prompt was replaced.</li>
+<li><strong>B — procedural Web Audio drone tied to zoom, plus Mandelbulb raymarch and Julia-morph modes</strong>: the widest creative scope, and the only candidate using runtime CDNs (three r128, Tailwind).</li>
+<li><strong>F — Mandelbrot rendered to a half-float texture (RGBA8 fallback) and sampled in the vertex shader for displacement, plus pinch detection from hand-joint distance</strong>: a GPU heightfield pipeline no one else uses in this form.</li>
+<li><strong>A — full-screen raymarched extrusion of the Mandelbrot boundary</strong>: the only pure-raymarch approach, though its XR camera maths is broken.</li>
+</ul>
+<h3 id="md-summary-of-tests-and-approach">Summary of tests and approach</h3>
+<p>I reviewed every file statically. I read the readable application code in full or in large parts: A, C and F completely, and the main sections of B, E and H. Where three.js was bundled (D, E, G), I skimmed the library and pulled the minified app code out by grepping for keywords: <code>requestSession</code>, <code>getHand</code>, <code>teleport</code>, <code>haptic</code>, <code>Worker</code>, <code>setFoveation</code>, <code>deviceorientation</code>. I extracted every inline <code>&lt;script&gt;</code> with a small Python script, and all 9 passed <code>node --check</code>. Using a Node helper, I pulled the GLSL out of the raw-WebGL candidates (A, C, F, H) and ran each shader through <code>glslangValidator</code>; all compiled. I traced XR maths by hand: A&#x27;s quaternion-to-forward conversion, F&#x27;s framebuffer binding order inside the XR loop, and C&#x27;s per-frame <code>requestAnimationFrame</code> placement and spawn position against its heightfield formula. I also compared reference-space fallbacks, input handling (controllers, hands, transient pointers), iOS fallbacks, precision limits and external dependencies. Each candidate was scored against its own prompt version, and nothing was run in a browser.</p>
+</div></section><details class="src-view"><summary>Source with line numbers</summary><pre class="src"><code><span id="L1"># HTML Judge — blind ranking</span><span id="L2"></span><span id="L3">## Ranking criteria</span><span id="L4"></span><span id="L5">1. **XR correctness (30%)**: correct stereo per-view rendering, reference-space fallbacks, a render loop that survives tracking loss. If the headset view is wrong, nothing else matters.</span><span id="L6">2. **Device reach (20%)**: Quest/Pico/SteamVR controllers *and* hands, Android AR, and a real fallback for iOS Safari, which has no WebXR. The prompt names HMDs and both phone families.</span><span id="L7">3. **Mandelbrot fidelity in 3D (20%)**: how faithfully and deeply the set is rendered as a 3D object in a room (precision, resolution, zoom depth). This is the core deliverable.</span><span id="L8">4. **Usability in and out of XR (15%)**: in-headset controls, onboarding, locomotion, error and support messaging. Needed for &quot;a person … can open … and enter&quot;.</span><span id="L9">5. **Prompt-specific goal (10%)**: v1 is judged on its &quot;wow&quot; effect; v0 on using three.js and how it handles three.xr.js. Each candidate is held only to its own prompt.</span><span id="L10">6. **Robustness and standalone delivery (5%)**: offline single file, performance adaptation, context-loss handling, and parse/compile checks.</span><span id="L11"></span><span id="L12">## Ranking</span><span id="L13"></span><span id="L14">| Rank | Candidate | Prompt | Justification |</span><span id="L15">|---|---|---|---|</span><span id="L16">| 1 | H | v1 | Dependency-free WebGL2. Perturbation deep zoom to about 1e-13 with progressive GPU jobs, AR hit-test placement, hands, transient pointers, haptics, Cardboard stereo for iOS, Julia inset, guided tour, procedural sky. All 22 shaders validate. The most complete and correct entry. |</span><span id="L17">| 2 | E | v0 | Bundled tree-shaken three.js r186. Perturbation deep zoom to 1e-12, in-VR canvas panel, hands, snap turn, locomotion, gyro and Cardboard modes, context wall screen. Careful XR edge-case handling. Swaps three.xr.js for WebXRManager, justified only in a code comment. |</span><span id="L18">| 3 | D | v1 | Polished, accessible offline gallery: bundled three.js, worker-built mesh, spatial VR panel, gaze-dwell buttons, teleport, snap turn, hand pinch, haptics, adaptive foveation and quality. CPU mesh limits zoom depth; the minified app code is hard to audit. |</span><span id="L19">| 4 | G | v0 | Bundled three.js r186 with a worker-built relief, minimap, full-size or tabletop AR with placement, floor teleport, split-screen stereo. Explains in-app why three.xr.js is obsolete. Coarse 192×144 relief and minified app code keep it below D. |</span><span id="L20">| 5 | B | v1 | Most features: spatial VR UI, grab-pan, two-hand zoom, Mandelbulb and Julia modes, audio synth, gyro. But it loads three r128 and the Tailwind play CDN at runtime, runs float32 deep zoom, and a 1024-iteration fragment loop is a performance risk on Quest. |</span><span id="L21">| 6 | F | v1 | Clean raw WebGL2: GPU-rendered Mandelbrot texture displaces the mesh in a full room; hand pinch-grab, flying, adaptive quality. Bug: re-rendering the texture inside the XR loop rebinds framebuffer null, so one eye renders off-target whenever you zoom. |</span><span id="L22">| 7 | C | v1 | Minimal WebGL2 heightfield with stars. The XR loop stops for good if `getViewerPose` returns null once. The viewer spawns inside the 1.85 m plateau. No XR interaction, uses `alert()`, and the advertised pinch-zoom isn&#x27;t implemented. |</span><span id="L23">| 8 | A | v1 | Raymarched SDF. In XR, the forward vector is the view&#x27;s +Z (it looks backwards), projection matrices are ignored, and per-eye UVs use the full framebuffer size. 96 steps × 80 iterations per pixel can&#x27;t run on headsets. Only on-screen orbit works. |</span><span id="L24"></span><span id="L25">## Special elements</span><span id="L26"></span><span id="L27">- **H, E — perturbation-theory deep zoom** (float64 CPU reference orbit in an RG32F texture, float32 GPU deltas, row-scissored progressive jobs, cross-faded buffers): the only candidates that zoom past float32 limits, to roughly 1e-12 to 1e-13.</span><span id="L28">- **H — van Wijk &amp; Nuij smooth zoom-pan flights plus async PBO readback with `fenceSync`** for ray-casting the hologram: no other candidate does stall-free GPU→CPU readback or optimal zoom-pan paths.</span><span id="L29">- **H — handheld-AR detection via `interactionMode === &#x27;screen-space&#x27;` with hit-test reticle placement**: the only phone-AR flow that places the model on a detected real surface.</span><span id="L30">- **H, E, G — Cardboard/split-screen phone stereo**: the only route to a stereo &quot;headset&quot; view on iPhones, where WebXR doesn&#x27;t exist.</span><span id="L31">- **E — deletes `XRWebGLBinding.prototype.createProjectionLayer` when the session didn&#x27;t grant `layers`**: an unusual, targeted workaround for a three.js r186 projection-layer pitfall that no one else addresses.</span><span id="L32">- **E — context &quot;wall screen&quot; at 3× the terrain span**: the only candidate that shows where you are in the set while you&#x27;re zoomed in.</span><span id="L33">- **D — gaze-dwell activation (&quot;look at a button for 3 seconds&quot;)**: the only accessibility path for headsets with no controllers or hand tracking.</span><span id="L34">- **D, G — inline Blob Web Worker building the fractal mesh, inside a minified bundled build**: the only candidates that move fractal computation off the main thread.</span><span id="L35">- **G — in-app explanation that three.xr.js is archived, with links**: the only v0 candidate that tells users in the UI why that part of the prompt was replaced.</span><span id="L36">- **B — procedural Web Audio drone tied to zoom, plus Mandelbulb raymarch and Julia-morph modes**: the widest creative scope, and the only candidate using runtime CDNs (three r128, Tailwind).</span><span id="L37">- **F — Mandelbrot rendered to a half-float texture (RGBA8 fallback) and sampled in the vertex shader for displacement, plus pinch detection from hand-joint distance**: a GPU heightfield pipeline no one else uses in this form.</span><span id="L38">- **A — full-screen raymarched extrusion of the Mandelbrot boundary**: the only pure-raymarch approach, though its XR camera maths is broken.</span><span id="L39"></span><span id="L40">## Summary of tests and approach</span><span id="L41"></span><span id="L42">I reviewed every file statically. I read the readable application code in full or in large parts: A, C and F completely, and the main sections of B, E and H. Where three.js was bundled (D, E, G), I skimmed the library and pulled the minified app code out by grepping for keywords: `requestSession`, `getHand`, `teleport`, `haptic`, `Worker`, `setFoveation`, `deviceorientation`. I extracted every inline `&lt;script&gt;` with a small Python script, and all 9 passed `node --check`. Using a Node helper, I pulled the GLSL out of the raw-WebGL candidates (A, C, F, H) and ran each shader through `glslangValidator`; all compiled. I traced XR maths by hand: A&#x27;s quaternion-to-forward conversion, F&#x27;s framebuffer binding order inside the XR loop, and C&#x27;s per-frame `requestAnimationFrame` placement and spawn position against its heightfield formula. I also compared reference-space fallbacks, input handling (controllers, hands, transient pointers), iOS fallbacks, precision limits and external dependencies. Each candidate was scored against its own prompt version, and nothing was run in a browser.</span></code></pre></details>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../../../data/">Data &amp; schema</a> · <a href="../../../data/changelog/">Changelog</a> · <a href="../../../feed.xml">Atom feed</a> · <a href="../../../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>

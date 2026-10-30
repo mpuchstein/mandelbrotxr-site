@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+<id>https://mandelbrotxr.puchstein.dev/</id>
+<title>MandelbrotXR results — new judgments</title>
+<subtitle>One entry per judge ranking or phase-1 review added to Judge/ or Review/ of mpuchstein/MandelbrotXR, from the git history.</subtitle>
+<link rel="self" type="application/atom+xml" href="https://mandelbrotxr.puchstein.dev/feed.xml"/>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/data/changelog/"/>
+<updated>2026-10-30T00:20:11+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<generator>MandelbrotXR site/build.py</generator>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-30:Judge/HTML-Judge/RANKING.md@f90cd6f0088d3944de7bde152d4e50d73eae17dc</id>
+<title>Added: HTML judge ranking</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/judges/html/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/f90cd6f0088d3944de7bde152d4e50d73eae17dc"/>
+<published>2026-10-30T00:20:11+01:00</published>
+<updated>2026-10-30T00:20:11+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">HTML Judge — blind ranking. Ranking (1 = best; blind letter in parentheses): 1. Opus 5.5 · v1 (H); 2. Opus 5.5 · v0 (E); 3. GPT6 Pro · v1 (D); 4. GPT6 Pro · v0 (G); 5. Gemini 4 Argon · v1 (B); 6. Mistral Large 4 · v1 (F); 7. Copilot Autopilot · v1 (C); 8. Copilot Interactive · v1 (A).</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-30:Judge/TRANSCRIPT-Judge/RANKING.md@f90cd6f0088d3944de7bde152d4e50d73eae17dc</id>
+<title>Added: Transcript judge ranking</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/judges/transcript/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/f90cd6f0088d3944de7bde152d4e50d73eae17dc"/>
+<published>2026-10-30T00:20:11+01:00</published>
+<updated>2026-10-30T00:20:11+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">Transcript Judge — blind ranking. Ranking (1 = best; blind letter in parentheses): 1. Opus 5.5 · v0 (F); 2. Opus 5.5 · v1 (E); 3. GPT6 Pro · v0 (A); 4. GPT6 Pro · v1 (D); 5. Mistral Large 4 · v1 (B); 6. Copilot Autopilot · v1 (H); 7. Copilot Interactive · v1 (C); 8. Gemini 4 Argon · v1 (G).</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-30:Judge/HTML_TRANSCRIPT-Judge/RANKING.md@f90cd6f0088d3944de7bde152d4e50d73eae17dc</id>
+<title>Added: HTML + Transcript judge ranking</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/judges/html-transcript/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/f90cd6f0088d3944de7bde152d4e50d73eae17dc"/>
+<published>2026-10-30T00:20:11+01:00</published>
+<updated>2026-10-30T00:20:11+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">HTML + Transcript Judge — blind ranking. Ranking (1 = best; blind letter in parentheses): 1. Opus 5.5 · v1 (B); 2. Opus 5.5 · v0 (A); 3. GPT6 Pro · v0 (D); 4. GPT6 Pro · v1 (E); 5. Gemini 4 Argon · v1 (G); 6. Mistral Large 4 · v1 (C); 7. Copilot Autopilot · v1 (F); 8. Copilot Interactive · v1 (H).</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-30:Judge/Browser-Judge/RANKING.md@f90cd6f0088d3944de7bde152d4e50d73eae17dc</id>
+<title>Added: Browser judge ranking</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/judges/browser/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/f90cd6f0088d3944de7bde152d4e50d73eae17dc"/>
+<published>2026-10-30T00:20:11+01:00</published>
+<updated>2026-10-30T00:20:11+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">Browser Judge — blind ranking. Ranking (1 = best; blind letter in parentheses): 1. GPT6 Pro · v1 (H); 2. Opus 5.5 · v0 (C); 3. GPT6 Pro · v0 (G); 4. Opus 5.5 · v1 (A); 5. Gemini 4 Argon · v1 (D); 6. Mistral Large 4 · v1 (E); 7. Copilot Autopilot · v1 (F); 8. Copilot Interactive · v1 (B).</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-30:Judge/Browser_HTML-Judge/RANKING.md@f90cd6f0088d3944de7bde152d4e50d73eae17dc</id>
+<title>Added: Browser + HTML judge ranking</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/judges/browser-html/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/f90cd6f0088d3944de7bde152d4e50d73eae17dc"/>
+<published>2026-10-30T00:20:11+01:00</published>
+<updated>2026-10-30T00:20:11+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">Browser + HTML Judge — blind ranking. Ranking (1 = best; blind letter in parentheses): 1. Opus 5.5 · v1 (G); 2. Opus 5.5 · v0 (H); 3. GPT6 Pro · v1 (B); 4. GPT6 Pro · v0 (C); 5. Gemini 4 Argon · v1 (E); 6. Mistral Large 4 · v1 (D); 7. Copilot Autopilot · v1 (A); 8. Copilot Interactive · v1 (F).</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/HTML-Review/Anthropic-Web-Opus5.5-Max-v0/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: HTML review of Opus 5.5 · v0</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/html/opus55-max-v0/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">HTML Review — candidate-07. Overall score: 8 / 10. Criteria: Done-when fulfilment 9; Device/XR compatibility 8; Visual wow effect 8; Usability &amp; controls 8; Code quality &amp; robustness 8; Prompt adherence 9.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/HTML-Review/Anthropic-Web-Opus5.5-Max-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: HTML review of Opus 5.5 · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/html/opus55-max-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">HTML Review — candidate-02. Overall score: 8.5 / 10. Criteria: Done-when fulfilment 8; Device/XR compatibility 8; Visual wow effect 9; Usability &amp; controls 8; Code quality &amp; robustness 7; Prompt adherence 9.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/HTML-Review/OpenAI-Web-GPT6-Pro-v0/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: HTML review of GPT6 Pro · v0</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/html/gpt6-pro-v0/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">HTML Review — candidate-06. Overall score: 7.5 / 10. Criteria: Done-when fulfilment 8; Device/XR compatibility 8; Visual wow effect 6; Usability &amp; controls 8; Code quality &amp; robustness 7; Prompt adherence 8.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/HTML-Review/OpenAI-Web-GPT6-Pro-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: HTML review of GPT6 Pro · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/html/gpt6-pro-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">HTML Review — candidate-01. Overall score: 7.5 / 10. Criteria: Done-when fulfilment 8; Device/XR compatibility 8; Visual wow effect 7; Usability &amp; controls 7; Code quality &amp; robustness 7; Prompt adherence 9.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/HTML-Review/Google-Web-Gemini4Argon-High-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: HTML review of Gemini 4 Argon · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/html/gemini4-argon-high-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">HTML Review — candidate-08. Overall score: 6 / 10. Criteria: Done-when fulfilment 7; Device/XR compatibility 6; Visual wow effect 7; Usability &amp; controls 6; Code quality &amp; robustness 5; Prompt adherence 7.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/HTML-Review/Mistral-VibeCode-MistralLarge4-Default-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: HTML review of Mistral Large 4 · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/html/mistral-large4-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">HTML Review — candidate-03. Overall score: 5 / 10. Criteria: Done-when fulfilment 6; Device/XR compatibility 5; Visual wow effect 6; Usability &amp; controls 3; Code quality &amp; robustness 4; Prompt adherence 9.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/HTML-Review/GitHub-CopilotTasks-Auto-Autopilot-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: HTML review of Copilot Autopilot · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/html/copilot-autopilot-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">HTML Review — candidate-04. Overall score: 2 / 10. Criteria: Done-when fulfilment 2; Device/XR compatibility 3; Visual wow effect 3; Usability &amp; controls 3; Code quality &amp; robustness 3; Prompt adherence 6.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/HTML-Review/GitHub-CopilotTasks-Auto-Interactive-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: HTML review of Copilot Interactive · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/html/copilot-interactive-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">HTML Review — candidate-05. Overall score: 2.5 / 10. Criteria: Done-when fulfilment 2; Device/XR compatibility 3; Visual wow effect 4; Usability &amp; controls 2; Code quality &amp; robustness 3; Prompt adherence 6.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/TRANSCRIPT-Review/Anthropic-Web-Opus5.5-Max-v0/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Transcript review of Opus 5.5 · v0</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/transcript/opus55-max-v0/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">TRANSCRIPT Review — candidate-07. Overall score: 8 / 10. Criteria: Requirement understanding 9; Engineering process 8; Verification rigor 7; Honesty &amp; calibration 8; Communication &amp; handoff 6; Expected deliverable quality 8.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/TRANSCRIPT-Review/Anthropic-Web-Opus5.5-Max-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Transcript review of Opus 5.5 · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/transcript/opus55-max-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">TRANSCRIPT Review — candidate-02. Overall score: 7 / 10. Criteria: Requirement understanding 8; Engineering process 7; Verification rigor 7; Honesty &amp; calibration 7; Communication &amp; handoff 7; Expected deliverable quality 7.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/TRANSCRIPT-Review/OpenAI-Web-GPT6-Pro-v0/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Transcript review of GPT6 Pro · v0</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/transcript/gpt6-pro-v0/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">TRANSCRIPT Review — candidate-06. Overall score: 7 / 10. Criteria: Requirement understanding 8; Engineering process 7; Verification rigor 6; Honesty &amp; calibration 8; Communication &amp; handoff 7; Expected deliverable quality 7.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/TRANSCRIPT-Review/OpenAI-Web-GPT6-Pro-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Transcript review of GPT6 Pro · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/transcript/gpt6-pro-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">TRANSCRIPT Review — candidate-01. Overall score: 8 / 10. Criteria: Requirement understanding 8; Engineering process 8; Verification rigor 7; Honesty &amp; calibration 9; Communication &amp; handoff 8; Expected deliverable quality 8.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/TRANSCRIPT-Review/Google-Web-Gemini4Argon-High-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Transcript review of Gemini 4 Argon · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/transcript/gemini4-argon-high-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">TRANSCRIPT Review — candidate-08. Overall score: 4 / 10. Criteria: Requirement understanding 5; Engineering process 4; Verification rigor 2; Honesty &amp; calibration 4; Communication &amp; handoff 4; Expected deliverable quality 5.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/TRANSCRIPT-Review/Mistral-VibeCode-MistralLarge4-Default-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Transcript review of Mistral Large 4 · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/transcript/mistral-large4-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">TRANSCRIPT Review — candidate-03. Overall score: 7 / 10. Criteria: Requirement understanding 7; Engineering process 7; Verification rigor 6; Honesty &amp; calibration 8; Communication &amp; handoff 6; Expected deliverable quality 6.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/TRANSCRIPT-Review/GitHub-CopilotTasks-Auto-Autopilot-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Transcript review of Copilot Autopilot · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/transcript/copilot-autopilot-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">TRANSCRIPT Review — candidate-04. Overall score: 4 / 10. Criteria: Requirement understanding 5; Engineering process 5; Verification rigor 4; Honesty &amp; calibration 4; Communication &amp; handoff 4; Expected deliverable quality 4.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/TRANSCRIPT-Review/GitHub-CopilotTasks-Auto-Interactive-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Transcript review of Copilot Interactive · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/transcript/copilot-interactive-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">TRANSCRIPT Review — candidate-05. Overall score: 4 / 10. Criteria: Requirement understanding 6; Engineering process 4; Verification rigor 3; Honesty &amp; calibration 5; Communication &amp; handoff 5; Expected deliverable quality 4.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/Browser-Review/Anthropic-Web-Opus5.5-Max-v0/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Browser review of Opus 5.5 · v0</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/browser/opus55-max-v0/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">Browser Review — candidate-07. Overall score: 8 / 10. Criteria: Loads &amp; renders 9; Done-when (desktop-checkable) 9; Visual wow 8; Usability &amp; controls 7; Robustness 8; XR readiness &amp; messaging 9.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/Browser-Review/Anthropic-Web-Opus5.5-Max-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Browser review of Opus 5.5 · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/browser/opus55-max-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">Browser Review — candidate-02. Overall score: 8 / 10. Criteria: Loads &amp; renders 9; Done-when (desktop-checkable) 8; Visual wow 8; Usability &amp; controls 7; Robustness 8; XR readiness &amp; messaging 7.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/Browser-Review/OpenAI-Web-GPT6-Pro-v0/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Browser review of GPT6 Pro · v0</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/browser/gpt6-pro-v0/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">Browser Review — candidate-06. Overall score: 8 / 10. Criteria: Loads &amp; renders 9; Done-when (desktop-checkable) 8; Visual wow 8; Usability &amp; controls 8; Robustness 8; XR readiness &amp; messaging 8.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/Browser-Review/OpenAI-Web-GPT6-Pro-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Browser review of GPT6 Pro · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/browser/gpt6-pro-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">Browser Review — candidate-01. Overall score: 8 / 10. Criteria: Loads &amp; renders 9; Done-when (desktop-checkable) 8; Visual wow effect 8; Usability &amp; controls 8; Robustness 7; XR readiness &amp; messaging 9.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/Browser-Review/Google-Web-Gemini4Argon-High-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Browser review of Gemini 4 Argon · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/browser/gemini4-argon-high-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">Browser Review — candidate-08. Overall score: 7 / 10. Criteria: Loads &amp; renders 9; Done-when (desktop-checkable) 8; Visual wow effect 8; Usability &amp; controls 6; Robustness 8; XR readiness &amp; messaging 6.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/Browser-Review/Mistral-VibeCode-MistralLarge4-Default-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Browser review of Mistral Large 4 · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/browser/mistral-large4-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">Browser Review — candidate-03. Overall score: 5 / 10. Criteria: Loads &amp; renders 8; Done-when (desktop-checkable) 5; Visual wow effect 5; Usability &amp; controls 4; Robustness 6; XR readiness &amp; messaging 4.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/Browser-Review/GitHub-CopilotTasks-Auto-Autopilot-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Browser review of Copilot Autopilot · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/browser/copilot-autopilot-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">Browser Review — candidate-04. Overall score: 4 / 10. Criteria: Loads &amp; renders 7; Done-when (desktop-checkable) 4; Visual wow effect 3; Usability &amp; controls 5; Robustness 6; XR readiness &amp; messaging 4.</summary>
+</entry>
+<entry>
+<id>tag:mandelbrotxr.puchstein.dev,2026-10-29:Review/Browser-Review/GitHub-CopilotTasks-Auto-Interactive-v1/REVIEW.md@41f1537c5844c1668c18fad065ed79e7ef74608c</id>
+<title>Added: Browser review of Copilot Interactive · v1</title>
+<link rel="alternate" type="text/html" href="https://mandelbrotxr.puchstein.dev/reviews/browser/copilot-interactive-v1/"/>
+<link rel="related" type="text/html" href="https://github.com/mpuchstein/MandelbrotXR/commit/41f1537c5844c1668c18fad065ed79e7ef74608c"/>
+<published>2026-10-29T23:24:12+01:00</published>
+<updated>2026-10-29T23:24:12+01:00</updated>
+<author><name>s0wlz (Matthias Puchstein)</name></author>
+<summary type="text">Browser Review — candidate-05. Overall score: 4 / 10. Criteria: Loads &amp; renders 7; Done-when (desktop-checkable) 3; Visual wow effect 4; Usability &amp; controls 4; Robustness 6; XR readiness &amp; messaging 4.</summary>
+</entry>
+</feed>

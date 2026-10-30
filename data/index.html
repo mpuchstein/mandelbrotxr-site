@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data · MandelbrotXR results</title>
+<meta name="description" content="MandelbrotXR results as JSON and CSV, with a documented schema, provenance, a changelog and an Atom feed.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/data/">
+<link rel="icon" href="../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../feed.xml">
+<script src="../assets/js/theme.js?v=7a718e6155"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../">Home</a></li><li><a href="../rankings/">Rankings</a></li><li><a href="../candidates/">Candidates</a></li><li><a href="../compare/">Compare</a></li><li><a href="../techniques/">Techniques</a></li><li><a href="../judges/">Judges &amp; reviews</a></li><li><a href="../transcripts/">Transcripts</a></li><li><a href="../methodology/">Methodology</a></li><li><a href="../data/" aria-current="page">Data</a></li><li><a href="../search/">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../">Home</a></li><li><span aria-current="page">Data</span></li></ol></nav>
+<header class="data-head"><h1>Data</h1>
+<p class="lede">The complete results as machine-readable files: one JSON export with everything and three flat CSV tables.
+They are generated from the repository at commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a>
+(<time datetime="2026-10-30T11:16:35+01:00">2026-10-30</time>) by the same build that writes this site, so every number here equals the one on the pages.</p></header>
+<section class="data-sec" aria-labelledby="files"><h2 id="files">Files</h2>
+<ul class="data-file-list"><li class="card data-file"><a class="data-file-name" href="../data/results.json" download><code>results.json</code></a><p class="data-file-meta small muted num">JSON · 118.5 kB<br>8 candidates · 24 reviews · 5 judges</p><p class="data-file-desc">Everything in one file: candidates, reviews with criteria, judge rankings with verbatim justifications and special elements, and the derived metrics.</p></li><li class="card data-file"><a class="data-file-name" href="../data/ranks.csv" download><code>ranks.csv</code></a><p class="data-file-meta small muted num">CSV · 3.2 kB<br>40 rows</p><p class="data-file-desc">One row per judge × ranked candidate, by judge, then rank.</p></li><li class="card data-file"><a class="data-file-name" href="../data/scores.csv" download><code>scores.csv</code></a><p class="data-file-meta small muted num">CSV · 1.8 kB<br>24 rows</p><p class="data-file-desc">One row per phase-1 review, by review type, then folder.</p></li><li class="card data-file"><a class="data-file-name" href="../data/criteria.csv" download><code>criteria.csv</code></a><p class="data-file-meta small muted num">CSV · 34.4 kB<br>144 rows</p><p class="data-file-desc">One row per criterion of every phase-1 review, in the review&#x27;s table order.</p></li></ul>
+<p class="small muted">UTF-8, <code>\n</code> line endings. CSVs have a header row and RFC 4180 quoting; JSON keys keep the order documented below.
+Two builds of the same commit produce byte-identical files.</p>
+</section>
+<section class="data-sec" aria-labelledby="provenance"><h2 id="provenance">Provenance and licence</h2>
+<ul class="data-notes">
+<li>Source: the committed files of <a href="https://github.com/mpuchstein/MandelbrotXR/tree/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener">mpuchstein/MandelbrotXR at <code>75d36a0</code></a>:
+<ul class="data-paths">
+<li><code><span class="nw">site</span>/<wbr><span class="nw">candidates.toml</span></code>: the candidate list (the only file entered by hand)</li>
+<li><code><span class="nw">Review</span>/<wbr><span class="nw">*-Review</span>/<wbr><span class="nw">*</span>/<wbr><span class="nw">REVIEW.md</span></code>: every phase-1 review</li>
+<li><code><span class="nw">Judge</span>/<wbr><span class="nw">*-Judge</span>/<wbr><span class="nw">RANKING.md</span></code>: every judge ranking</li>
+<li><code><span class="nw">Judge</span>/<wbr><span class="nw">judge-mapping.json</span></code>: the judges' letter mapping</li>
+<li><code><span class="nw">ReviewOrchestrator</span>/<wbr><span class="nw">blind-mapping.json</span></code>: the reviewers' blind ids</li>
+<li><code><span class="nw">ReviewOrchestrator</span>/<wbr><span class="nw">blind</span>/<wbr><span class="nw">source-html.sha256</span></code>: checksums of the blinded HTML copies</li>
+</ul></li>
+<li>Verdicts are verbatim: justifications, reasons and special-element bullets are the judges' and reviewers' Markdown, unchanged. Scores and ranks are parsed, not edited.</li>
+<li>Fields marked <span class="derived">derived</span> are computed by the build; see <a href="#derived-fields">Derived fields</a> and <a href="../methodology/#derived">Methodology</a>.</li>
+<li>The repository has no licence file at this commit; reuse terms are the repository owner's.</li>
+</ul></section>
+<section class="data-sec" aria-labelledby="results-schema"><h2 id="results-schema"><code>results.json</code> schema</h2>
+<p>A single object. Paths are repository-relative; <code>urls</code> and <code>url</code> fields are site paths relative to the site root.
+Integers stay integers; other numbers are rounded to 4 decimals.</p>
+<div class="table-wrap"><table class="schema"><caption class="sr-only">Fields of results.json</caption>
+<thead><tr><th scope="col">Field and type</th><th scope="col">Meaning</th></tr></thead><tbody><tr><th scope="row"><code>schema</code><span class="schema-type">string</span></th><td>Schema identifier, currently <code>mandelbrotxr-results/1</code>. Changes when fields are removed or change meaning.</td></tr><tr><th scope="row"><code>build<wbr>.commit</code><span class="schema-type">string</span></th><td>Build commit SHA (<code>git rev-parse HEAD</code>), with <code>-dirty</code> appended if the working tree had uncommitted changes.</td></tr><tr><th scope="row"><code>build<wbr>.sha / build<wbr>.dirty</code><span class="schema-type">string / boolean</span></th><td>The bare commit SHA and whether the tree was dirty.</td></tr><tr><th scope="row"><code>build<wbr>.date</code><span class="schema-type">string</span></th><td>Commit date of the build commit (ISO 8601). Never the wall clock.</td></tr><tr><th scope="row"><code>build<wbr>.github</code><span class="schema-type">string</span></th><td>The GitHub tree at the build commit.</td></tr><tr><th scope="row"><code>candidates[]</code><span class="schema-type">array</span></th><td>One object per entry of <code>site/candidates.toml</code>, in file order.</td></tr><tr><th scope="row"><code>candidates[]<wbr>.slug, folder, name, label</code><span class="schema-type">string</span></th><td>URL slug, top-level repo folder, display name, short table label.</td></tr><tr><th scope="row"><code>candidates[]<wbr>.vendor, product, model, effort, provenance</code><span class="schema-type">string</span></th><td>As recorded in <code>site/candidates.toml</code> (from the transcript headers and ReviewOrchestrator/README.md §1).</td></tr><tr><th scope="row"><code>candidates[]<wbr>.prompt</code><span class="schema-type">string</span></th><td>Prompt version the candidate was built from: <code>v0</code> = prompt0.txt, <code>v1</code> = prompt1.txt.</td></tr><tr><th scope="row"><code>candidates[]<wbr>.product_file, transcription</code><span class="schema-type">string</span></th><td>Repo-relative paths of the product HTML and the chat transcript.</td></tr><tr><th scope="row"><code>candidates[]<wbr>.source_url, date</code><span class="schema-type">string</span></th><td>Original chat URL and chat date (YYYY-MM-DD).</td></tr><tr><th scope="row"><code>candidates[]<wbr>.bytes, sha256</code><span class="schema-type">integer, string</span></th><td>Size and SHA-256 of the product file; the build fails unless the SHA matches ReviewOrchestrator/blind/source-html.sha256.</td></tr><tr><th scope="row"><code>candidates[]<wbr>.external, alert_calls</code><span class="schema-type">array of strings, integer</span></th><td>Absolute URLs the product loads as resources, and its number of <code>alert(</code> calls, found by scanning the file. <span class="derived">derived</span></td></tr><tr><th scope="row"><code>candidates[]<wbr>.blind_id</code><span class="schema-type">string | null</span></th><td>Phase-1 blind label (<code>candidate-NN</code>) from ReviewOrchestrator/blind-mapping.json.</td></tr><tr><th scope="row"><code>candidates[]<wbr>.urls</code><span class="schema-type">object</span></th><td>Site paths (relative to the site root) of the candidate page, the playable copy and the rendered transcript.</td></tr><tr><th scope="row"><code>review_types[]</code><span class="schema-type">array</span></th><td><code>{id, folder, label}</code> for every <code>Review/*-Review/</code> folder.</td></tr><tr><th scope="row"><code>reviews[]</code><span class="schema-type">array</span></th><td>One object per phase-1 review, by review type, then folder.</td></tr><tr><th scope="row"><code>reviews[]<wbr>.type, slug, folder, blind_id, title</code><span class="schema-type">string</span></th><td>Review type id, candidate, its folder, the blind label the reviewer saw and the review's H1 as written.</td></tr><tr><th scope="row"><code>reviews[]<wbr>.overall</code><span class="schema-type">number</span></th><td>Overall score (1–10): the first number on the overall-score line.</td></tr><tr><th scope="row"><code>reviews[]<wbr>.overall_line</code><span class="schema-type">string</span></th><td>That line, verbatim, so the parse can be checked.</td></tr><tr><th scope="row"><code>reviews[]<wbr>.criteria[]</code><span class="schema-type">array</span></th><td><code>{name, score, reason}</code> per row of the criteria table, in table order. <code>reason</code> is the reviewer's Markdown cell, verbatim.</td></tr><tr><th scope="row"><code>reviews[]<wbr>.files, url</code><span class="schema-type">object, string</span></th><td>Repo-relative paths of PROMPT.txt, REVIEW.md, TRANSCRIPT.md; site path of the review page.</td></tr><tr><th scope="row"><code>judges[]</code><span class="schema-type">array</span></th><td>One object per phase-2 judge (Judge/*-Judge/ with a RANKING.md and a judge-mapping.json entry).</td></tr><tr><th scope="row"><code>judges[]<wbr>.id, folder, label, title</code><span class="schema-type">string</span></th><td>Judge id (folder name lowercased, <code>-Judge</code> stripped), folder, label, RANKING.md H1.</td></tr><tr><th scope="row"><code>judges[]<wbr>.material, focus</code><span class="schema-type">string | null</span></th><td>Material and special-elements focus from the Judges table of Judge/README.md.</td></tr><tr><th scope="row"><code>judges[]<wbr>.browser</code><span class="schema-type">boolean</span></th><td>Hands-on in a browser (id contains <code>browser</code> or the folder has screenshots) vs. static material only.</td></tr><tr><th scope="row"><code>judges[]<wbr>.mapping</code><span class="schema-type">object</span></th><td>Letter → candidate slug, from Judge/judge-mapping.json.</td></tr><tr><th scope="row"><code>judges[]<wbr>.ranking[]</code><span class="schema-type">array</span></th><td><code>{rank, letter, slug, prompt, justification}</code> per row of the judge's ranking table, best first. <code>justification</code> is verbatim Markdown.</td></tr><tr><th scope="row"><code>judges[]<wbr>.special[]</code><span class="schema-type">array</span></th><td><code>{letters, slugs, title, reason, raw}</code> per “Special elements” bullet; <code>raw</code> is the bullet verbatim.</td></tr><tr><th scope="row"><code>judges[]<wbr>.files, url</code><span class="schema-type">object, string</span></th><td>Repo-relative paths of the judge's files; site path of the judge page.</td></tr><tr><th scope="row"><code>derived<wbr>.order</code><span class="schema-type">array of slugs</span></th><td>Candidates by mean rank; candidates not ranked by every judge come after those that were; ties keep the first judge's order. <span class="derived">derived</span></td></tr><tr><th scope="row"><code>derived<wbr>.coverage</code><span class="schema-type">object</span></th><td>slug → <code>{judges, of}</code>: how many judges ranked the candidate, out of all judges. <span class="derived">derived</span></td></tr><tr><th scope="row"><code>derived<wbr>.mean_rank</code><span class="schema-type">object</span></th><td>slug → <code>{display, exact, value}</code>: mean of the candidate's ranks over the judges that ranked it — one decimal as in Judge/README.md, an exact fraction, and a number rounded to 4 decimals. <span class="derived">derived</span></td></tr><tr><th scope="row"><code>derived<wbr>.standing</code><span class="schema-type">object</span></th><td>slug → <code>{place, tied}</code>: competition rank (1, 1, 3, …) by mean rank, among candidates ranked by every judge. <span class="derived">derived</span></td></tr><tr><th scope="row"><code>derived<wbr>.spread</code><span class="schema-type">object</span></th><td>slug → <code>{min, max, sd}</code>: lowest and highest rank and the population standard deviation (4 decimals). <span class="derived">derived</span></td></tr><tr><th scope="row"><code>derived<wbr>.kendall_tau_b[]</code><span class="schema-type">array</span></th><td><code>{a, b, tau, n}</code> per pair of judges: Kendall τ<sub>b</sub> over the n candidates both ranked (4 decimals; null if undefined). <span class="derived">derived</span></td></tr></tbody></table></div>
+<details class="fold"><summary>Example: the first <code>candidates[]</code> object</summary><pre tabindex="0" aria-label="Example candidate object (JSON)"><code>{
+ &quot;slug&quot;: &quot;opus55-max-v0&quot;,
+ &quot;folder&quot;: &quot;Anthropic-Web-Opus5.5-Max-v0&quot;,
+ &quot;name&quot;: &quot;Opus 5.5 Max · v0&quot;,
+ &quot;label&quot;: &quot;Opus 5.5 · v0&quot;,
+ &quot;vendor&quot;: &quot;Anthropic&quot;,
+ &quot;product&quot;: &quot;Claude.ai (Web)&quot;,
+ &quot;model&quot;: &quot;claude-opus-5-5&quot;,
+ &quot;effort&quot;: &quot;max&quot;,
+ &quot;provenance&quot;: &quot;conversation JSON: `claude-opus-5-5`, `effort_level: max`&quot;,
+ &quot;prompt&quot;: &quot;v0&quot;,
+ &quot;product_file&quot;: &quot;Anthropic-Web-Opus5.5-Max-v0/mandelbrot-room.html&quot;,
+ &quot;source_url&quot;: &quot;https://claude.ai/chat/09e85d21-ad05-4fe0-b10d-8ef14cc23da7&quot;,
+ &quot;date&quot;: &quot;2026-10-29&quot;,
+ &quot;bytes&quot;: 668223,
+ &quot;sha256&quot;: &quot;d4bf8d9c9bf638e4884d325d866e941a4216b750d6b3e353e8cf90490fc65415&quot;,
+ &quot;external&quot;: [],
+ &quot;alert_calls&quot;: 0,
+ &quot;blind_id&quot;: &quot;candidate-07&quot;,
+ &quot;transcription&quot;: &quot;Anthropic-Web-Opus5.5-Max-v0/TRANSCRIPTION.md&quot;,
+ &quot;urls&quot;: {
+  &quot;page&quot;: &quot;candidates/opus55-max-v0/&quot;,
+  &quot;play&quot;: &quot;play/opus55-max-v0/&quot;,
+  &quot;transcript&quot;: &quot;transcripts/chat-anthropic-web-opus5.5-max-v0/&quot;
+ }
+}</code></pre></details>
+</section>
+<section class="data-sec" aria-labelledby="csv-schema"><h2 id="csv-schema">CSV columns</h2>
+<h3 id="ranks-csv"><code>ranks.csv</code></h3><p>One row per judge × ranked candidate, by judge, then rank. Header row: <code>judge,judge_label,letter,slug,folder,prompt,rank</code>.</p><div class="table-wrap"><table class="schema"><caption class="sr-only">Columns of ranks.csv</caption><thead><tr><th scope="col">Column</th><th scope="col">Meaning</th></tr></thead><tbody><tr><th scope="row"><code>judge</code></th><td>Judge id, e.g. the folder name lowercased without <code>-Judge</code>.</td></tr><tr><th scope="row"><code>judge_label</code></th><td>Readable judge label.</td></tr><tr><th scope="row"><code>letter</code></th><td>The blind letter the judge saw for this candidate.</td></tr><tr><th scope="row"><code>slug</code></th><td>Candidate slug (see results.json <code>candidates[]</code>).</td></tr><tr><th scope="row"><code>folder</code></th><td>Candidate folder in the repo.</td></tr><tr><th scope="row"><code>prompt</code></th><td>Prompt version (v0/v1) as given in the judge's ranking table.</td></tr><tr><th scope="row"><code>rank</code></th><td>The judge's rank, 1 = best.</td></tr></tbody></table></div><h3 id="scores-csv"><code>scores.csv</code></h3><p>One row per phase-1 review, by review type, then folder. Header row: <code>review_type,slug,folder,blind_id,overall</code>.</p><div class="table-wrap"><table class="schema"><caption class="sr-only">Columns of scores.csv</caption><thead><tr><th scope="col">Column</th><th scope="col">Meaning</th></tr></thead><tbody><tr><th scope="row"><code>review_type</code></th><td>Review type id (folder name lowercased without <code>-Review</code>).</td></tr><tr><th scope="row"><code>slug</code></th><td>Candidate slug.</td></tr><tr><th scope="row"><code>folder</code></th><td>Candidate folder in the repo.</td></tr><tr><th scope="row"><code>blind_id</code></th><td>Phase-1 blind label the reviewer saw.</td></tr><tr><th scope="row"><code>overall</code></th><td>Overall score, 1–10, the first number on the overall-score line (a reviewer's own rounding is not applied).</td></tr></tbody></table></div><h3 id="criteria-csv"><code>criteria.csv</code></h3><p>One row per criterion of every phase-1 review, in the review&#x27;s table order. Header row: <code>review_type,slug,criterion_index,criterion,score,reason</code>.</p><div class="table-wrap"><table class="schema"><caption class="sr-only">Columns of criteria.csv</caption><thead><tr><th scope="col">Column</th><th scope="col">Meaning</th></tr></thead><tbody><tr><th scope="row"><code>review_type</code></th><td>Review type id.</td></tr><tr><th scope="row"><code>slug</code></th><td>Candidate slug.</td></tr><tr><th scope="row"><code>criterion_index</code></th><td>1-based position of the row in the review's criteria table.</td></tr><tr><th scope="row"><code>criterion</code></th><td>Criterion name as written (leading numbering removed).</td></tr><tr><th scope="row"><code>score</code></th><td>Score, 1–10.</td></tr><tr><th scope="row"><code>reason</code></th><td>The reviewer's one-line reason, verbatim Markdown.</td></tr></tbody></table></div>
+</section>
+<section class="data-sec" aria-labelledby="derived-fields"><h2 id="derived-fields">Derived fields <span class="derived">derived</span></h2>
+<p>The judges produced ranks and the reviewers produced scores; everything under <code>derived</code> is computed by this site from those numbers:</p>
+<ul class="data-notes">
+<li><strong>Mean rank</strong> = sum of a candidate's ranks ÷ number of judges that ranked it. <code>display</code> rounds to one decimal, as in <code>Judge/README.md</code>;
+<code>exact</code> is the fraction, so ties are exact (equal fractions = tie).</li>
+<li><strong>Standing</strong>: competition rank by mean rank (1, 1, 3, …) among candidates ranked by every judge; <code>tied</code> marks shared places.</li>
+<li><strong>Spread</strong>: min and max rank, and σ = √(Σ(r − mean)² / n), the population standard deviation.</li>
+<li><strong>Kendall τ<sub>b</sub></strong> between two judges over the candidates both ranked: (C − D) / √((C + D + T<sub>a</sub>)(C + D + T<sub>b</sub>)).</li>
+<li><strong><code>external</code> and <code>alert_calls</code></strong> come from scanning each product file for absolute resource URLs and <code>alert(</code> calls.</li>
+</ul></section>
+<section class="data-sec" aria-labelledby="changes"><h2 id="changes">Changes</h2>
+<p>Latest: 5 judgments added on <time datetime="2026-10-30T00:20:11+01:00">2026-10-30</time>. 29 in total since the first commit.</p>
+<p>The <a href="../data/changelog/">Changelog</a> lists every judge ranking and review added to the repository, from its git history;
+<a href="../feed.xml">feed.xml</a> carries the same entries as an Atom feed.</p>
+</section>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../data/">Data &amp; schema</a> · <a href="../data/changelog/">Changelog</a> · <a href="../feed.xml">Atom feed</a> · <a href="../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>

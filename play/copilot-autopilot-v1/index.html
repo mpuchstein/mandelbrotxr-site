@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Mandelbrot: Infinite Room</title>
+<style>
+  :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #02030d; }
+  canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+  #ui { position: fixed; inset: 0; pointer-events: none; display: grid; place-items: center; }
+  #panel {
+    pointer-events: auto; width: min(440px, calc(100vw - 32px)); padding: 28px;
+    border: 1px solid #6f68ff80; border-radius: 24px; color: #eef0ff;
+    background: linear-gradient(145deg, #121636e8, #090a19e8);
+    box-shadow: 0 0 80px #5b48ff35, inset 0 0 45px #5b48ff12;
+    backdrop-filter: blur(18px); text-align: center;
+  }
+  h1 { margin: 0 0 7px; letter-spacing: .16em; font-weight: 500; font-size: 19px; }
+  p { color: #a7add2; line-height: 1.5; font-size: 13px; margin: 9px 0 20px; }
+  button {
+    appearance: none; border: 0; border-radius: 999px; padding: 13px 18px; margin: 4px;
+    color: #fff; background: linear-gradient(105deg, #6759ff, #d847c9);
+    box-shadow: 0 7px 25px #6958ff55; font: inherit; font-weight: 700; cursor: pointer;
+  }
+  button.secondary { background: #20264d; box-shadow: none; color: #dce0ff; }
+  button:disabled { opacity: .45; cursor: default; }
+  #hint { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%);
+    color: #aeb5dc; font-size: 12px; opacity: .75; text-align: center; pointer-events:none; }
+  .hide { display: none !important; }
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div id="ui">
+  <section id="panel">
+    <h1>MANDELBROT / INFINITE ROOM</h1>
+    <p>Step into a living mathematical landscape. The black hole at its heart is the Mandelbrot set; its orbit trails and crystalline terrain are generated in real time.</p>
+    <button id="vr">ENTER VR</button>
+    <button id="ar" class="secondary">PLACE IN AR</button>
+    <button id="explore" class="secondary">EXPLORE ON SCREEN</button>
+  </section>
+</div>
+<div id="hint" class="hide">Drag to look · pinch to zoom · double tap to reset</div>
+<script>
+(() => {
+  'use strict';
+  const canvas = document.querySelector('#gl'), panel = document.querySelector('#panel');
+  const vrButton = document.querySelector('#vr'), arButton = document.querySelector('#ar');
+  const explore = document.querySelector('#explore'), hint = document.querySelector('#hint');
+  const gl = canvas.getContext('webgl2', { antialias: true, alpha: false, xrCompatible: true });
+  if (!gl) {
+    panel.innerHTML = '<h1>WEBGL2 REQUIRED</h1><p>This experience needs a modern browser with WebGL 2. Try the latest Chrome, Safari, or Firefox.</p>';
+    return;
+  }
+
+  const VERT = `#version 300 es
+  layout(location=0) in vec3 position;
+  layout(location=1) in vec3 normal;
+  layout(location=2) in vec3 color;
+  uniform mat4 uViewProj, uModel;
+  uniform float uTime;
+  out vec3 vNormal, vColor, vWorld;
+  void main() {
+    vec4 world = uModel * vec4(position, 1.0);
+    vWorld = world.xyz; vNormal = mat3(uModel) * normal; vColor = color;
+    gl_Position = uViewProj * world;
+  }`;
+  const FRAG = `#version 300 es
+  precision highp float;
+  uniform float uTime;
+  uniform vec3 uLight;
+  in vec3 vNormal, vColor, vWorld;
+  out vec4 outColor;
+  void main() {
+    vec3 n = normalize(vNormal);
+    float glow = pow(max(dot(n, normalize(uLight - vWorld)), 0.0), .35);
+    float rim = pow(1.0 - max(dot(n, vec3(0,1,0)), 0.0), 2.0);
+    float pulse = .9 + .1 * sin(uTime * 1.4 + vWorld.y * 2.0);
+    vec3 c = vColor * (.22 + .7 * glow) * pulse + vec3(.08,.02,.18) * rim;
+    outColor = vec4(c, 1.0);
+  }`;
+  const POINT_VERT = `#version 300 es
+  layout(location=0) in vec3 position; layout(location=1) in vec3 color; layout(location=2) in float size;
+  uniform mat4 uViewProj; uniform float uTime; out vec3 vColor;
+  void main(){ vec3 p=position; p.y += sin(uTime*.4+p.x*1.7+p.z)*.015; gl_Position=uViewProj*vec4(p,1.); gl_PointSize=size; vColor=color; }`;
+  const POINT_FRAG = `#version 300 es
+  precision mediump float; in vec3 vColor; out vec4 outColor;
+  void main(){ float d=length(gl_PointCoord-.5)*2.; float a=smoothstep(1.,.05,d); outColor=vec4(vColor*(1.3-a*.25),a); }`;
+
+  function shader(type, source) {
+    const s = gl.createShader(type); gl.shaderSource(s, source); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  function program(v, f) {
+    const p = gl.createProgram(); gl.attachShader(p, shader(gl.VERTEX_SHADER,v)); gl.attachShader(p, shader(gl.FRAGMENT_SHADER,f)); gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p)); return p;
+  }
+  const terrainProgram = program(VERT, FRAG), pointProgram = program(POINT_VERT, POINT_FRAG);
+  const tp = { vp: gl.getUniformLocation(terrainProgram,'uViewProj'), model: gl.getUniformLocation(terrainProgram,'uModel'), time: gl.getUniformLocation(terrainProgram,'uTime'), light: gl.getUniformLocation(terrainProgram,'uLight') };
+  const pp = { vp: gl.getUniformLocation(pointProgram,'uViewProj'), time: gl.getUniformLocation(pointProgram,'uTime') };
+
+  function mandel(cx, cy) {
+    let x=0,y=0,i=0, zx=0, zy=0;
+    for (; i<72 && x*x+y*y<64; i++) { zx=x*x-y*y+cx; zy=2*x*y+cy; x=zx; y=zy; }
+    if (i===72) return 1;
+    return Math.min(1, (i + 1 - Math.log2(Math.log2(x*x+y*y))) / 72);
+  }
+  function meshGrid(size, span, height, fn) {
+    const verts=[], idx=[], n=size+1;
+    for (let z=0;z<n;z++) for (let x=0;x<n;x++) {
+      const u=x/size, v=z/size, px=(u-.5)*span, pz=(v-.5)*span;
+      const h=fn(px,pz), eps=span/size*.7;
+      const hx=fn(px+eps,pz)-fn(px-eps,pz), hz=fn(px,pz+eps)-fn(px,pz-eps);
+      const nx=-hx, ny=2*eps/height, nz=-hz, l=Math.hypot(nx,ny,nz);
+      const c=h > .83 ? [1.0,.22,.85] : h > .48 ? [.17,.55,1.] : [.035,.12,.43];
+      verts.push(px,h*height-.65,pz,nx/l,ny/l,nz/l,...c);
+    }
+    for(let z=0;z<size;z++) for(let x=0;x<size;x++){let a=z*n+x;idx.push(a,a+1,a+n,a+1,a+n+1,a+n);}
+    return makeMesh(new Float32Array(verts), new Uint32Array(idx));
+  }
+  function makeMesh(vertices, indices) {
+    const vao=gl.createVertexArray(), vb=gl.createBuffer(), ib=gl.createBuffer();
+    gl.bindVertexArray(vao); gl.bindBuffer(gl.ARRAY_BUFFER,vb); gl.bufferData(gl.ARRAY_BUFFER,vertices,gl.STATIC_DRAW);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,indices,gl.STATIC_DRAW);
+    const stride=9*4; gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,3,gl.FLOAT,false,stride,0);
+    gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1,3,gl.FLOAT,false,stride,12);
+    gl.enableVertexAttribArray(2); gl.vertexAttribPointer(2,3,gl.FLOAT,false,stride,24);
+    return {vao,count:indices.length};
+  }
+  const terrain = meshGrid(120, 10.5, 2.5, (x,z) => {
+    const scale=.43, cX=x*scale-.68, cY=z*scale;
+    const m=mandel(cX,cY), ridge=Math.pow(m,2.1);
+    return Math.max(.02, ridge + .025*Math.sin(x*5.2)*Math.sin(z*4.4));
+  });
+  const room = meshGrid(40, 42, .04, () => .03);
+  const stars=[];
+  for(let i=0;i<650;i++){ const a=Math.random()*Math.PI*2, r=7+Math.random()*18; stars.push(Math.cos(a)*r, .7+Math.random()*6, Math.sin(a)*r, .25+.5*Math.random(), .2+.4*Math.random(), 1, 2+Math.random()*6); }
+  const starV=gl.createVertexArray(), starB=gl.createBuffer(); gl.bindVertexArray(starV); gl.bindBuffer(gl.ARRAY_BUFFER,starB); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(stars),gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,3,gl.FLOAT,false,7*4,0); gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1,3,gl.FLOAT,false,7*4,12); gl.enableVertexAttribArray(2); gl.vertexAttribPointer(2,1,gl.FLOAT,false,7*4,24);
+  const I = () => new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
+  function mul(a,b){const o=new Float32Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++)o[c*4+r]=a[r]*b[c*4]+a[4+r]*b[c*4+1]+a[8+r]*b[c*4+2]+a[12+r]*b[c*4+3];return o;}
+  function perspective(fov, aspect, near, far){const f=1/Math.tan(fov/2),o=I();o[0]=f/aspect;o[5]=f;o[10]=(far+near)/(near-far);o[11]=-1;o[14]=2*far*near/(near-far);o[15]=0;return o;}
+  function look(eye, target){
+    const fx=target[0]-eye[0], fy=target[1]-eye[1], fz=target[2]-eye[2], fl=Math.hypot(fx,fy,fz);
+    const f=[fx/fl,fy/fl,fz/fl], up=[0,1,0];
+    const sx=f[1]*up[2]-f[2]*up[1], sy=f[2]*up[0]-f[0]*up[2], sz=f[0]*up[1]-f[1]*up[0], sl=Math.hypot(sx,sy,sz);
+    const s=[sx/sl,sy/sl,sz/sl], u=[s[1]*f[2]-s[2]*f[1],s[2]*f[0]-s[0]*f[2],s[0]*f[1]-s[1]*f[0]], o=I();
+    o[0]=s[0];o[1]=u[0];o[2]=-f[0];o[4]=s[1];o[5]=u[1];o[6]=-f[1];o[8]=s[2];o[9]=u[2];o[10]=-f[2];
+    o[12]=-(s[0]*eye[0]+s[1]*eye[1]+s[2]*eye[2]);o[13]=-(u[0]*eye[0]+u[1]*eye[1]+u[2]*eye[2]);o[14]=f[0]*eye[0]+f[1]*eye[1]+f[2]*eye[2];return o;
+  }
+  function draw(viewProj, time, arMode) {
+    gl.enable(gl.DEPTH_TEST); gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA); gl.clearColor(.004,.006,.035,1); gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+    gl.useProgram(terrainProgram); gl.uniformMatrix4fv(tp.vp,false,viewProj); gl.uniform1f(tp.time,time); gl.uniform3f(tp.light,-2,7,3);
+    gl.uniformMatrix4fv(tp.model,false,I()); gl.bindVertexArray(terrain.vao); gl.drawElements(gl.TRIANGLES,terrain.count,gl.UNSIGNED_INT,0);
+    gl.uniformMatrix4fv(tp.model,false,(() => {const m=I();m[13]=-1.94; return m;})()); gl.bindVertexArray(room.vao); gl.drawElements(gl.TRIANGLES,room.count,gl.UNSIGNED_INT,0);
+    gl.useProgram(pointProgram); gl.uniformMatrix4fv(pp.vp,false,viewProj); gl.uniform1f(pp.time,time); gl.bindVertexArray(starV); gl.drawArrays(gl.POINTS,0,stars.length/7);
+  }
+  let xrSession=null, xrRef=null, startTime=performance.now(), running=false;
+  const identity=I();
+  function frame(t, frame) {
+    if (!xrSession) return; const pose=frame.getViewerPose(xrRef); if (!pose) return;
+    const layer=xrSession.renderState.baseLayer; gl.bindFramebuffer(gl.FRAMEBUFFER,layer.framebuffer);
+    for(const view of pose.views){const vp=layer.getViewport(view);gl.viewport(vp.x,vp.y,vp.width,vp.height);draw(mul(view.projectionMatrix,view.transform.inverse.matrix), (t-startTime)/1000, true);}
+    xrSession.requestAnimationFrame(frame);
+  }
+  async function enter(mode) {
+    if (!navigator.xr) { alert('WebXR is not available in this browser. Use Chrome on a Quest/Android headset, or choose Explore on screen.'); return; }
+    if (!(await navigator.xr.isSessionSupported(mode).catch(()=>false))) { alert(mode==='immersive-ar'?'AR is not supported on this device.':'VR is not supported on this device.'); return; }
+    xrSession=await navigator.xr.requestSession(mode,{optionalFeatures:['local-floor','bounded-floor','hand-tracking','dom-overlay'],domOverlay:{root:document.body}});
+    xrSession.addEventListener('end',()=>{xrSession=null;panel.classList.remove('hide');});
+    const glLayer=new XRWebGLLayer(xrSession,gl); await xrSession.updateRenderState({baseLayer:glLayer,depthNear:.01,depthFar:100});
+    xrRef=await xrSession.requestReferenceSpace('local-floor'); panel.classList.add('hide'); startTime=performance.now(); xrSession.requestAnimationFrame(frame);
+  }
+  vrButton.onclick=()=>enter('immersive-vr'); arButton.onclick=()=>enter('immersive-ar');
+  if (!navigator.xr) { vrButton.textContent='VR NOT DETECTED'; vrButton.disabled=true; arButton.textContent='AR NOT DETECTED'; arButton.disabled=true; }
+
+  let yaw=.35,pitch=-.12,dist=8,drag=false,lastX=0,lastY=0;
+  function resize(){const d=Math.min(devicePixelRatio||1,2);canvas.width=innerWidth*d;canvas.height=innerHeight*d;gl.viewport(0,0,canvas.width,canvas.height);}
+  addEventListener('resize',resize); resize();
+  explore.onclick=()=>{panel.classList.add('hide'); hint.classList.remove('hide'); running=true;};
+  canvas.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;lastY=e.clientY;canvas.setPointerCapture(e.pointerId);});
+  canvas.addEventListener('pointermove',e=>{if(!drag)return;yaw+=(e.clientX-lastX)*.006;pitch=Math.max(-1.3,Math.min(1.3,pitch+(e.clientY-lastY)*.006));lastX=e.clientX;lastY=e.clientY;});
+  canvas.addEventListener('pointerup',()=>drag=false);
+  canvas.addEventListener('wheel',e=>{dist=Math.max(3,Math.min(18,dist+e.deltaY*.01));},{passive:true});
+  canvas.addEventListener('dblclick',()=>{yaw=.35;pitch=-.12;dist=8;});
+  function screenFrame(t){if(!running||xrSession)return;resize();const eye=[Math.sin(yaw)*dist,2.2+Math.sin(pitch)*dist*.35,Math.cos(yaw)*dist];const vp=mul(perspective(1.05,canvas.width/canvas.height,.03,100),look(eye,[0,-.1,0]));draw(vp,(t-startTime)/1000,false);requestAnimationFrame(screenFrame);}
+  explore.addEventListener('click',()=>{startTime=performance.now();requestAnimationFrame(screenFrame);});
+  gl.clearColor(.004,.006,.035,1); gl.clear(gl.COLOR_BUFFER_BIT);
+})();
+</script>
+</body>
+</html>

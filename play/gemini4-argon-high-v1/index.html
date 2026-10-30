@@ -1,0 +1,2365 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>MANDELBROT // XR — 3D Holographic Fractal Sanctuary</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Three.js r128 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent-cyan: #00f0ff;
+      --accent-magenta: #ff007f;
+      --accent-violet: #7b2cbf;
+      --accent-gold: #ffb703;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #03050a;
+      font-family: 'Inter', sans-serif;
+      color: #f0f6fc;
+      touch-action: none;
+    }
+
+    #canvas-container {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .font-display {
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .font-mono-tech {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Glassmorphism panels */
+    .glass-panel {
+      background: rgba(7, 11, 22, 0.76);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 240, 255, 0.22);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-button {
+      background: rgba(14, 22, 42, 0.78);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .glass-button:hover {
+      background: rgba(0, 240, 255, 0.16);
+      border-color: rgba(0, 240, 255, 0.65);
+      box-shadow: 0 0 18px rgba(0, 240, 255, 0.28);
+      transform: translateY(-1px);
+    }
+
+    .glass-button:active {
+      transform: translateY(0px) scale(0.98);
+    }
+
+    .glass-button.active-btn {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.28), rgba(123, 44, 191, 0.38));
+      border-color: #00f0ff;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+      color: #ffffff;
+    }
+
+    .xr-cta-btn {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.25) 0%, rgba(123, 44, 191, 0.45) 100%);
+      border: 1px solid rgba(0, 240, 255, 0.7);
+      box-shadow: 0 0 24px rgba(0, 240, 255, 0.25), inset 0 0 12px rgba(0, 240, 255, 0.15);
+      transition: all 0.25s ease;
+    }
+
+    .xr-cta-btn:hover:not(:disabled) {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.4) 0%, rgba(255, 0, 127, 0.45) 100%);
+      border-color: #ffffff;
+      box-shadow: 0 0 32px rgba(0, 240, 255, 0.55);
+      transform: translateY(-1px);
+    }
+
+    /* Custom Range Sliders */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #00f0ff;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
+      cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #00f0ff;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
+      cursor: pointer;
+    }
+
+    /* Custom Scrollbar for drawer */
+    .custom-scroll::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(0, 240, 255, 0.35);
+      border-radius: 999px;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.65; }
+      50% { opacity: 1; }
+    }
+
+    .animate-glow {
+      animation: pulse-glow 2.5s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 3D WebGL / WebXR Viewport -->
+  <div id="canvas-container"></div>
+
+  <!-- Toast / Status Notification Banner -->
+  <div id="toast-banner" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-300">
+    <div class="glass-panel px-4 py-2 rounded-full text-xs sm:text-sm font-mono-tech text-cyan-300 flex items-center gap-2 shadow-2xl border border-cyan-400/50">
+      <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+      <span id="toast-text">System Ready</span>
+    </div>
+  </div>
+
+  <!-- Top Telemetry & WebXR Launch Bar -->
+  <header class="fixed top-0 left-0 right-0 z-30 p-2.5 sm:p-4 pointer-events-none flex flex-wrap items-center justify-between gap-2">
+    <!-- Brand & Coordinate Readout -->
+    <div class="glass-panel rounded-2xl px-3.5 py-2 pointer-events-auto flex items-center gap-3 sm:gap-5">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-400 via-fuchsia-500 to-violet-700 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+          <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="font-display text-xs sm:text-sm font-bold tracking-wider text-white flex items-center gap-1.5">
+            MANDELBROT <span class="text-cyan-400">XR</span>
+            <span id="xr-status-badge" class="hidden sm:inline-block text-[10px] font-mono-tech px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">WEBGL2 HOLOGRAM</span>
+          </h1>
+          <p class="text-[10px] text-slate-400 hidden sm:block">3D Complex Potential & Volumetric Sanctuary</p>
+        </div>
+      </div>
+
+      <!-- Real-Time Coordinates -->
+      <div class="hidden md:flex items-center gap-4 border-l border-slate-700/70 pl-4 font-mono-tech text-[11px]">
+        <div>
+          <span class="text-slate-400 block text-[9px] uppercase">Real (Re)</span>
+          <span id="hud-re" class="text-cyan-300 font-medium">-0.5000000</span>
+        </div>
+        <div>
+          <span class="text-slate-400 block text-[9px] uppercase">Imag (Im)</span>
+          <span id="hud-im" class="text-fuchsia-300 font-medium">+0.0000000</span>
+        </div>
+        <div>
+          <span class="text-slate-400 block text-[9px] uppercase">Magnification</span>
+          <span id="hud-zoom" class="text-amber-300 font-semibold">1.00×</span>
+        </div>
+        <div>
+          <span class="text-slate-400 block text-[9px] uppercase">Engine</span>
+          <span id="hud-fps" class="text-emerald-400 font-semibold">60 FPS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- WebXR & Device Action Buttons -->
+    <div class="flex items-center gap-2 pointer-events-auto">
+      <!-- Enter VR Button -->
+      <button id="btn-enter-vr" class="xr-cta-btn px-3.5 py-2 rounded-xl font-display text-xs font-bold tracking-wide text-white flex items-center gap-2">
+        <svg class="w-4 h-4 text-cyan-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="6" width="20" height="12" rx="3"/>
+          <path d="M10 18v-2a2 2 0 0 1 4 0v2"/>
+          <circle cx="7.5" cy="12" r="1.5"/>
+          <circle cx="16.5" cy="12" r="1.5"/>
+        </svg>
+        <span id="vr-btn-label">ENTER VR ROOM</span>
+      </button>
+
+      <!-- Enter AR Passthrough Button -->
+      <button id="btn-enter-ar" class="glass-button px-3 py-2 rounded-xl font-display text-xs font-bold tracking-wide text-cyan-200 flex items-center gap-1.5" title="AR Hologram Mode (Quest 3 / Pico 4 / Mobile AR)">
+        <svg class="w-4 h-4 text-fuchsia-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+          <line x1="12" y1="22.08" x2="12" y2="12"/>
+        </svg>
+        <span class="hidden sm:inline">AR HOLOGRAM</span>
+      </button>
+
+      <!-- Mobile Gyroscope Magic Window Button -->
+      <button id="btn-gyro" class="glass-button p-2 rounded-xl text-slate-200 hover:text-cyan-300" title="Toggle Mobile Gyroscope Look-Around (Magic Window)">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+        </svg>
+      </button>
+
+      <!-- Ambient Synth Audio Button -->
+      <button id="btn-audio" class="glass-button p-2 rounded-xl text-slate-200 hover:text-cyan-300" title="Toggle Ambient Harmonic Drone Synth">
+        <svg id="icon-audio-off" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <line x1="23" y1="9" x2="17" y2="15"/>
+          <line x1="17" y1="9" x2="23" y2="15"/>
+        </svg>
+        <svg id="icon-audio-on" class="w-4 h-4 hidden text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        </svg>
+      </button>
+
+      <!-- Toggle Control Deck Button -->
+      <button id="btn-toggle-hud" class="glass-button px-2.5 py-2 rounded-xl text-xs font-medium text-cyan-300 flex items-center gap-1" title="Show/Hide Controls">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
+          <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
+          <line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
+        </svg>
+        <span class="hidden sm:inline" id="toggle-hud-label">HIDE UI</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Compact Coordinate Pill (Shown on small screens) -->
+  <div id="mobile-coord-bar" class="md:hidden fixed top-16 left-2.5 right-2.5 z-20 pointer-events-none flex justify-between items-center">
+    <div class="glass-panel px-3 py-1 rounded-full font-mono-tech text-[10px] text-slate-300 flex items-center gap-3">
+      <span>Re: <strong id="m-hud-re" class="text-cyan-300">-0.5000</strong></span>
+      <span>Im: <strong id="m-hud-im" class="text-fuchsia-300">+0.0000</strong></span>
+      <span>Zoom: <strong id="m-hud-zoom" class="text-amber-300">1.0×</strong></span>
+    </div>
+  </div>
+
+  <!-- Quick On-Screen Fractal Dive Pad (Bottom Left for Mobile/Desktop Quick Zoom & Pan) -->
+  <div id="quick-nav-pad" class="fixed bottom-4 left-3 sm:left-4 z-20 flex flex-col gap-2 pointer-events-auto">
+    <div class="glass-panel p-2 rounded-2xl flex flex-col items-center gap-1.5 w-32 sm:w-36">
+      <div class="text-[10px] font-mono-tech uppercase tracking-wider text-slate-400 flex items-center justify-between w-full px-1">
+        <span>Fractal Dive</span>
+        <button id="btn-touch-mode" class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40" title="Switch 1-finger touch drag between Room Orbit and Fractal Pan">Orbit</button>
+      </div>
+
+      <!-- Directional Pan Cross -->
+      <div class="grid grid-cols-3 gap-1 w-full">
+        <div></div>
+        <button data-pan="up" class="pan-btn glass-button h-8 rounded-lg flex items-center justify-center text-cyan-300 text-xs font-bold">▲</button>
+        <div></div>
+        <button data-pan="left" class="pan-btn glass-button h-8 rounded-lg flex items-center justify-center text-cyan-300 text-xs font-bold">◀</button>
+        <button id="btn-quick-reset" class="glass-button h-8 rounded-lg flex items-center justify-center text-[10px] font-mono-tech text-amber-300" title="Reset Coordinates">RST</button>
+        <button data-pan="right" class="pan-btn glass-button h-8 rounded-lg flex items-center justify-center text-cyan-300 text-xs font-bold">▶</button>
+        <div></div>
+        <button data-pan="down" class="pan-btn glass-button h-8 rounded-lg flex items-center justify-center text-cyan-300 text-xs font-bold">▼</button>
+        <div></div>
+      </div>
+
+      <!-- Hold to Zoom In / Out -->
+      <div class="grid grid-cols-2 gap-1.5 w-full mt-0.5">
+        <button id="btn-zoom-in" class="glass-button py-1.5 rounded-lg text-xs font-mono-tech font-bold text-emerald-300 flex items-center justify-center gap-1">
+          <span>＋</span> ZOOM
+        </button>
+        <button id="btn-zoom-out" class="glass-button py-1.5 rounded-lg text-xs font-mono-tech font-bold text-rose-300 flex items-center justify-center gap-1">
+          <span>－</span> OUT
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Interactive Control Panel (Right Side / Bottom Drawer) -->
+  <aside id="main-control-panel" class="fixed bottom-4 right-3 sm:right-4 z-20 w-[calc(100vw-9.5rem)] sm:w-80 md:w-96 max-h-[68vh] sm:max-h-[80vh] glass-panel rounded-2xl flex flex-col overflow-hidden pointer-events-auto transition-all duration-300">
+    <!-- Panel Header -->
+    <div class="px-4 py-2.5 border-b border-slate-700/60 flex items-center justify-between bg-slate-900/50">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-glow"></span>
+        <span class="font-display text-xs font-bold tracking-wider uppercase text-slate-100">Hologram Synthesis Deck</span>
+      </div>
+      <span class="text-[10px] font-mono-tech text-slate-400">3D SPATIAL UI SYNCED</span>
+    </div>
+
+    <!-- Scrollable Controls Content -->
+    <div class="p-3.5 overflow-y-auto custom-scroll space-y-4 text-xs">
+
+      <!-- 1. 3D Visualization Mode Switcher -->
+      <div>
+        <label class="block text-[10px] font-mono-tech uppercase tracking-wider text-slate-400 mb-1.5">1. 3D Hologram Mode</label>
+        <div class="grid grid-cols-3 gap-1.5">
+          <button data-mode="0" class="mode-btn glass-button active-btn py-2 px-2 rounded-xl text-[11px] font-medium text-center leading-tight">
+            <span class="block text-cyan-300 font-bold mb-0.5">3D Terrain</span>
+            <span class="text-[9px] text-slate-400">Pedestal Mesh</span>
+          </button>
+          <button data-mode="1" class="mode-btn glass-button py-2 px-2 rounded-xl text-[11px] font-medium text-center leading-tight">
+            <span class="block text-fuchsia-300 font-bold mb-0.5">Mandelbulb</span>
+            <span class="text-[9px] text-slate-400">Volumetric 3D</span>
+          </button>
+          <button data-mode="2" class="mode-btn glass-button py-2 px-2 rounded-xl text-[11px] font-medium text-center leading-tight">
+            <span class="block text-amber-300 font-bold mb-0.5">Cathedral</span>
+            <span class="text-[9px] text-slate-400">Room Canyon</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. Famous Preset Locations -->
+      <div>
+        <div class="flex items-center justify-between mb-1.5">
+          <label class="text-[10px] font-mono-tech uppercase tracking-wider text-slate-400">2. Famous Fractal Coordinates</label>
+          <span class="text-[10px] text-cyan-400 font-mono-tech">Smooth Fly-To</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+          <button data-preset="0" class="preset-btn glass-button active-btn px-2.5 py-1.5 rounded-lg text-left">
+            <div class="font-semibold text-[11px] text-white truncate">Full Overview</div>
+            <div class="text-[9px] font-mono-tech text-slate-400">-0.50, +0.00i</div>
+          </button>
+          <button data-preset="1" class="preset-btn glass-button px-2.5 py-1.5 rounded-lg text-left">
+            <div class="font-semibold text-[11px] text-cyan-300 truncate">Seahorse Valley</div>
+            <div class="text-[9px] font-mono-tech text-slate-400">-0.7436, +0.1318i</div>
+          </button>
+          <button data-preset="2" class="preset-btn glass-button px-2.5 py-1.5 rounded-lg text-left">
+            <div class="font-semibold text-[11px] text-amber-300 truncate">Elephant Valley</div>
+            <div class="text-[9px] font-mono-tech text-slate-400">+0.2817, +0.5771i</div>
+          </button>
+          <button data-preset="3" class="preset-btn glass-button px-2.5 py-1.5 rounded-lg text-left">
+            <div class="font-semibold text-[11px] text-fuchsia-300 truncate">Triple Spiral</div>
+            <div class="text-[9px] font-mono-tech text-slate-400">-0.0880, +0.6540i</div>
+          </button>
+          <button data-preset="4" class="preset-btn glass-button px-2.5 py-1.5 rounded-lg text-left">
+            <div class="font-semibold text-[11px] text-emerald-300 truncate">Mini-Brot Island</div>
+            <div class="text-[9px] font-mono-tech text-slate-400">-1.7687, -0.0017i</div>
+          </button>
+          <button id="btn-auto-dive" class="glass-button px-2.5 py-1.5 rounded-lg text-left border-cyan-400/50">
+            <div class="font-semibold text-[11px] text-cyan-200 flex items-center gap-1">
+              <span id="auto-dive-dot" class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+              Auto-Dive
+            </div>
+            <div class="text-[9px] font-mono-tech text-slate-400">Continuous Zoom</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. Sliders: Elevation, Max Iterations, Morph Power -->
+      <div class="space-y-3 bg-slate-900/45 p-3 rounded-xl border border-slate-800/80">
+        <!-- 3D Elevation Amplitude -->
+        <div>
+          <div class="flex justify-between text-[11px] mb-1">
+            <span class="text-slate-300 font-medium">3D Elevation Amplitude</span>
+            <span id="val-elevation" class="font-mono-tech text-cyan-300">0.55m</span>
+          </div>
+          <input id="slider-elevation" type="range" min="0.0" max="1.4" step="0.02" value="0.55" />
+        </div>
+
+        <!-- Max Iterations -->
+        <div>
+          <div class="flex justify-between text-[11px] mb-1">
+            <span class="text-slate-300 font-medium">Fractal Iterations (Detail)</span>
+            <span id="val-iterations" class="font-mono-tech text-fuchsia-300">256</span>
+          </div>
+          <input id="slider-iterations" type="range" min="64" max="1024" step="16" value="256" />
+        </div>
+
+        <!-- Mandelbulb Power / Julia Morph Speed -->
+        <div>
+          <div class="flex justify-between text-[11px] mb-1">
+            <span class="text-slate-300 font-medium">Dimension Power / Morph</span>
+            <span id="val-power" class="font-mono-tech text-amber-300">8.0</span>
+          </div>
+          <input id="slider-power" type="range" min="2.0" max="12.0" step="0.05" value="8.0" />
+        </div>
+      </div>
+
+      <!-- 4. Color Palette Cycler & Julia Live Morph -->
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="block text-[10px] font-mono-tech uppercase tracking-wider text-slate-400 mb-1">Color Palette</label>
+          <button id="btn-palette" class="glass-button w-full py-2 px-3 rounded-xl flex items-center justify-between text-left">
+            <span id="palette-name" class="font-semibold text-cyan-300 text-[11px]">Cyber Neon</span>
+            <span id="palette-swatch" class="w-4 h-4 rounded-full bg-gradient-to-tr from-cyan-400 via-fuchsia-500 to-violet-600 border border-white/40"></span>
+          </button>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-mono-tech uppercase tracking-wider text-slate-400 mb-1">Fractal Equation</label>
+          <button id="btn-julia-morph" class="glass-button w-full py-2 px-3 rounded-xl flex items-center justify-between text-left">
+            <span id="julia-label" class="font-semibold text-slate-200 text-[11px]">Mandelbrot Set</span>
+            <span id="julia-indicator" class="text-[9px] font-mono-tech px-1.5 py-0.5 rounded bg-slate-700 text-slate-300">Z²+C</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- HMD & Mobile Ergonomic Instructions -->
+      <div class="text-[10px] text-slate-400 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/70 leading-relaxed">
+        <strong class="text-cyan-300">VR / AR Headsets:</strong> Aim laser at the 3D Spatial UI Slate or directly at the hologram. Trigger/Squeeze to grab & pan coordinates; thumbstick or two-hand pinch to zoom.<br/>
+        <strong class="text-fuchsia-300">Phone / Desktop:</strong> Drag to orbit room (or click <em class="text-slate-200">Orbit/Pan</em> to drag fractal directly), pinch/scroll on the hologram to zoom.
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Application Script -->
+  <script>
+    (function () {
+      'use strict';
+
+      // ============================================================================
+      // 1. CENTRALIZED APPLICATION STATE & PRESETS
+      // ============================================================================
+      const PRESETS = [
+        {
+          name: 'Full Overview',
+          re: -0.5,
+          im: 0.0,
+          zoom: 1.0,
+          iterations: 220,
+          elevation: 0.55
+        },
+        {
+          name: 'Seahorse Valley',
+          re: -0.7436438870371587,
+          im: 0.13182590420531197,
+          zoom: 185.0,
+          iterations: 480,
+          elevation: 0.68
+        },
+        {
+          name: 'Elephant Valley',
+          re: 0.281717921930775,
+          im: 0.5771052841488505,
+          zoom: 240.0,
+          iterations: 512,
+          elevation: 0.62
+        },
+        {
+          name: 'Triple Spiral',
+          re: -0.088,
+          im: 0.654,
+          zoom: 95.0,
+          iterations: 420,
+          elevation: 0.64
+        },
+        {
+          name: 'Mini-Brot Island',
+          re: -1.768778833,
+          im: -0.001738996,
+          zoom: 620.0,
+          iterations: 640,
+          elevation: 0.58
+        }
+      ];
+
+      const PALETTES = [
+        {
+          name: 'Cyber Neon',
+          primaryHex: '#00f0ff',
+          secondaryHex: '#ff007f',
+          lightColor1: 0x00f0ff,
+          lightColor2: 0xff007f,
+          swatchClass: 'from-cyan-400 via-fuchsia-500 to-violet-600'
+        },
+        {
+          name: 'Inferno Gold',
+          primaryHex: '#ffb703',
+          secondaryHex: '#fb5607',
+          lightColor1: 0xffb703,
+          lightColor2: 0xff0055,
+          swatchClass: 'from-amber-300 via-orange-500 to-red-700'
+        },
+        {
+          name: 'Bioluminescent',
+          primaryHex: '#00f5d4',
+          secondaryHex: '#7b2cbf',
+          lightColor1: 0x00f5d4,
+          lightColor2: 0x7b2cbf,
+          swatchClass: 'from-emerald-300 via-teal-500 to-purple-700'
+        },
+        {
+          name: 'Obsidian Pearl',
+          primaryHex: '#e0fbfc',
+          secondaryHex: '#98c1d9',
+          lightColor1: 0xe0fbfc,
+          lightColor2: 0x3d5a80,
+          swatchClass: 'from-slate-100 via-sky-300 to-slate-800'
+        }
+      ];
+
+      const state = {
+        // Current & Target Fractal Coordinates (for ultra-smooth interpolation)
+        centerRe: -0.5,
+        centerIm: 0.0,
+        targetRe: -0.5,
+        targetIm: 0.0,
+
+        zoom: 1.0,
+        targetZoom: 1.0,
+
+        maxIterations: 256,
+        elevation: 0.55,
+        targetElevation: 0.55,
+
+        // 0 = 3D Terrain Pedestal, 1 = 3D Mandelbulb Volumetric Raymarch, 2 = Cathedral Canyon
+        vizMode: 0,
+        paletteIndex: 0,
+        activePreset: 0,
+
+        // Julia set morphing
+        juliaMorph: false,
+        juliaRe: -0.70176,
+        juliaIm: -0.3842,
+        bulbPower: 8.0,
+
+        // Navigation & Interaction
+        autoDive: false,
+        touchDragMode: 'orbit', // 'orbit' or 'pan'
+        gyroEnabled: false,
+        hudVisible: true,
+
+        // XR State
+        inXR: false,
+        xrMode: null, // 'immersive-vr' or 'immersive-ar'
+        xrStickMode: 'fractal', // 'fractal' or 'locomotion'
+
+        // Performance
+        fps: 60,
+        time: 0
+      };
+
+      // ============================================================================
+      // 2. PROCEDURAL WEB AUDIO AMBIENT HARMONIC SYNTHESIZER
+      // ============================================================================
+      const audioEngine = {
+        ctx: null,
+        isPlaying: false,
+        osc1: null,
+        osc2: null,
+        subOsc: null,
+        filter: null,
+        masterGain: null,
+
+        toggle() {
+          if (!this.ctx) {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) {
+              showToast('Web Audio API not supported on this browser');
+              return;
+            }
+            this.ctx = new AudioCtx();
+            this.masterGain = this.ctx.createGain();
+            this.masterGain.gain.value = 0.001;
+
+            this.filter = this.ctx.createBiquadFilter();
+            this.filter.type = 'lowpass';
+            this.filter.frequency.value = 260;
+            this.filter.Q.value = 4.0;
+
+            this.osc1 = this.ctx.createOscillator();
+            this.osc2 = this.ctx.createOscillator();
+            this.subOsc = this.ctx.createOscillator();
+
+            this.osc1.type = 'sawtooth';
+            this.osc2.type = 'triangle';
+            this.subOsc.type = 'sine';
+
+            this.osc1.frequency.value = 110;
+            this.osc2.frequency.value = 164.81; // Fifth
+            this.subOsc.frequency.value = 55;
+
+            this.osc1.connect(this.filter);
+            this.osc2.connect(this.filter);
+            this.subOsc.connect(this.filter);
+            this.filter.connect(this.masterGain);
+            this.masterGain.connect(this.ctx.destination);
+
+            this.osc1.start();
+            this.osc2.start();
+            this.subOsc.start();
+          }
+
+          if (this.ctx.state === 'suspended') {
+            this.ctx.resume();
+          }
+
+          this.isPlaying = !this.isPlaying;
+          const now = this.ctx.currentTime;
+          if (this.isPlaying) {
+            this.masterGain.gain.setTargetAtTime(0.12, now, 0.5);
+            document.getElementById('icon-audio-off').classList.add('hidden');
+            document.getElementById('icon-audio-on').classList.remove('hidden');
+            showToast('Harmonic Fractal Telemetry Audio Enabled');
+          } else {
+            this.masterGain.gain.setTargetAtTime(0.0001, now, 0.3);
+            document.getElementById('icon-audio-off').classList.remove('hidden');
+            document.getElementById('icon-audio-on').classList.add('hidden');
+            showToast('Audio Muted');
+          }
+        },
+
+        update(zoom, re, im, time) {
+          if (!this.isPlaying || !this.ctx) return;
+          const now = this.ctx.currentTime;
+          const logZoom = Math.max(0, Math.log10(Math.max(1, zoom)));
+          const baseFreq = 98 + (logZoom * 18) % 110;
+          const mod = Math.sin(time * 0.4 + re * 2.0) * 4;
+          this.osc1.frequency.setTargetAtTime(baseFreq + mod, now, 0.1);
+          this.osc2.frequency.setTargetAtTime(baseFreq * 1.498 + Math.cos(time * 0.3 + im * 2.0) * 3, now, 0.1);
+          this.subOsc.frequency.setTargetAtTime(baseFreq * 0.5, now, 0.1);
+          this.filter.frequency.setTargetAtTime(220 + Math.min(1200, logZoom * 190 + Math.sin(time) * 60), now, 0.1);
+        }
+      };
+
+      // ============================================================================
+      // 3. THREE.JS SCENE, CAMERA, RENDERER & USER RIG INITIALIZATION
+      // ============================================================================
+      const container = document.getElementById('canvas-container');
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x03050a);
+      scene.fog = new THREE.FogExp2(0x03050a, 0.045);
+
+      // User Rig supports VR locomotion/snap-turn and desktop/mobile orbit positioning
+      const userRig = new THREE.Group();
+      userRig.position.set(0, 0, 0);
+      scene.add(userRig);
+
+      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.05, 120);
+      userRig.add(camera);
+
+      // Renderer with WebXR enabled
+      const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        powerPreference: 'high-performance',
+        alpha: true
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.xr.enabled = true;
+      container.appendChild(renderer.domElement);
+
+      // Camera Orbit Spherical Coordinates (used when not in XR)
+      const orbit = {
+        theta: 0.0,         // Horizontal angle around pedestal
+        phi: 1.05,          // Vertical polar angle (radians from top)
+        radius: 3.35,       // Distance from target
+        target: new THREE.Vector3(0, 0.92, 0),
+        isDragging: false,
+        prevX: 0,
+        prevY: 0,
+        pinchDist: 0,
+        gyroAlpha: 0,
+        gyroBeta: 0,
+        gyroGamma: 0
+      };
+
+      function updateDesktopCamera() {
+        if (renderer.xr.isPresenting) return;
+        orbit.phi = Math.max(0.22, Math.min(Math.PI * 0.48, orbit.phi));
+        orbit.radius = Math.max(0.95, Math.min(9.5, orbit.radius));
+
+        let finalTheta = orbit.theta;
+        let finalPhi = orbit.phi;
+
+        if (state.gyroEnabled) {
+          finalTheta += orbit.gyroGamma * 0.6;
+          finalPhi = Math.max(0.2, Math.min(1.5, orbit.phi + (orbit.gyroBeta - 0.8) * 0.4));
+        }
+
+        const sinPhi = Math.sin(finalPhi);
+        camera.position.x = orbit.target.x + orbit.radius * sinPhi * Math.sin(finalTheta);
+        camera.position.y = orbit.target.y + orbit.radius * Math.cos(finalPhi);
+        camera.position.z = orbit.target.z + orbit.radius * sinPhi * Math.cos(finalTheta);
+        camera.lookAt(orbit.target);
+      }
+      updateDesktopCamera();
+
+      // ============================================================================
+      // 4. ARCHITECTURAL VIRTUAL ROOM ENVIRONMENT ("SANCTUARY OF INFINITE COMPLEXITY")
+      // ============================================================================
+      const roomGroup = new THREE.Group();
+      scene.add(roomGroup);
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0x182238, 1.4);
+      scene.add(ambientLight);
+
+      const coreLight1 = new THREE.PointLight(0x00f0ff, 2.5, 16);
+      coreLight1.position.set(2.2, 3.2, 2.2);
+      scene.add(coreLight1);
+
+      const coreLight2 = new THREE.PointLight(0xff007f, 2.2, 16);
+      coreLight2.position.set(-2.2, 2.8, -2.2);
+      scene.add(coreLight2);
+
+      const pedestalUnderLight = new THREE.PointLight(0x00f0ff, 1.8, 6);
+      pedestalUnderLight.position.set(0, 0.3, 0);
+      scene.add(pedestalUnderLight);
+
+      // 4.1 Custom Shader Reflective Cyber-Grid Floor
+      const floorGeo = new THREE.PlaneGeometry(36, 36, 1, 1);
+      floorGeo.rotateX(-Math.PI / 2);
+      const floorMat = new THREE.ShaderMaterial({
+        uniforms: {
+          uTime: { value: 0 },
+          uColor1: { value: new THREE.Color(0x00f0ff) },
+          uColor2: { value: new THREE.Color(0xff007f) }
+        },
+        vertexShader: `
+          varying vec3 vWorldPos;
+          void main() {
+            vec4 wp = modelMatrix * vec4(position, 1.0);
+            vWorldPos = wp.xyz;
+            gl_Position = projectionMatrix * viewMatrix * wp;
+          }
+        `,
+        fragmentShader: `
+          uniform float uTime;
+          uniform vec3 uColor1;
+          uniform vec3 uColor2;
+          varying vec3 vWorldPos;
+
+          void main() {
+            vec2 p = vWorldPos.xz;
+            float dist = length(p);
+
+            // Dual-scale architectural grid
+            vec2 grid1 = abs(fract(p * 1.0 - 0.5) - 0.5) / fwidth(p * 1.0);
+            float line1 = min(grid1.x, grid1.y);
+            float g1 = 1.0 - min(line1, 1.0);
+
+            vec2 grid2 = abs(fract(p * 0.25 - 0.5) - 0.5) / fwidth(p * 0.25);
+            float line2 = min(grid2.x, grid2.y);
+            float g2 = 1.0 - min(line2, 1.0);
+
+            // Radial sanctuary rings
+            float ring1 = smoothstep(0.04, 0.0, abs(dist - 2.35));
+            float ring2 = smoothstep(0.05, 0.0, abs(dist - 5.2));
+            float pulseRing = smoothstep(0.08, 0.0, abs(dist - mod(uTime * 1.2, 12.0))) * exp(-dist * 0.18);
+
+            vec3 baseCol = vec3(0.015, 0.022, 0.045);
+            vec3 gridCol = mix(uColor1, uColor2, clamp(dist * 0.1, 0.0, 1.0));
+
+            vec3 col = baseCol;
+            col += gridCol * g1 * 0.16 * exp(-dist * 0.12);
+            col += uColor1 * g2 * 0.35 * exp(-dist * 0.09);
+            col += uColor1 * ring1 * 0.75;
+            col += uColor2 * ring2 * 0.5;
+            col += uColor1 * pulseRing * 0.45;
+
+            // Distance fade into obsidian fog
+            float fade = exp(-dist * 0.11);
+            col *= fade;
+
+            gl_FragColor = vec4(col, 1.0);
+          }
+        `,
+        extensions: { derivatives: true }
+      });
+      const floorMesh = new THREE.Mesh(floorGeo, floorMat);
+      roomGroup.add(floorMesh);
+
+      // 4.2 Architectural Monolith Pillars & Skylight Sanctuary Rings
+      const pillarGeo = new THREE.BoxGeometry(0.45, 7.5, 0.45);
+      const pillarMat = new THREE.MeshStandardMaterial({
+        color: 0x070b14,
+        roughness: 0.25,
+        metalness: 0.8
+      });
+      const stripGeo = new THREE.PlaneGeometry(0.08, 6.8);
+      const stripMat = new THREE.MeshBasicMaterial({
+        color: 0x00f0ff,
+        side: THREE.DoubleSide
+      });
+
+      const NUM_PILLARS = 8;
+      const PILLAR_RADIUS = 7.2;
+      for (let i = 0; i < NUM_PILLARS; i++) {
+        const angle = (i / NUM_PILLARS) * Math.PI * 2 + Math.PI / 8;
+        const pillarGroup = new THREE.Group();
+        pillarGroup.position.set(
+          Math.cos(angle) * PILLAR_RADIUS,
+          3.75,
+          Math.sin(angle) * PILLAR_RADIUS
+        );
+        pillarGroup.lookAt(0, 3.75, 0);
+
+        const pillar = new THREE.Mesh(pillarGeo, pillarMat);
+        pillarGroup.add(pillar);
+
+        // Glowing inner neon strip facing the center
+        const strip = new THREE.Mesh(stripGeo, stripMat);
+        strip.position.set(0, 0, 0.23);
+        pillarGroup.add(strip);
+
+        roomGroup.add(pillarGroup);
+      }
+
+      // Overhead Architectural Skylight Rings
+      const ceilingRingGeo1 = new THREE.TorusGeometry(6.8, 0.06, 12, 64);
+      ceilingRingGeo1.rotateX(Math.PI / 2);
+      const ceilingRing1 = new THREE.Mesh(ceilingRingGeo1, stripMat);
+      ceilingRing1.position.y = 7.2;
+      roomGroup.add(ceilingRing1);
+
+      const ceilingRingGeo2 = new THREE.TorusGeometry(3.4, 0.04, 12, 64);
+      ceilingRingGeo2.rotateX(Math.PI / 2);
+      const ceilingRingMat2 = new THREE.MeshBasicMaterial({ color: 0xff007f });
+      const ceilingRing2 = new THREE.Mesh(ceilingRingGeo2, ceilingRingMat2);
+      ceilingRing2.position.y = 7.6;
+      roomGroup.add(ceilingRing2);
+
+      // Atmospheric Starfield / Quantum Vault Dome in the Room
+      const starGeo = new THREE.BufferGeometry();
+      const starCount = 600;
+      const starPos = new Float32Array(starCount * 3);
+      for (let i = 0; i < starCount; i++) {
+        const r = 10 + Math.random() * 14;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.random() * Math.PI * 0.46;
+        starPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+        starPos[i * 3 + 1] = Math.abs(r * Math.cos(phi)) + 1.5;
+        starPos[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
+      }
+      starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+      const starMat = new THREE.PointsMaterial({
+        color: 0x88e5ff,
+        size: 0.06,
+        transparent: true,
+        opacity: 0.65
+      });
+      const starField = new THREE.Points(starGeo, starMat);
+      roomGroup.add(starField);
+
+      // ============================================================================
+      // 5. HOLOGRAPHIC PROJECTOR PEDESTAL & FLOATING QUANTUM PARTICLES
+      // ============================================================================
+      const pedestalGroup = new THREE.Group();
+      scene.add(pedestalGroup);
+
+      // Tiered Obsidian Base
+      const baseGeo1 = new THREE.CylinderGeometry(1.42, 1.62, 0.22, 48);
+      const baseMat = new THREE.MeshStandardMaterial({
+        color: 0x090e1a,
+        roughness: 0.2,
+        metalness: 0.85
+      });
+      const baseMesh1 = new THREE.Mesh(baseGeo1, baseMat);
+      baseMesh1.position.y = 0.11;
+      pedestalGroup.add(baseMesh1);
+
+      const baseGeo2 = new THREE.CylinderGeometry(1.15, 1.32, 0.45, 48);
+      const baseMesh2 = new THREE.Mesh(baseGeo2, baseMat);
+      baseMesh2.position.y = 0.44;
+      pedestalGroup.add(baseMesh2);
+
+      // Glowing Emitter Emitter Rim
+      const emitterRingGeo = new THREE.TorusGeometry(1.22, 0.025, 16, 64);
+      emitterRingGeo.rotateX(Math.PI / 2);
+      const emitterRingMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+      const emitterRing = new THREE.Mesh(emitterRingGeo, emitterRingMat);
+      emitterRing.position.y = 0.68;
+      pedestalGroup.add(emitterRing);
+
+      // Rotating Inner Gyro Ring
+      const innerGyroGeo = new THREE.TorusGeometry(1.52, 0.014, 12, 64);
+      innerGyroGeo.rotateX(Math.PI / 2);
+      const innerGyroMat = new THREE.MeshBasicMaterial({
+        color: 0xff007f,
+        transparent: true,
+        opacity: 0.75
+      });
+      const innerGyroRing = new THREE.Mesh(innerGyroGeo, innerGyroMat);
+      innerGyroRing.position.y = 0.82;
+      pedestalGroup.add(innerGyroRing);
+
+      // Hologram Light Cone
+      const coneGeo = new THREE.CylinderGeometry(1.65, 1.12, 0.26, 48, 1, true);
+      const coneMat = new THREE.MeshBasicMaterial({
+        color: 0x00f0ff,
+        transparent: true,
+        opacity: 0.11,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+      });
+      const hologramCone = new THREE.Mesh(coneGeo, coneMat);
+      hologramCone.position.y = 0.75;
+      pedestalGroup.add(hologramCone);
+
+      // Floating Ambient Quantum Dust Particles above the Pedestal
+      const particleCount = 320;
+      const particleGeo = new THREE.BufferGeometry();
+      const pPositions = new Float32Array(particleCount * 3);
+      const pPhases = new Float32Array(particleCount);
+      for (let i = 0; i < particleCount; i++) {
+        const r = Math.sqrt(Math.random()) * 1.65;
+        const a = Math.random() * Math.PI * 2;
+        pPositions[i * 3] = Math.cos(a) * r;
+        pPositions[i * 3 + 1] = 0.8 + Math.random() * 1.4;
+        pPositions[i * 3 + 2] = Math.sin(a) * r;
+        pPhases[i] = Math.random() * Math.PI * 2;
+      }
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+      particleGeo.setAttribute('aPhase', new THREE.BufferAttribute(pPhases, 1));
+
+      const particleMat = new THREE.ShaderMaterial({
+        uniforms: {
+          uTime: { value: 0 },
+          uColor: { value: new THREE.Color(0x00f0ff) }
+        },
+        vertexShader: `
+          attribute float aPhase;
+          uniform float uTime;
+          varying float vAlpha;
+          void main() {
+            vec3 pos = position;
+            float cycle = fract((pos.y - 0.8) / 1.4 + uTime * 0.08 + aPhase * 0.1);
+            pos.y = 0.8 + cycle * 1.5;
+            pos.x += sin(uTime * 1.2 + aPhase) * 0.04;
+            pos.z += cos(uTime * 1.1 + aPhase) * 0.04;
+            vAlpha = sin(cycle * 3.14159265) * 0.75;
+            vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+            gl_PointSize = (14.0 / -mvPosition.z);
+            gl_Position = projectionMatrix * mvPosition;
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 uColor;
+          varying float vAlpha;
+          void main() {
+            float d = length(gl_PointCoord - vec2(0.5));
+            if (d > 0.5) discard;
+            float glow = smoothstep(0.5, 0.05, d);
+            gl_FragColor = vec4(uColor, glow * vAlpha);
+          }
+        `,
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+      });
+      const hologramParticles = new THREE.Points(particleGeo, particleMat);
+      scene.add(hologramParticles);
+
+      // ============================================================================
+      // 6. CENTERPIECE 3D MANDELBROT SHADERS (TERRAIN + CATHEDRAL + VOLUMETRIC BULB)
+      // ============================================================================
+      const sharedUniforms = {
+        uCenter: { value: new THREE.Vector2(state.centerRe, state.centerIm) },
+        uZoom: { value: state.zoom },
+        uMaxIter: { value: state.maxIterations },
+        uElevation: { value: state.elevation },
+        uTime: { value: 0 },
+        uPalette: { value: 0 },
+        uJuliaMode: { value: 0.0 },
+        uJuliaC: { value: new THREE.Vector2(state.juliaRe, state.juliaIm) },
+        uCanyonMode: { value: 0.0 },
+        uBulbPower: { value: state.bulbPower },
+        uCameraPos: { value: new THREE.Vector3() }
+      };
+
+      // 6.1 High-Density 3D Displaced Mandelbrot Terrain & Cathedral Canyon Mesh
+      // 256x256 vertices = 65,536 vertices for smooth real-time 3D topological peaks
+      // + Fragment shader analytical complex derivative & per-pixel iteration for infinite sharpness!
+      const terrainGeo = new THREE.PlaneGeometry(3.3, 3.3, 240, 240);
+      terrainGeo.rotateX(-Math.PI / 2);
+
+      const mandelbrotTerrainShader = new THREE.ShaderMaterial({
+        uniforms: sharedUniforms,
+        vertexShader: `
+          uniform vec2 uCenter;
+          uniform float uZoom;
+          uniform float uMaxIter;
+          uniform float uElevation;
+          uniform float uTime;
+          uniform float uJuliaMode;
+          uniform vec2 uJuliaC;
+          uniform float uCanyonMode;
+
+          varying vec2 vUv;
+          varying vec2 vFractalCoord;
+          varying vec3 vWorldPos;
+          varying float vRadiusRatio;
+          varying float vVertPotential;
+
+          // Fast vertex-level smoothed escape potential for 3D terrain elevation
+          float computePotential(vec2 coord) {
+            vec2 z = mix(vec2(0.0), coord, uJuliaMode);
+            vec2 c = mix(coord, uJuliaC, uJuliaMode);
+
+            float iter = 0.0;
+            // Cap vertex shader iterations at 96 for locked 90fps VR performance
+            float vMax = min(uMaxIter, 96.0);
+            for (int i = 0; i < 96; i++) {
+              if (float(i) >= vMax) break;
+              float x2 = z.x * z.x;
+              float y2 = z.y * z.y;
+              if (x2 + y2 > 64.0) break;
+              z = vec2(x2 - y2 + c.x, 2.0 * z.x * z.y + c.y);
+              iter += 1.0;
+            }
+
+            if (iter >= vMax) {
+              return 1.0;
+            }
+            float log_zn = log(dot(z, z)) * 0.5;
+            float nu = log(log_zn / log(2.0)) / log(2.0);
+            float smoothIter = iter + 1.0 - nu;
+            return clamp(smoothIter / vMax, 0.0, 1.0);
+          }
+
+          void main() {
+            vUv = uv;
+            vec2 centered = (uv - 0.5) * 2.0; // [-1, 1]
+            vRadiusRatio = length(centered);
+
+            // Complex plane coordinate mapping
+            float scale = 1.45 / max(uZoom, 0.00001);
+            vec2 cCoord = uCenter + centered * scale;
+            vFractalCoord = cCoord;
+
+            float pot = computePotential(cCoord);
+            vVertPotential = pot;
+
+            // Shape the 3D terrain height so the boundary filaments rise into dramatic mountains
+            // and the interior lake sits as a sleek obsidian plateau with subtle energy waves
+            float ridge = pow(sin(pot * 3.14159265), 0.72);
+            float interiorWave = (pot >= 0.999)
+              ? (0.18 + 0.025 * sin(length(cCoord) * 18.0 - uTime * 2.5))
+              : ridge;
+
+            // Smooth circular hologram edge taper
+            float edgeMask = smoothstep(1.0, 0.72, vRadiusRatio);
+            float height = interiorWave * uElevation * edgeMask;
+
+            vec3 pos = position;
+            if (uCanyonMode > 0.5) {
+              // Cathedral Canyon Mode: Expand across the room & curve walls upward around the user
+              pos.xz *= 4.2;
+              float roomDist = length(pos.xz);
+              float canyonWall = pow(clamp(roomDist / 6.5, 0.0, 1.2), 2.1) * 2.8;
+              pos.y = (height * 2.6 + canyonWall) - 0.72;
+            } else {
+              pos.y += height;
+            }
+
+            vec4 worldPos = modelMatrix * vec4(pos, 1.0);
+            vWorldPos = worldPos.xyz;
+            gl_Position = projectionMatrix * viewMatrix * worldPos;
+          }
+        `,
+        fragmentShader: `
+          uniform vec2 uCenter;
+          uniform float uZoom;
+          uniform float uMaxIter;
+          uniform float uElevation;
+          uniform float uTime;
+          uniform int uPalette;
+          uniform float uJuliaMode;
+          uniform vec2 uJuliaC;
+          uniform float uCanyonMode;
+
+          varying vec2 vUv;
+          varying vec2 vFractalCoord;
+          varying vec3 vWorldPos;
+          varying float vRadiusRatio;
+          varying float vVertPotential;
+
+          // Cosine procedural color palette generator
+          vec3 getPaletteColor(float t, int pal) {
+            if (pal == 0) {
+              // Cyber Neon: Deep Ultramarine -> Electric Cyan -> Magenta -> White-Gold
+              vec3 a = vec3(0.5, 0.5, 0.55);
+              vec3 b = vec3(0.5, 0.5, 0.45);
+              vec3 c = vec3(1.0, 1.0, 1.0);
+              vec3 d = vec3(0.00, 0.33, 0.67);
+              return a + b * cos(6.28318 * (c * t + d));
+            } else if (pal == 1) {
+              // Inferno Gold: Obsidian -> Crimson -> Molten Gold -> Solar White
+              vec3 a = vec3(0.5, 0.38, 0.25);
+              vec3 b = vec3(0.5, 0.45, 0.35);
+              vec3 c = vec3(1.0, 0.8, 0.6);
+              vec3 d = vec3(0.0, 0.15, 0.35);
+              return a + b * cos(6.28318 * (c * t + d));
+            } else if (pal == 2) {
+              // Bioluminescent Abyss: Deep Teal -> Emerald -> Ultraviolet Aurora
+              vec3 a = vec3(0.35, 0.52, 0.55);
+              vec3 b = vec3(0.45, 0.48, 0.45);
+              vec3 c = vec3(0.8, 1.0, 0.9);
+              vec3 d = vec3(0.18, 0.42, 0.68);
+              return a + b * cos(6.28318 * (c * t + d));
+            } else {
+              // Obsidian Pearl: Monochrome Silver & Iridescent Ice
+              float v = 0.5 + 0.5 * cos(6.28318 * t);
+              return mix(vec3(0.06, 0.09, 0.14), vec3(0.88, 0.96, 1.0), v);
+            }
+          }
+
+          void main() {
+            // Clip outside hologram circle in Pedestal Mode
+            if (uCanyonMode < 0.5 && vRadiusRatio > 1.0) {
+              discard;
+            }
+
+            vec2 z = mix(vec2(0.0), vFractalCoord, uJuliaMode);
+            vec2 c = mix(vFractalCoord, uJuliaC, uJuliaMode);
+
+            // Track complex derivative dz for distance estimation & analytical micro-normals
+            vec2 dz = vec2(1.0, 0.0);
+            float iter = 0.0;
+            float escaped = 0.0;
+            float orbitTrap = 1e10;
+
+            for (int i = 0; i < 1024; i++) {
+              if (float(i) >= uMaxIter) break;
+              float x2 = z.x * z.x;
+              float y2 = z.y * z.y;
+              float r2 = x2 + y2;
+
+              orbitTrap = min(orbitTrap, abs(z.x * z.y));
+
+              if (r2 > 256.0) {
+                escaped = 1.0;
+                break;
+              }
+
+              // dz = 2 * z * dz + 1
+              dz = 2.0 * vec2(z.x * dz.x - z.y * dz.y, z.x * dz.y + z.y * dz.x) + vec2(1.0 - uJuliaMode, 0.0);
+              // z = z^2 + c
+              z = vec2(x2 - y2 + c.x, 2.0 * z.x * z.y + c.y);
+              iter += 1.0;
+            }
+
+            // Compute screen-space geometric normal from displaced world position
+            vec3 dPdx = dFdx(vWorldPos);
+            vec3 dPdy = dFdy(vWorldPos);
+            vec3 geomNormal = normalize(cross(dPdx, dPdy));
+
+            vec3 viewDir = normalize(cameraPosition - vWorldPos);
+            vec3 lightDir1 = normalize(vec3(2.5, 4.0, 2.5) - vWorldPos);
+            vec3 lightDir2 = normalize(vec3(-2.5, 3.0, -2.0) - vWorldPos);
+
+            vec3 finalColor = vec3(0.0);
+
+            if (escaped < 0.5) {
+              // Interior of the Mandelbrot / Julia Set: Deep Obsidian Sanctuary Core with Orbit Trap Veins
+              float trapGlow = exp(-orbitTrap * 14.0);
+              vec3 coreAccent = getPaletteColor(trapGlow * 0.6 + uTime * 0.04, uPalette);
+              finalColor = vec3(0.015, 0.02, 0.04) + coreAccent * trapGlow * 0.42;
+            } else {
+              // Smooth normalized iteration count
+              float r = length(z);
+              float log_zn = log(r);
+              float nu = log(log_zn / log(2.0)) / log(2.0);
+              float smoothIter = max(0.0, iter + 1.0 - nu);
+
+              // Perturb normal with high-frequency per-pixel potential gradient for razor-sharp ridges at any zoom!
+              float dIterDx = dFdx(smoothIter);
+              float dIterDy = dFdy(smoothIter);
+              vec3 microNormal = normalize(geomNormal + vec3(-dIterDx, 0.6, -dIterDy) * 0.25);
+
+              float colorCycle = log(smoothIter + 1.0) * 0.65 - uTime * 0.05;
+              vec3 baseCol = getPaletteColor(colorCycle, uPalette);
+
+              // Pulsing emissive energy veins along high-iteration boundaries (Seahorse/Elephant filaments)
+              float boundaryRatio = iter / uMaxIter;
+              float energyPulse = sin(smoothIter * 0.35 - uTime * 3.2) * 0.5 + 0.5;
+              float veinGlow = smoothstep(0.12, 0.85, boundaryRatio) * energyPulse;
+
+              // Specular + Iridescent Fresnel Rim Lighting
+              float diff1 = max(dot(microNormal, lightDir1), 0.0);
+              float diff2 = max(dot(microNormal, lightDir2), 0.0);
+              vec3 halfVec = normalize(lightDir1 + viewDir);
+              float spec = pow(max(dot(microNormal, halfVec), 0.0), 36.0);
+              float fresnel = pow(1.0 - max(dot(microNormal, viewDir), 0.0), 3.0);
+
+              finalColor = baseCol * (0.32 + 0.68 * diff1 + 0.25 * diff2);
+              finalColor += vec3(1.0, 0.96, 0.9) * spec * 0.55;
+              finalColor += getPaletteColor(colorCycle + 0.25, uPalette) * veinGlow * 0.65;
+              finalColor += vec3(0.0, 0.94, 1.0) * fresnel * 0.38;
+            }
+
+            // Holographic scanline & circular rim glow
+            float rimGlow = smoothstep(0.92, 0.995, vRadiusRatio) * (1.0 - smoothstep(0.995, 1.0, vRadiusRatio));
+            finalColor += vec3(0.0, 0.94, 1.0) * rimGlow * 1.6 * (1.0 - uCanyonMode);
+
+            float alpha = (uCanyonMode > 0.5)
+              ? smoothstep(1.0, 0.75, vRadiusRatio * 0.85)
+              : smoothstep(1.0, 0.94, vRadiusRatio);
+
+            gl_FragColor = vec4(finalColor, alpha);
+          }
+        `,
+        transparent: true,
+        side: THREE.DoubleSide,
+        extensions: { derivatives: true }
+      });
+
+      const fractalTerrainMesh = new THREE.Mesh(terrainGeo, mandelbrotTerrainShader);
+      fractalTerrainMesh.position.set(0, 0.84, 0);
+      scene.add(fractalTerrainMesh);
+
+      // 6.2 Volumetric Raymarched 3D Mandelbulb Hologram (Mode 1)
+      // Rendered inside a bounding sphere floating over the pedestal
+      const bulbGeo = new THREE.SphereGeometry(1.15, 48, 48);
+      const mandelbulbShader = new THREE.ShaderMaterial({
+        uniforms: sharedUniforms,
+        vertexShader: `
+          varying vec3 vWorldPos;
+          varying vec3 vLocalPos;
+          void main() {
+            vLocalPos = position;
+            vec4 wp = modelMatrix * vec4(position, 1.0);
+            vWorldPos = wp.xyz;
+            gl_Position = projectionMatrix * viewMatrix * wp;
+          }
+        `,
+        fragmentShader: `
+          uniform float uTime;
+          uniform int uPalette;
+          uniform float uBulbPower;
+          uniform vec2 uCenter;
+          uniform float uJuliaMode;
+          uniform vec2 uJuliaC;
+
+          varying vec3 vWorldPos;
+          varying vec3 vLocalPos;
+
+          mat2 rot2D(float a) {
+            float s = sin(a), c = cos(a);
+            return mat2(c, -s, s, c);
+          }
+
+          // 3D Mandelbulb Distance Estimator with smooth orbit trap
+          vec2 mapMandelbulb(vec3 p) {
+            p.xz *= rot2D(uTime * 0.18 + (uCenter.x + 0.5) * 1.5);
+            p.yz *= rot2D(uCenter.y * 1.5);
+
+            vec3 z = p;
+            float dr = 1.0;
+            float r = 0.0;
+            float power = uBulbPower;
+            float trap = 1e10;
+
+            for (int i = 0; i < 8; i++) {
+              r = length(z);
+              if (r > 2.0) break;
+
+              trap = min(trap, abs(z.y) + 0.35 * length(z.xz));
+
+              // Convert to polar coordinates
+              float theta = acos(clamp(z.z / max(r, 0.00001), -1.0, 1.0));
+              float phi = atan(z.y, z.x);
+              dr = pow(r, power - 1.0) * power * dr + 1.0;
+
+              // Scale and rotate the point
+              float zr = pow(r, power);
+              theta = theta * power;
+              phi = phi * power;
+
+              vec3 offset = (uJuliaMode > 0.5)
+                ? vec3(uJuliaC.x * 0.6, uJuliaC.y * 0.6, sin(uTime * 0.4) * 0.25)
+                : p;
+
+              z = zr * vec3(sin(theta) * cos(phi), sin(phi) * sin(theta), cos(theta)) + offset;
+            }
+            return vec2(0.5 * log(r) * r / dr, trap);
+          }
+
+          vec3 calcNormal(vec3 p) {
+            vec2 e = vec2(0.0025, -0.0025);
+            return normalize(
+              e.xyy * mapMandelbulb(p + e.xyy).x +
+              e.yyx * mapMandelbulb(p + e.yyx).x +
+              e.yxy * mapMandelbulb(p + e.yxy).x +
+              e.xxx * mapMandelbulb(p + e.xxx).x
+            );
+          }
+
+          vec3 getBulbPalette(float t, int pal) {
+            if (pal == 0) {
+              return vec3(0.5) + vec3(0.5) * cos(6.28318 * (vec3(1.0) * t + vec3(0.00, 0.33, 0.67)));
+            } else if (pal == 1) {
+              return vec3(0.5, 0.38, 0.25) + vec3(0.5, 0.45, 0.35) * cos(6.28318 * (vec3(1.0, 0.8, 0.6) * t + vec3(0.0, 0.15, 0.35)));
+            } else if (pal == 2) {
+              return vec3(0.35, 0.52, 0.55) + vec3(0.45, 0.48, 0.45) * cos(6.28318 * (vec3(0.8, 1.0, 0.9) * t + vec3(0.18, 0.42, 0.68)));
+            } else {
+              float v = 0.5 + 0.5 * cos(6.28318 * t);
+              return mix(vec3(0.08, 0.11, 0.18), vec3(0.92, 0.97, 1.0), v);
+            }
+          }
+
+          void main() {
+            // Transform ray into local object space of the hologram orb
+            vec3 ro = cameraPosition - (vWorldPos - vLocalPos);
+            vec3 fragLocal = vLocalPos;
+            vec3 rd = normalize(fragLocal - ro);
+
+            // Intersect bounding sphere radius 1.12
+            float b = dot(ro, rd);
+            float c = dot(ro, ro) - 1.12 * 1.12;
+            float h = b * b - c;
+            if (h < 0.0) discard;
+            h = sqrt(h);
+            float tNear = max(0.0, -b - h);
+            float tFar = -b + h;
+
+            float t = tNear;
+            float hit = 0.0;
+            float trapVal = 0.0;
+            float steps = 0.0;
+
+            for (int i = 0; i < 64; i++) {
+              if (t > tFar) break;
+              vec3 p = ro + rd * t;
+              vec2 res = mapMandelbulb(p);
+              if (res.x < 0.0022) {
+                hit = 1.0;
+                trapVal = res.y;
+                break;
+              }
+              t += res.x;
+              steps += 1.0;
+            }
+
+            if (hit < 0.5) {
+              // Subtle volumetric halo around the Mandelbulb filaments
+              float glow = pow(clamp(steps / 64.0, 0.0, 1.0), 2.2);
+              if (glow < 0.08) discard;
+              vec3 haloCol = getBulbPalette(uTime * 0.05 + glow, uPalette);
+              gl_FragColor = vec4(haloCol * glow * 1.4, glow * 0.65);
+              return;
+            }
+
+            vec3 hitPos = ro + rd * t;
+            vec3 n = calcNormal(hitPos);
+            vec3 light1 = normalize(vec3(1.8, 2.5, 2.0));
+            vec3 light2 = normalize(vec3(-2.0, -1.5, -1.5));
+
+            float diff1 = max(dot(n, light1), 0.0);
+            float diff2 = max(dot(n, light2), 0.0);
+            float ao = clamp(1.0 - steps / 58.0, 0.15, 1.0);
+            float fresnel = pow(1.0 - max(dot(n, -rd), 0.0), 3.0);
+            vec3 halfV = normalize(light1 - rd);
+            float spec = pow(max(dot(n, halfV), 0.0), 32.0);
+
+            vec3 baseCol = getBulbPalette(trapVal * 1.35 - uTime * 0.04, uPalette);
+            vec3 col = baseCol * (0.25 + 0.75 * diff1 + 0.3 * diff2) * ao;
+            col += vec3(1.0, 0.95, 0.9) * spec * 0.65 * ao;
+            col += vec3(0.0, 0.94, 1.0) * fresnel * 0.55;
+
+            gl_FragColor = vec4(col, 0.98);
+          }
+        `,
+        transparent: true,
+        side: THREE.FrontSide
+      });
+
+      const mandelbulbMesh = new THREE.Mesh(bulbGeo, mandelbulbShader);
+      mandelbulbMesh.position.set(0, 1.55, 0);
+      mandelbulbMesh.visible = false;
+      scene.add(mandelbulbMesh);
+
+      // ============================================================================
+      // 7. SPATIAL 3D FLOATING UI DASHBOARD IN THE VIRTUAL ROOM
+      // ============================================================================
+      // Accessible via VR Laser Pointer / Hand Pinch OR Desktop/Mobile Raycast Click!
+      const spatialUIGroup = new THREE.Group();
+      spatialUIGroup.position.set(-1.55, 1.32, -0.85);
+      spatialUIGroup.lookAt(0, 1.32, 1.8);
+      scene.add(spatialUIGroup);
+
+      const uiCanvas = document.createElement('canvas');
+      uiCanvas.width = 1024;
+      uiCanvas.height = 640;
+      const uiCtx = uiCanvas.getContext('2d');
+      const uiTexture = new THREE.CanvasTexture(uiCanvas);
+      uiTexture.minFilter = THREE.LinearFilter;
+      uiTexture.magFilter = THREE.LinearFilter;
+
+      const spatialPanelGeo = new THREE.PlaneGeometry(1.28, 0.80);
+      const spatialPanelMat = new THREE.MeshBasicMaterial({
+        map: uiTexture,
+        transparent: true,
+        side: THREE.DoubleSide
+      });
+      const spatialPanelMesh = new THREE.Mesh(spatialPanelGeo, spatialPanelMat);
+      spatialUIGroup.add(spatialPanelMesh);
+
+      // Glowing Frame around the 3D Spatial UI
+      const frameGeo = new THREE.PlaneGeometry(1.32, 0.84);
+      const frameMat = new THREE.MeshBasicMaterial({
+        color: 0x00f0ff,
+        transparent: true,
+        opacity: 0.28,
+        side: THREE.DoubleSide
+      });
+      const frameMesh = new THREE.Mesh(frameGeo, frameMat);
+      frameMesh.position.z = -0.005;
+      spatialUIGroup.add(frameMesh);
+
+      // Interactive Button Regions on the 1024x640 Spatial Canvas
+      const spatialButtons = [
+        // Row 1: Visualization Modes
+        { id: 'mode_0', label: '3D TERRAIN', x: 40, y: 120, w: 295, h: 64, action: () => setVisualizationMode(0) },
+        { id: 'mode_1', label: '3D MANDELBULB', x: 362, y: 120, w: 295, h: 64, action: () => setVisualizationMode(1) },
+        { id: 'mode_2', label: 'CATHEDRAL CANYON', x: 685, y: 120, w: 295, h: 64, action: () => setVisualizationMode(2) },
+
+        // Row 2: Famous Preset Coordinates
+        { id: 'pre_0', label: 'Full Overview', x: 40, y: 225, w: 176, h: 66, action: () => applyPreset(0) },
+        { id: 'pre_1', label: 'Seahorse Valley', x: 231, y: 225, w: 176, h: 66, action: () => applyPreset(1) },
+        { id: 'pre_2', label: 'Elephant Valley', x: 422, y: 225, w: 176, h: 66, action: () => applyPreset(2) },
+        { id: 'pre_3', label: 'Triple Spiral', x: 613, y: 225, w: 176, h: 66, action: () => applyPreset(3) },
+        { id: 'pre_4', label: 'Mini-Brot Island', x: 804, y: 225, w: 176, h: 66, action: () => applyPreset(4) },
+
+        // Row 3: Zoom, Elevation, Iterations, Palette, Julia
+        { id: 'zoom_in', label: '+ ZOOM IN', x: 40, y: 332, w: 220, h: 70, action: () => { state.targetZoom *= 1.85; } },
+        { id: 'zoom_out', label: '- ZOOM OUT', x: 280, y: 332, w: 220, h: 70, action: () => { state.targetZoom = Math.max(0.5, state.targetZoom / 1.85); } },
+        { id: 'auto_dive', label: 'AUTO-DIVE', x: 520, y: 332, w: 220, h: 70, action: () => toggleAutoDive() },
+        { id: 'julia_toggle', label: 'JULIA MORPH', x: 760, y: 332, w: 220, h: 70, action: () => toggleJuliaMorph() },
+
+        // Row 4: Fine Tuning & XR Stick Mode
+        { id: 'palette_next', label: 'CYCLE PALETTE', x: 40, y: 432, w: 220, h: 70, action: () => cyclePalette() },
+        { id: 'elev_plus', label: 'HEIGHT +/-', x: 280, y: 432, w: 220, h: 70, action: () => {
+          state.targetElevation = state.targetElevation > 0.9 ? 0.25 : state.targetElevation + 0.25;
+          document.getElementById('slider-elevation').value = state.targetElevation;
+          document.getElementById('val-elevation').textContent = state.targetElevation.toFixed(2) + 'm';
+        }},
+        { id: 'xr_stick', label: 'STICK: FRACTAL', x: 520, y: 432, w: 220, h: 70, action: () => {
+          state.xrStickMode = state.xrStickMode === 'fractal' ? 'locomotion' : 'fractal';
+          showToast('XR Thumbstick Mode: ' + state.xrStickMode.toUpperCase());
+        }},
+        { id: 'reset_all', label: 'RESET VIEW', x: 760, y: 432, w: 220, h: 70, action: () => applyPreset(0) }
+      ];
+
+      let hoveredSpatialBtn = null;
+
+      function renderSpatialUICanvas() {
+        const ctx = uiCtx;
+        ctx.clearRect(0, 0, 1024, 640);
+
+        // Dark Glassmorphic Background
+        ctx.fillStyle = 'rgba(6, 11, 24, 0.90)';
+        ctx.fillRect(0, 0, 1024, 640);
+
+        // Glowing Border
+        ctx.strokeStyle = '#00f0ff';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(8, 8, 1008, 624);
+
+        // Header Bar
+        ctx.fillStyle = 'rgba(0, 240, 255, 0.12)';
+        ctx.fillRect(12, 12, 1000, 78);
+
+        ctx.fillStyle = '#00f0ff';
+        ctx.font = 'bold 28px Orbitron, sans-serif';
+        ctx.fillText('MANDELBROT // XR SPATIAL DECK', 38, 52);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '18px JetBrains Mono, monospace';
+        ctx.fillText('POINT LASER OR TAP TO CONTROL HOLOGRAM', 38, 78);
+
+        // FPS & Mode Badge on Right Header
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#34d399';
+        ctx.font = 'bold 24px JetBrains Mono, monospace';
+        ctx.fillText(`${state.fps} FPS | ${PALETTES[state.paletteIndex].name.toUpperCase()}`, 980, 56);
+        ctx.textAlign = 'left';
+
+        // Draw Interactive Buttons
+        for (const btn of spatialButtons) {
+          const isHovered = hoveredSpatialBtn === btn.id;
+          let isActive = false;
+          if (btn.id === `mode_${state.vizMode}`) isActive = true;
+          if (btn.id === `pre_${state.activePreset}`) isActive = true;
+          if (btn.id === 'auto_dive' && state.autoDive) isActive = true;
+          if (btn.id === 'julia_toggle' && state.juliaMorph) isActive = true;
+
+          // Button Fill
+          if (isHovered) {
+            ctx.fillStyle = 'rgba(0, 240, 255, 0.38)';
+          } else if (isActive) {
+            ctx.fillStyle = 'rgba(123, 44, 191, 0.55)';
+          } else {
+            ctx.fillStyle = 'rgba(17, 27, 48, 0.85)';
+          }
+          ctx.fillRect(btn.x, btn.y, btn.w, btn.h);
+
+          // Button Border
+          ctx.strokeStyle = isHovered ? '#ffffff' : (isActive ? '#00f0ff' : 'rgba(0, 240, 255, 0.35)');
+          ctx.lineWidth = isHovered || isActive ? 3 : 1.5;
+          ctx.strokeRect(btn.x, btn.y, btn.w, btn.h);
+
+          // Dynamic Label Override for Stick mode
+          let labelText = btn.label;
+          if (btn.id === 'xr_stick') {
+            labelText = state.xrStickMode === 'fractal' ? 'STICK: ZOOM/PAN' : 'STICK: MOVE/TURN';
+          }
+
+          ctx.fillStyle = isHovered || isActive ? '#ffffff' : '#cbd5e1';
+          ctx.font = 'bold 19px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(labelText, btn.x + btn.w / 2, btn.y + btn.h / 2);
+        }
+
+        // Bottom Live Telemetry Footer
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
+        ctx.fillRect(40, 528, 940, 76);
+        ctx.strokeStyle = 'rgba(0, 240, 255, 0.25)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(40, 528, 940, 76);
+
+        ctx.font = '21px JetBrains Mono, monospace';
+        ctx.fillStyle = '#00f0ff';
+        ctx.fillText(`Re: ${state.centerRe.toFixed(9)}`, 64, 562);
+        ctx.fillStyle = '#f472b6';
+        ctx.fillText(`Im: ${state.centerIm >= 0 ? '+' : ''}${state.centerIm.toFixed(9)}i`, 64, 592);
+
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#fbbf24';
+        ctx.fillText(`MAGNIFICATION: ${formatZoom(state.zoom)}`, 956, 562);
+        ctx.fillStyle = '#a78bfa';
+        ctx.fillText(`ITERATIONS: ${Math.round(state.maxIterations)} | ELEV: ${state.elevation.toFixed(2)}m`, 956, 592);
+
+        uiTexture.needsUpdate = true;
+      }
+
+      // ============================================================================
+      // 8. WEBXR SESSION MANAGER, LASER CONTROLLERS & HOLOGRAM GRAB/PINCH
+      // ============================================================================
+      const raycaster = new THREE.Raycaster();
+      const tempMatrix = new THREE.Matrix4();
+
+      // Create 2 XR Controllers with glowing laser pointers & hit reticles
+      const controllers = [];
+      for (let i = 0; i < 2; i++) {
+        const controller = renderer.xr.getController(i);
+        controller.userData.index = i;
+        controller.userData.isSelecting = false;
+        controller.userData.isSqueezing = false;
+        controller.userData.grabPoint = new THREE.Vector3();
+
+        // Laser Line
+        const laserGeo = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(0, 0, 0),
+          new THREE.Vector3(0, 0, -4.5)
+        ]);
+        const laserMat = new THREE.LineBasicMaterial({
+          color: i === 0 ? 0x00f0ff : 0xff007f,
+          transparent: true,
+          opacity: 0.85
+        });
+        const laserLine = new THREE.Line(laserGeo, laserMat);
+        laserLine.name = 'laserLine';
+        controller.add(laserLine);
+
+        // Futuristic Procedural Controller Wand Body
+        const wandGeo = new THREE.CylinderGeometry(0.012, 0.022, 0.14, 16);
+        wandGeo.rotateX(Math.PI / 2);
+        const wandMat = new THREE.MeshStandardMaterial({
+          color: 0x0f172a,
+          metalness: 0.8,
+          roughness: 0.2,
+          emissive: i === 0 ? 0x005577 : 0x770033
+        });
+        const wandMesh = new THREE.Mesh(wandGeo, wandMat);
+        wandMesh.position.z = 0.05;
+        controller.add(wandMesh);
+
+        // Hit Reticle Sphere
+        const reticleGeo = new THREE.SphereGeometry(0.022, 16, 16);
+        const reticleMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const reticle = new THREE.Mesh(reticleGeo, reticleMat);
+        reticle.visible = false;
+        scene.add(reticle);
+        controller.userData.reticle = reticle;
+
+        controller.addEventListener('selectstart', () => onXRControllerSelectStart(controller));
+        controller.addEventListener('selectend', () => onXRControllerSelectEnd(controller));
+        controller.addEventListener('squeezestart', () => { controller.userData.isSqueezing = true; });
+        controller.addEventListener('squeezeend', () => { controller.userData.isSqueezing = false; });
+
+        userRig.add(controller);
+        controllers.push(controller);
+      }
+
+      let xrTwoHandStartDist = 0;
+      let xrTwoHandStartZoom = 1.0;
+
+      function getControllerRay(controller) {
+        tempMatrix.identity().extractRotation(controller.matrixWorld);
+        raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
+        raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
+      }
+
+      function onXRControllerSelectStart(controller) {
+        controller.userData.isSelecting = true;
+        getControllerRay(controller);
+
+        // 1. Check intersection with 3D Spatial UI Panel
+        const uiHits = raycaster.intersectObject(spatialPanelMesh);
+        if (uiHits.length > 0 && uiHits[0].uv) {
+          const uv = uiHits[0].uv;
+          const cx = uv.x * 1024;
+          const cy = (1.0 - uv.y) * 640;
+          for (const btn of spatialButtons) {
+            if (cx >= btn.x && cx <= btn.x + btn.w && cy >= btn.y && cy <= btn.y + btn.h) {
+              btn.action();
+              renderSpatialUICanvas();
+              return;
+            }
+          }
+        }
+
+        // 2. Check intersection with Fractal Hologram for direct Grab-to-Pan
+        const targetMesh = state.vizMode === 1 ? mandelbulbMesh : fractalTerrainMesh;
+        const hits = raycaster.intersectObject(targetMesh);
+        if (hits.length > 0) {
+          controller.userData.grabbingFractal = true;
+          controller.userData.grabPoint.copy(hits[0].point);
+        }
+      }
+
+      function onXRControllerSelectEnd(controller) {
+        controller.userData.isSelecting = false;
+        controller.userData.grabbingFractal = false;
+        xrTwoHandStartDist = 0;
+      }
+
+      function updateXRInteractions(dt) {
+        if (!renderer.xr.isPresenting) return;
+
+        hoveredSpatialBtn = null;
+
+        // Check two-handed pinch/squeeze zoom
+        const c0Active = controllers[0].userData.isSelecting || controllers[0].userData.isSqueezing;
+        const c1Active = controllers[1].userData.isSelecting || controllers[1].userData.isSqueezing;
+
+        if (c0Active && c1Active) {
+          const p0 = new THREE.Vector3().setFromMatrixPosition(controllers[0].matrixWorld);
+          const p1 = new THREE.Vector3().setFromMatrixPosition(controllers[1].matrixWorld);
+          const dist = p0.distanceTo(p1);
+          if (xrTwoHandStartDist === 0 && dist > 0.05) {
+            xrTwoHandStartDist = dist;
+            xrTwoHandStartZoom = state.targetZoom;
+          } else if (xrTwoHandStartDist > 0.05) {
+            const ratio = dist / xrTwoHandStartDist;
+            state.targetZoom = Math.max(0.4, xrTwoHandStartZoom * Math.pow(ratio, 2.5));
+          }
+        } else {
+          xrTwoHandStartDist = 0;
+        }
+
+        // Process each controller laser & thumbstick
+        for (const controller of controllers) {
+          getControllerRay(controller);
+          const laser = controller.getObjectByName('laserLine');
+          const reticle = controller.userData.reticle;
+
+          const uiHits = raycaster.intersectObject(spatialPanelMesh);
+          const targetMesh = state.vizMode === 1 ? mandelbulbMesh : fractalTerrainMesh;
+          const fractalHits = raycaster.intersectObject(targetMesh);
+
+          if (uiHits.length > 0) {
+            const hit = uiHits[0];
+            reticle.position.copy(hit.point);
+            reticle.visible = true;
+            laser.scale.z = hit.distance / 4.5;
+
+            if (hit.uv) {
+              const cx = hit.uv.x * 1024;
+              const cy = (1.0 - hit.uv.y) * 640;
+              for (const btn of spatialButtons) {
+                if (cx >= btn.x && cx <= btn.x + btn.w && cy >= btn.y && cy <= btn.y + btn.h) {
+                  hoveredSpatialBtn = btn.id;
+                  break;
+                }
+              }
+            }
+          } else if (fractalHits.length > 0) {
+            const hit = fractalHits[0];
+            reticle.position.copy(hit.point);
+            reticle.visible = true;
+            laser.scale.z = hit.distance / 4.5;
+
+            // If dragging fractal with single controller, pan complex plane coordinates
+            if (controller.userData.grabbingFractal && !(c0Active && c1Active)) {
+              const delta = hit.point.clone().sub(controller.userData.grabPoint);
+              const panScale = 0.85 / Math.max(state.zoom, 0.0001);
+              state.targetRe -= delta.x * panScale;
+              state.targetIm -= delta.z * panScale;
+              controller.userData.grabPoint.copy(hit.point);
+            }
+          } else {
+            reticle.visible = false;
+            laser.scale.z = 1.0;
+          }
+        }
+
+        // Read WebXR Gamepad Thumbsticks (Quest 3, Pico 4, SteamVR)
+        const session = renderer.xr.getSession();
+        if (session && session.inputSources) {
+          for (const source of session.inputSources) {
+            if (!source.gamepad || !source.gamepad.axes || source.gamepad.axes.length < 4) continue;
+            const axX = source.gamepad.axes[2];
+            const axY = source.gamepad.axes[3];
+            if (Math.abs(axX) < 0.12 && Math.abs(axY) < 0.12) continue;
+
+            if (state.xrStickMode === 'fractal' || source.handedness === 'right') {
+              // Zoom with vertical stick, pan/rotate with horizontal stick
+              state.targetZoom = Math.max(0.4, state.targetZoom * (1.0 - axY * dt * 1.8));
+              const panStep = (0.65 / state.zoom) * dt;
+              state.targetRe += axX * panStep;
+            } else {
+              // Room Locomotion with left stick when in locomotion mode
+              const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+              forward.y = 0;
+              forward.normalize();
+              const right = new THREE.Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
+              right.y = 0;
+              right.normalize();
+
+              userRig.position.addScaledVector(forward, -axY * dt * 2.0);
+              userRig.position.addScaledVector(right, axX * dt * 2.0);
+            }
+          }
+        }
+      }
+
+      // WebXR Session Launchers ('immersive-vr' and 'immersive-ar')
+      let currentXRSession = null;
+
+      async function launchWebXR(mode) {
+        if (currentXRSession) {
+          await currentXRSession.end();
+          return;
+        }
+
+        if (!navigator.xr) {
+          showToast('WebXR not detected on this browser — Interactive 3D Room Mode Active');
+          return;
+        }
+
+        try {
+          const isSupported = await navigator.xr.isSessionSupported(mode);
+          if (!isSupported) {
+            showToast(`${mode.toUpperCase()} not supported on this device. Try a VR/AR headset or Magic Window.`);
+            return;
+          }
+
+          const sessionInit = {
+            optionalFeatures: ['local-floor', 'bounded-floor', 'hand-tracking', 'layers']
+          };
+          const session = await navigator.xr.requestSession(mode, sessionInit);
+          currentXRSession = session;
+          state.inXR = true;
+          state.xrMode = mode;
+
+          // Position user ergonomically in front of the hologram pedestal upon entering XR
+          userRig.position.set(0, 0, 2.35);
+
+          // In AR Passthrough mode ('immersive-ar'), hide opaque architectural room walls & floor
+          if (mode === 'immersive-ar') {
+            scene.background = null;
+            scene.fog = null;
+            roomGroup.visible = false;
+            showToast('AR Hologram Passthrough Active');
+          } else {
+            scene.background = new THREE.Color(0x03050a);
+            scene.fog = new THREE.FogExp2(0x03050a, 0.045);
+            roomGroup.visible = true;
+            showToast('Immersive VR Sanctuary Active');
+          }
+
+          session.addEventListener('end', () => {
+            currentXRSession = null;
+            state.inXR = false;
+            state.xrMode = null;
+            userRig.position.set(0, 0, 0);
+            scene.background = new THREE.Color(0x03050a);
+            scene.fog = new THREE.FogExp2(0x03050a, 0.045);
+            roomGroup.visible = true;
+            for (const c of controllers) {
+              if (c.userData.reticle) c.userData.reticle.visible = false;
+            }
+            document.getElementById('vr-btn-label').textContent = 'ENTER VR ROOM';
+            updateDesktopCamera();
+          });
+
+          await renderer.xr.setSession(session);
+          document.getElementById('vr-btn-label').textContent = 'EXIT XR';
+        } catch (err) {
+          showToast('Could not start XR Session: ' + (err.message || 'Check HMD permissions'));
+        }
+      }
+
+      // Check XR Capabilities on startup to style buttons
+      if (navigator.xr) {
+        navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
+          const badge = document.getElementById('xr-status-badge');
+          if (supported && badge) {
+            badge.textContent = 'WEBXR VR READY';
+            badge.classList.replace('text-cyan-300', 'text-emerald-300');
+          }
+        }).catch(() => {});
+      }
+
+      // ============================================================================
+      // 9. DESKTOP & MOBILE TOUCH / POINTER / GYROSCOPE INTERACTION
+      // ============================================================================
+      const pointerNDC = new THREE.Vector2();
+
+      function checkSpatialUIClick(clientX, clientY) {
+        pointerNDC.x = (clientX / window.innerWidth) * 2 - 1;
+        pointerNDC.y = -(clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(pointerNDC, camera);
+
+        const hits = raycaster.intersectObject(spatialPanelMesh);
+        if (hits.length > 0 && hits[0].uv) {
+          const cx = hits[0].uv.x * 1024;
+          const cy = (1.0 - hits[0].uv.y) * 640;
+          for (const btn of spatialButtons) {
+            if (cx >= btn.x && cx <= btn.x + btn.w && cy >= btn.y && cy <= btn.y + btn.h) {
+              btn.action();
+              renderSpatialUICanvas();
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+
+      // Mouse Events
+      let mouseDownTime = 0;
+      renderer.domElement.addEventListener('mousedown', (e) => {
+        if (e.button !== 0 && e.button !== 2) return;
+        mouseDownTime = performance.now();
+        orbit.isDragging = true;
+        orbit.prevX = e.clientX;
+        orbit.prevY = e.clientY;
+        orbit.button = e.button;
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!orbit.isDragging) return;
+        const dx = e.clientX - orbit.prevX;
+        const dy = e.clientY - orbit.prevY;
+        orbit.prevX = e.clientX;
+        orbit.prevY = e.clientY;
+
+        if (orbit.button === 2 || e.shiftKey || state.touchDragMode === 'pan') {
+          // Direct Fractal Coordinate Pan
+          const panScale = 0.0032 / Math.max(state.zoom, 0.0001);
+          const cosT = Math.cos(orbit.theta);
+          const sinT = Math.sin(orbit.theta);
+          state.targetRe -= (dx * cosT + dy * sinT) * panScale;
+          state.targetIm -= (-dx * sinT + dy * cosT) * panScale;
+        } else {
+          // Orbit Camera around the Holographic Sanctuary
+          orbit.theta -= dx * 0.0055;
+          orbit.phi -= dy * 0.0055;
+          updateDesktopCamera();
+        }
+      });
+
+      window.addEventListener('mouseup', (e) => {
+        if (orbit.isDragging && performance.now() - mouseDownTime < 220) {
+          checkSpatialUIClick(e.clientX, e.clientY);
+        }
+        orbit.isDragging = false;
+      });
+
+      renderer.domElement.addEventListener('contextmenu', (e) => e.preventDefault());
+
+      // Mouse Wheel: Zoom into the fractal coordinates (or hold Alt to zoom camera radius)
+      renderer.domElement.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        if (e.altKey) {
+          orbit.radius += e.deltaY * 0.0025;
+          updateDesktopCamera();
+        } else {
+          const factor = e.deltaY < 0 ? 1.16 : 1 / 1.16;
+          state.targetZoom = Math.max(0.4, state.targetZoom * factor);
+        }
+      }, { passive: false });
+
+      // Touch Events for Android & iOS Phones
+      let touchStartTime = 0;
+      renderer.domElement.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          touchStartTime = performance.now();
+          orbit.isDragging = true;
+          orbit.prevX = e.touches[0].clientX;
+          orbit.prevY = e.touches[0].clientY;
+        } else if (e.touches.length === 2) {
+          orbit.isDragging = false;
+          const dx = e.touches[0].clientX - e.touches[1].clientX;
+          const dy = e.touches[0].clientY - e.touches[1].clientY;
+          orbit.pinchDist = Math.hypot(dx, dy);
+          orbit.prevX = (e.touches[0].clientX + e.touches[1].clientX) * 0.5;
+          orbit.prevY = (e.touches[0].clientY + e.touches[1].clientY) * 0.5;
+        }
+      }, { passive: false });
+
+      renderer.domElement.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (e.touches.length === 1 && orbit.isDragging) {
+          const dx = e.touches[0].clientX - orbit.prevX;
+          const dy = e.touches[0].clientY - orbit.prevY;
+          orbit.prevX = e.touches[0].clientX;
+          orbit.prevY = e.touches[0].clientY;
+
+          if (state.touchDragMode === 'pan') {
+            const panScale = 0.004 / Math.max(state.zoom, 0.0001);
+            const cosT = Math.cos(orbit.theta);
+            const sinT = Math.sin(orbit.theta);
+            state.targetRe -= (dx * cosT + dy * sinT) * panScale;
+            state.targetIm -= (-dx * sinT + dy * cosT) * panScale;
+          } else {
+            orbit.theta -= dx * 0.0065;
+            orbit.phi -= dy * 0.0065;
+            updateDesktopCamera();
+          }
+        } else if (e.touches.length === 2) {
+          const dx = e.touches[0].clientX - e.touches[1].clientX;
+          const dy = e.touches[0].clientY - e.touches[1].clientY;
+          const dist = Math.hypot(dx, dy);
+          if (orbit.pinchDist > 10) {
+            const scale = dist / orbit.pinchDist;
+            state.targetZoom = Math.max(0.4, state.targetZoom * Math.pow(scale, 1.35));
+          }
+          orbit.pinchDist = dist;
+
+          // Simultaneous 2-finger pan on the fractal
+          const midX = (e.touches[0].clientX + e.touches[1].clientX) * 0.5;
+          const midY = (e.touches[0].clientY + e.touches[1].clientY) * 0.5;
+          const panX = midX - orbit.prevX;
+          const panY = midY - orbit.prevY;
+          orbit.prevX = midX;
+          orbit.prevY = midY;
+
+          const panScale = 0.0035 / Math.max(state.zoom, 0.0001);
+          state.targetRe -= panX * panScale;
+          state.targetIm -= panY * panScale;
+        }
+      }, { passive: false });
+
+      renderer.domElement.addEventListener('touchend', (e) => {
+        if (e.changedTouches.length === 1 && performance.now() - touchStartTime < 220) {
+          checkSpatialUIClick(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+        }
+        if (e.touches.length === 0) {
+          orbit.isDragging = false;
+        }
+      });
+
+      // Mobile Gyroscope ("Magic Window") Handler for iOS & Android
+      async function toggleGyroscope() {
+        if (state.gyroEnabled) {
+          state.gyroEnabled = false;
+          document.getElementById('btn-gyro').classList.remove('active-btn');
+          showToast('Gyroscope Magic Window Disabled');
+          return;
+        }
+
+        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+          try {
+            const permission = await DeviceOrientationEvent.requestPermission();
+            if (permission !== 'granted') {
+              showToast('Gyroscope permission denied by iOS');
+              return;
+            }
+          } catch (err) {
+            showToast('Gyroscope request requires HTTPS on iOS');
+            return;
+          }
+        }
+
+        window.addEventListener('deviceorientation', (e) => {
+          if (!state.gyroEnabled) return;
+          orbit.gyroAlpha = THREE.MathUtils.degToRad(e.alpha || 0);
+          orbit.gyroBeta = THREE.MathUtils.degToRad(e.beta || 45);
+          orbit.gyroGamma = THREE.MathUtils.degToRad(e.gamma || 0);
+          updateDesktopCamera();
+        });
+
+        state.gyroEnabled = true;
+        document.getElementById('btn-gyro').classList.add('active-btn');
+        showToast('Mobile Gyroscope Look-Around Active');
+      }
+
+      // ============================================================================
+      // 10. UI ACTIONS, PRESETS, MODES & SYNCHRONIZATION
+      // ============================================================================
+      let toastTimeout = null;
+      function showToast(msg) {
+        const banner = document.getElementById('toast-banner');
+        const text = document.getElementById('toast-text');
+        if (!banner || !text) return;
+        text.textContent = msg;
+        banner.classList.remove('opacity-0');
+        banner.classList.add('opacity-100');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+          banner.classList.remove('opacity-100');
+          banner.classList.add('opacity-0');
+        }, 2800);
+      }
+
+      function formatZoom(z) {
+        if (z < 1000) return z.toFixed(1) + '×';
+        return z.toExponential(2) + '×';
+      }
+
+      function setVisualizationMode(modeIndex) {
+        state.vizMode = modeIndex;
+        document.querySelectorAll('.mode-btn').forEach((btn) => {
+          btn.classList.toggle('active-btn', parseInt(btn.dataset.mode, 10) === modeIndex);
+        });
+
+        if (modeIndex === 0) {
+          // 3D Terrain Hologram Pedestal
+          fractalTerrainMesh.visible = true;
+          mandelbulbMesh.visible = false;
+          sharedUniforms.uCanyonMode.value = 0.0;
+          pedestalGroup.visible = true;
+          showToast('Mode: 3D Hologram Terrain Pedestal');
+        } else if (modeIndex === 1) {
+          // 3D Volumetric Raymarched Mandelbulb
+          fractalTerrainMesh.visible = false;
+          mandelbulbMesh.visible = true;
+          sharedUniforms.uCanyonMode.value = 0.0;
+          pedestalGroup.visible = true;
+          showToast('Mode: 3D Volumetric Mandelbulb Raymarcher');
+        } else if (modeIndex === 2) {
+          // Cathedral Canyon Room-Scale Surround Mode
+          fractalTerrainMesh.visible = true;
+          mandelbulbMesh.visible = false;
+          sharedUniforms.uCanyonMode.value = 1.0;
+          pedestalGroup.visible = false;
+          showToast('Mode: Room-Scale Cathedral Canyon Projection');
+        }
+        renderSpatialUICanvas();
+      }
+
+      function applyPreset(index) {
+        const p = PRESETS[index];
+        if (!p) return;
+        state.activePreset = index;
+        state.targetRe = p.re;
+        state.targetIm = p.im;
+        state.targetZoom = p.zoom;
+        state.maxIterations = p.iterations;
+        state.targetElevation = p.elevation;
+
+        document.getElementById('slider-iterations').value = p.iterations;
+        document.getElementById('val-iterations').textContent = p.iterations;
+        document.getElementById('slider-elevation').value = p.elevation;
+        document.getElementById('val-elevation').textContent = p.elevation.toFixed(2) + 'm';
+
+        document.querySelectorAll('.preset-btn').forEach((btn) => {
+          btn.classList.toggle('active-btn', parseInt(btn.dataset.preset, 10) === index);
+        });
+
+        showToast(`Flying to ${p.name} (${p.re.toFixed(4)}, ${p.im.toFixed(4)}i)`);
+        renderSpatialUICanvas();
+      }
+
+      function cyclePalette() {
+        state.paletteIndex = (state.paletteIndex + 1) % PALETTES.length;
+        const pal = PALETTES[state.paletteIndex];
+        sharedUniforms.uPalette.value = state.paletteIndex;
+
+        // Update Room Dynamic Lighting & Floor Shaders to react to the active palette!
+        coreLight1.color.setHex(pal.lightColor1);
+        coreLight2.color.setHex(pal.lightColor2);
+        pedestalUnderLight.color.setHex(pal.lightColor1);
+        floorMat.uniforms.uColor1.value.setHex(pal.lightColor1);
+        floorMat.uniforms.uColor2.value.setHex(pal.lightColor2);
+        particleMat.uniforms.uColor.value.setHex(pal.lightColor1);
+        emitterRingMat.color.setHex(pal.lightColor1);
+        innerGyroMat.color.setHex(pal.lightColor2);
+        stripMat.color.setHex(pal.lightColor1);
+
+        document.getElementById('palette-name').textContent = pal.name;
+        const swatch = document.getElementById('palette-swatch');
+        swatch.className = `w-4 h-4 rounded-full bg-gradient-to-tr ${pal.swatchClass} border border-white/40`;
+
+        showToast(`Palette: ${pal.name}`);
+        renderSpatialUICanvas();
+      }
+
+      function toggleAutoDive() {
+        state.autoDive = !state.autoDive;
+        const btn = document.getElementById('btn-auto-dive');
+        const dot = document.getElementById('auto-dive-dot');
+        btn.classList.toggle('active-btn', state.autoDive);
+        dot.className = state.autoDive
+          ? 'w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping'
+          : 'w-1.5 h-1.5 rounded-full bg-slate-400';
+
+        // If user starts Auto-Dive from full overview, target Seahorse Valley automatically for an exciting dive
+        if (state.autoDive && state.targetZoom < 2.0) {
+          state.targetRe = PRESETS[1].re;
+          state.targetIm = PRESETS[1].im;
+          state.maxIterations = Math.max(state.maxIterations, 512);
+          document.getElementById('slider-iterations').value = state.maxIterations;
+          document.getElementById('val-iterations').textContent = state.maxIterations;
+        }
+        showToast(state.autoDive ? 'Continuous Fractal Auto-Dive Engaged' : 'Auto-Dive Paused');
+        renderSpatialUICanvas();
+      }
+
+      function toggleJuliaMorph() {
+        state.juliaMorph = !state.juliaMorph;
+        const btn = document.getElementById('btn-julia-morph');
+        const label = document.getElementById('julia-label');
+        const ind = document.getElementById('julia-indicator');
+        btn.classList.toggle('active-btn', state.juliaMorph);
+        label.textContent = state.juliaMorph ? 'Julia Live Morph' : 'Mandelbrot Set';
+        ind.textContent = state.juliaMorph ? 'MORPH' : 'Z²+C';
+        showToast(state.juliaMorph ? 'Julia Set Live Parameter Morphing Active' : 'Standard Mandelbrot Set Active');
+        renderSpatialUICanvas();
+      }
+
+      // Bind DOM Controls
+      document.getElementById('btn-enter-vr').addEventListener('click', () => launchWebXR('immersive-vr'));
+      document.getElementById('btn-enter-ar').addEventListener('click', () => launchWebXR('immersive-ar'));
+      document.getElementById('btn-gyro').addEventListener('click', toggleGyroscope);
+      document.getElementById('btn-audio').addEventListener('click', () => audioEngine.toggle());
+
+      document.getElementById('btn-toggle-hud').addEventListener('click', () => {
+        state.hudVisible = !state.hudVisible;
+        const panel = document.getElementById('main-control-panel');
+        const navPad = document.getElementById('quick-nav-pad');
+        const label = document.getElementById('toggle-hud-label');
+        panel.classList.toggle('opacity-0', !state.hudVisible);
+        panel.classList.toggle('pointer-events-none', !state.hudVisible);
+        navPad.classList.toggle('opacity-0', !state.hudVisible);
+        navPad.classList.toggle('pointer-events-none', !state.hudVisible);
+        label.textContent = state.hudVisible ? 'HIDE UI' : 'SHOW UI';
+      });
+
+      document.querySelectorAll('.mode-btn').forEach((btn) => {
+        btn.addEventListener('click', () => setVisualizationMode(parseInt(btn.dataset.mode, 10)));
+      });
+
+      document.querySelectorAll('.preset-btn').forEach((btn) => {
+        btn.addEventListener('click', () => applyPreset(parseInt(btn.dataset.preset, 10)));
+      });
+
+      document.getElementById('btn-auto-dive').addEventListener('click', toggleAutoDive);
+      document.getElementById('btn-palette').addEventListener('click', cyclePalette);
+      document.getElementById('btn-julia-morph').addEventListener('click', toggleJuliaMorph);
+
+      document.getElementById('slider-elevation').addEventListener('input', (e) => {
+        state.targetElevation = parseFloat(e.target.value);
+        document.getElementById('val-elevation').textContent = state.targetElevation.toFixed(2) + 'm';
+      });
+
+      document.getElementById('slider-iterations').addEventListener('input', (e) => {
+        state.maxIterations = parseInt(e.target.value, 10);
+        document.getElementById('val-iterations').textContent = state.maxIterations;
+      });
+
+      document.getElementById('slider-power').addEventListener('input', (e) => {
+        state.bulbPower = parseFloat(e.target.value);
+        sharedUniforms.uBulbPower.value = state.bulbPower;
+        document.getElementById('val-power').textContent = state.bulbPower.toFixed(1);
+      });
+
+      // Touch Mode Switcher (Orbit vs Direct Fractal Pan)
+      document.getElementById('btn-touch-mode').addEventListener('click', (e) => {
+        state.touchDragMode = state.touchDragMode === 'orbit' ? 'pan' : 'orbit';
+        e.target.textContent = state.touchDragMode === 'orbit' ? 'Orbit' : 'Pan';
+        showToast(state.touchDragMode === 'orbit' ? '1-Finger Drag: Room Orbit' : '1-Finger Drag: Fractal Coordinates Pan');
+      });
+
+      // Hold-to-Pan & Hold-to-Zoom On-Screen Buttons
+      const activeNavHolds = { up: false, down: false, left: false, right: false, zoomIn: false, zoomOut: false };
+
+      function bindHoldBtn(el, key) {
+        if (!el) return;
+        const start = (e) => { e.preventDefault(); activeNavHolds[key] = true; };
+        const end = () => { activeNavHolds[key] = false; };
+        el.addEventListener('mousedown', start);
+        el.addEventListener('touchstart', start, { passive: false });
+        window.addEventListener('mouseup', end);
+        window.addEventListener('touchend', end);
+      }
+
+      document.querySelectorAll('.pan-btn').forEach((btn) => {
+        bindHoldBtn(btn, btn.dataset.pan);
+      });
+      bindHoldBtn(document.getElementById('btn-zoom-in'), 'zoomIn');
+      bindHoldBtn(document.getElementById('btn-zoom-out'), 'zoomOut');
+
+      document.getElementById('btn-quick-reset').addEventListener('click', () => applyPreset(0));
+
+      // Keyboard Shortcuts (WASD / Arrows to pan, +/- to zoom)
+      window.addEventListener('keydown', (e) => {
+        const step = 0.15 / Math.max(state.zoom, 0.0001);
+        if (e.key === 'ArrowUp' || e.key === 'w') state.targetIm += step;
+        if (e.key === 'ArrowDown' || e.key === 's') state.targetIm -= step;
+        if (e.key === 'ArrowLeft' || e.key === 'a') state.targetRe -= step;
+        if (e.key === 'ArrowRight' || e.key === 'd') state.targetRe += step;
+        if (e.key === '=' || e.key === '+') state.targetZoom *= 1.35;
+        if (e.key === '-' || e.key === '_') state.targetZoom = Math.max(0.4, state.targetZoom / 1.35);
+      });
+
+      // Responsive Resize Handler
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      // ============================================================================
+      // 11. MAIN RENDER & ANIMATION LOOP (WEBXR + STANDARD 3D COMPATIBLE)
+      // ============================================================================
+      let prevTime = performance.now();
+      let frameCount = 0;
+      let fpsAccum = 0;
+
+      // Initial render of the 3D Spatial UI Canvas
+      renderSpatialUICanvas();
+
+      function renderLoop(now) {
+        const dt = Math.min((now - prevTime) * 0.001, 0.1);
+        prevTime = now;
+        state.time += dt;
+
+        // FPS Telemetry Calculation
+        frameCount++;
+        fpsAccum += dt;
+        if (fpsAccum >= 0.5) {
+          state.fps = Math.round(frameCount / fpsAccum);
+          frameCount = 0;
+          fpsAccum = 0;
+          document.getElementById('hud-fps').textContent = state.fps + ' FPS';
+          renderSpatialUICanvas();
+        }
+
+        // Process On-Screen Hold Buttons
+        const panSpeed = (0.85 / Math.max(state.zoom, 0.0001)) * dt;
+        if (activeNavHolds.up) state.targetIm += panSpeed;
+        if (activeNavHolds.down) state.targetIm -= panSpeed;
+        if (activeNavHolds.left) state.targetRe -= panSpeed;
+        if (activeNavHolds.right) state.targetRe += panSpeed;
+        if (activeNavHolds.zoomIn) state.targetZoom *= (1.0 + 1.45 * dt);
+        if (activeNavHolds.zoomOut) state.targetZoom = Math.max(0.4, state.targetZoom / (1.0 + 1.45 * dt));
+
+        // Process Continuous Auto-Dive
+        if (state.autoDive) {
+          state.targetZoom *= (1.0 + 0.55 * dt);
+          if (state.targetZoom > 95000.0) {
+            state.targetZoom = 1.0;
+          }
+        }
+
+        // Smooth Exponential Interpolation of Fractal Coordinates & Elevation
+        const lerpFactor = 1.0 - Math.exp(-dt * 8.5);
+        state.centerRe += (state.targetRe - state.centerRe) * lerpFactor;
+        state.centerIm += (state.targetIm - state.centerIm) * lerpFactor;
+        state.zoom += (state.targetZoom - state.zoom) * lerpFactor;
+        state.elevation += (state.targetElevation - state.elevation) * lerpFactor;
+
+        // Julia Live Parameter Morphing
+        const targetJuliaBlend = state.juliaMorph ? 1.0 : 0.0;
+        sharedUniforms.uJuliaMode.value += (targetJuliaBlend - sharedUniforms.uJuliaMode.value) * (1.0 - Math.exp(-dt * 5.0));
+        if (state.juliaMorph || sharedUniforms.uJuliaMode.value > 0.01) {
+          const morphAngle = state.time * 0.32;
+          state.juliaRe = -0.745 + Math.cos(morphAngle) * 0.065;
+          state.juliaIm = 0.186 + Math.sin(morphAngle * 0.85) * 0.065;
+          sharedUniforms.uJuliaC.value.set(state.juliaRe, state.juliaIm);
+        }
+
+        // Update Shader Uniforms
+        sharedUniforms.uCenter.value.set(state.centerRe, state.centerIm);
+        sharedUniforms.uZoom.value = state.zoom;
+        sharedUniforms.uMaxIter.value = state.maxIterations;
+        sharedUniforms.uElevation.value = state.elevation;
+        sharedUniforms.uTime.value = state.time;
+
+        floorMat.uniforms.uTime.value = state.time;
+        particleMat.uniforms.uTime.value = state.time;
+
+        // Animate Holographic Pedestal Rings
+        innerGyroRing.rotation.z = state.time * 0.35;
+        innerGyroRing.rotation.x = Math.PI / 2 + Math.sin(state.time * 0.7) * 0.08;
+        ceilingRing2.rotation.z = -state.time * 0.12;
+
+        // Update WebXR Controller Lasers & Thumbsticks
+        updateXRInteractions(dt);
+
+        // Update Ambient Harmonic Audio Synth
+        audioEngine.update(state.zoom, state.centerRe, state.centerIm, state.time);
+
+        // Update 2D HUD Readouts
+        const reStr = state.centerRe.toFixed(7);
+        const imStr = (state.centerIm >= 0 ? '+' : '') + state.centerIm.toFixed(7);
+        const zoomStr = formatZoom(state.zoom);
+
+        document.getElementById('hud-re').textContent = reStr;
+        document.getElementById('hud-im').textContent = imStr;
+        document.getElementById('hud-zoom').textContent = zoomStr;
+
+        document.getElementById('m-hud-re').textContent = state.centerRe.toFixed(4);
+        document.getElementById('m-hud-im').textContent = (state.centerIm >= 0 ? '+' : '') + state.centerIm.toFixed(4);
+        document.getElementById('m-hud-zoom').textContent = zoomStr;
+
+        renderer.render(scene, camera);
+      }
+
+      window.onload = function () {
+        renderer.setAnimationLoop(renderLoop);
+      };
+    })();
+  </script>
+</body>
+</html>

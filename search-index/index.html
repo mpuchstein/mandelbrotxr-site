@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search index · MandelbrotXR results</title>
+<meta name="description" content="The static full-text search index of the MandelbrotXR results site.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/search-index/">
+<link rel="icon" href="../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../feed.xml">
+<script src="../assets/js/theme.js?v=7a718e6155"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../">Home</a></li><li><a href="../rankings/">Rankings</a></li><li><a href="../candidates/">Candidates</a></li><li><a href="../compare/">Compare</a></li><li><a href="../techniques/">Techniques</a></li><li><a href="../judges/">Judges &amp; reviews</a></li><li><a href="../transcripts/">Transcripts</a></li><li><a href="../methodology/">Methodology</a></li><li><a href="../data/">Data</a></li><li><a href="../search/" aria-current="page">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../">Home</a></li><li><a href="../search/">Search</a></li><li><span aria-current="page">Search index</span></li></ol></nav>
+<header><h1>Search index</h1>
+<p class="lede">The files behind <a href="../search/">Search</a>, built with the site: 2,443 documents split into
+4,049 passages and 10,472 terms. The page loads <code>meta.json</code> and <code>p.json</code>,
+then only the shards a query needs.</p></header>
+<p>The format is documented at the top of <code>site/sitelib/searchindex.py</code>: <code>meta.json</code> (shard map and stop words),
+<code>p.json</code> (document table and passage lengths), <code>i-*.json</code> (postings by term prefix) and <code>d-*.json</code> (passage text).</p>
+<div class="table-wrap" role="region" aria-label="Search index files"><table><caption class="sr-only">Search index files and sizes</caption>
+<thead><tr><th scope="col">File</th><th scope="col" class="num">Size</th></tr></thead><tbody><tr><th scope="row"><a href="../search-index/p.json"><code>p.json</code></a></th><td class="num">380,219 B</td></tr><tr><th scope="row"><a href="../search-index/meta.json"><code>meta.json</code></a></th><td class="num">13,144 B</td></tr><tr><th scope="row"><a href="../search-index/d-0.json"><code>d-0.json</code></a></th><td class="num">117,294 B</td></tr><tr><th scope="row"><a href="../search-index/d-1.json"><code>d-1.json</code></a></th><td class="num">107,223 B</td></tr><tr><th scope="row"><a href="../search-index/d-2.json"><code>d-2.json</code></a></th><td class="num">107,191 B</td></tr><tr><th scope="row"><a href="../search-index/d-3.json"><code>d-3.json</code></a></th><td class="num">111,774 B</td></tr><tr><th scope="row"><a href="../search-index/d-4.json"><code>d-4.json</code></a></th><td class="num">99,564 B</td></tr><tr><th scope="row"><a href="../search-index/d-5.json"><code>d-5.json</code></a></th><td class="num">105,419 B</td></tr><tr><th scope="row"><a href="../search-index/d-6.json"><code>d-6.json</code></a></th><td class="num">98,709 B</td></tr><tr><th scope="row"><a href="../search-index/d-7.json"><code>d-7.json</code></a></th><td class="num">102,101 B</td></tr><tr><th scope="row"><a href="../search-index/d-8.json"><code>d-8.json</code></a></th><td class="num">96,436 B</td></tr><tr><th scope="row"><a href="../search-index/d-9.json"><code>d-9.json</code></a></th><td class="num">100,777 B</td></tr><tr><th scope="row"><a href="../search-index/i-0.json"><code>i-0.json</code></a></th><td class="num">63,038 B</td></tr><tr><th scope="row"><a href="../search-index/i-1.json"><code>i-1.json</code></a></th><td class="num">63,698 B</td></tr><tr><th scope="row"><a href="../search-index/i-2.json"><code>i-2.json</code></a></th><td class="num">56,156 B</td></tr><tr><th scope="row"><a href="../search-index/i-3.json"><code>i-3.json</code></a></th><td class="num">63,274 B</td></tr><tr><th scope="row"><a href="../search-index/i-4.json"><code>i-4.json</code></a></th><td class="num">63,152 B</td></tr><tr><th scope="row"><a href="../search-index/i-5.json"><code>i-5.json</code></a></th><td class="num">61,266 B</td></tr><tr><th scope="row"><a href="../search-index/i-6.json"><code>i-6.json</code></a></th><td class="num">62,542 B</td></tr><tr><th scope="row"><a href="../search-index/i-7.json"><code>i-7.json</code></a></th><td class="num">41,131 B</td></tr><tr><th scope="row"><a href="../search-index/i-8.json"><code>i-8.json</code></a></th><td class="num">61,992 B</td></tr><tr><th scope="row"><a href="../search-index/i-9.json"><code>i-9.json</code></a></th><td class="num">63,451 B</td></tr><tr><th scope="row"><a href="../search-index/d-10.json"><code>d-10.json</code></a></th><td class="num">103,765 B</td></tr><tr><th scope="row"><a href="../search-index/d-11.json"><code>d-11.json</code></a></th><td class="num">83,288 B</td></tr><tr><th scope="row"><a href="../search-index/d-12.json"><code>d-12.json</code></a></th><td class="num">86,588 B</td></tr><tr><th scope="row"><a href="../search-index/d-13.json"><code>d-13.json</code></a></th><td class="num">109,825 B</td></tr><tr><th scope="row"><a href="../search-index/d-14.json"><code>d-14.json</code></a></th><td class="num">96,586 B</td></tr><tr><th scope="row"><a href="../search-index/d-15.json"><code>d-15.json</code></a></th><td class="num">93,396 B</td></tr><tr><th scope="row"><a href="../search-index/d-16.json"><code>d-16.json</code></a></th><td class="num">74,893 B</td></tr><tr><th scope="row"><a href="../search-index/d-17.json"><code>d-17.json</code></a></th><td class="num">100,995 B</td></tr><tr><th scope="row"><a href="../search-index/d-18.json"><code>d-18.json</code></a></th><td class="num">92,469 B</td></tr><tr><th scope="row"><a href="../search-index/d-19.json"><code>d-19.json</code></a></th><td class="num">95,621 B</td></tr><tr><th scope="row"><a href="../search-index/d-20.json"><code>d-20.json</code></a></th><td class="num">100,231 B</td></tr><tr><th scope="row"><a href="../search-index/d-21.json"><code>d-21.json</code></a></th><td class="num">102,522 B</td></tr><tr><th scope="row"><a href="../search-index/d-22.json"><code>d-22.json</code></a></th><td class="num">110,519 B</td></tr><tr><th scope="row"><a href="../search-index/d-23.json"><code>d-23.json</code></a></th><td class="num">101,134 B</td></tr><tr><th scope="row"><a href="../search-index/d-24.json"><code>d-24.json</code></a></th><td class="num">99,256 B</td></tr><tr><th scope="row"><a href="../search-index/d-25.json"><code>d-25.json</code></a></th><td class="num">101,604 B</td></tr><tr><th scope="row"><a href="../search-index/d-26.json"><code>d-26.json</code></a></th><td class="num">97,813 B</td></tr><tr><th scope="row"><a href="../search-index/d-27.json"><code>d-27.json</code></a></th><td class="num">100,720 B</td></tr><tr><th scope="row"><a href="../search-index/d-28.json"><code>d-28.json</code></a></th><td class="num">54,429 B</td></tr><tr><th scope="row"><a href="../search-index/i-10.json"><code>i-10.json</code></a></th><td class="num">54,782 B</td></tr></tbody></table></div>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../data/">Data &amp; schema</a> · <a href="../data/changelog/">Changelog</a> · <a href="../feed.xml">Atom feed</a> · <a href="../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>

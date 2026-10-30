@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML review agent log — Opus 5.5 · v1 · MandelbrotXR results</title>
+<meta name="description" content="HTML review agent log — Opus 5.5 · v1: 20 messages, rendered from Review/HTML-Review/Anthropic-Web-Opus5.5-Max-v1/TRANSCRIPT.md.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/transcripts/review-html-anthropic-web-opus5.5-max-v1/">
+<link rel="icon" href="../../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../../feed.xml">
+<script src="../../assets/js/theme.js?v=7a718e6155"></script>
+<script src="../../assets/js/transcripts.js?v=54e22884d0" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../../">Home</a></li><li><a href="../../rankings/">Rankings</a></li><li><a href="../../candidates/">Candidates</a></li><li><a href="../../compare/">Compare</a></li><li><a href="../../techniques/">Techniques</a></li><li><a href="../../judges/">Judges &amp; reviews</a></li><li><a href="../../transcripts/" aria-current="page">Transcripts</a></li><li><a href="../../methodology/">Methodology</a></li><li><a href="../../data/">Data</a></li><li><a href="../../search/">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../">Home</a></li><li><a href="../../transcripts/">Transcripts</a></li><li><span aria-current="page">HTML review agent log — Opus 5.5 · v1</span></li></ol></nav>
+<h1>HTML review agent log — Opus 5.5 · v1</h1>
+<ul class="tx-meta"><li><span class="evidence"><a href="../../transcripts/review-html-anthropic-web-opus5.5-max-v1/"><span class="nw">Review</span>/<wbr><span class="nw">HTML-Review</span>/<wbr><span class="nw">Anthropic-Web-Opus5.5-Max-v1</span>/<wbr><span class="nw">TRANSCRIPT.md</span></a> <a class="gh" href="https://github.com/mpuchstein/MandelbrotXR/blob/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a/Review/HTML-Review/Anthropic-Web-Opus5.5-Max-v1/TRANSCRIPT.md" rel="noopener" title="Review/HTML-Review/Anthropic-Web-Opus5.5-Max-v1/TRANSCRIPT.md on GitHub at 75d36a0">GitHub</a></span></li><li class="num">20 messages · 368 lines</li><li><a href="../../candidates/opus55-max-v1/">Candidate: Opus 5.5 · v1</a></li><li><a href="../../reviews/html/opus55-max-v1/">HTML review (candidate-02)</a></li></ul>
+<section class="tx-intro" aria-label="Transcript header (verbatim)"><div class="md"><h2 id="intro-agent-transcript-html-review-anthropic-web-opus5-5-max-v1">Agent transcript: HTML-Review / Anthropic-Web-Opus5.5-Max-v1</h2>
+<ul>
+<li>Agent: <code>html-c02</code> (general-purpose subagent, Opus; requested effort xhigh, but the API requests show effort <code>high</code>)</li>
+<li>Reviewed blind as <code>candidate-02</code>; the vendor/model mapping was applied afterwards by the orchestrator</li>
+<li>Rendered from the Claude Code session log. Tool inputs are cut at 4,000 characters and tool results at 2,000. System reminders are removed.</li>
+</ul>
+</div></section>
+<details class="tx-index"><summary>Message index: all 20 messages</summary><ol class="msg-index"><li><a href="#m-1"><span class="ix-n">#1</span> User</a> <span class=ix-first>You are a blind reviewer in a comparison of AI coding assistant…</span></li><li><a href="#m-2"><span class="ix-n">#2</span> Assistant</a> <span class=ix-first>Tool call Bash { &quot;command&quot;: &quot;F=/tmp/claude-1000/-home-mpuchstei…</span></li><li><a href="#m-3"><span class="ix-n">#3</span> Tool output</a> <span class=ix-first>Tool result 1826 111928 /tmp/claude-1000/-home-mpuchstein-Dev-A…</span></li><li><a href="#m-4"><span class="ix-n">#4</span> Assistant</a> <span class=ix-first>Tool call Read { &quot;file_path&quot;: &quot;/tmp/claude-1000/-home-mpuchstei…</span></li><li><a href="#m-5"><span class="ix-n">#5</span> Tool output</a> <span class=ix-first>Tool result 1 &lt;!doctype html&gt; 2 &lt;html lang=&quot;en&quot;&gt; 3 &lt;head&gt; 4 &lt;me…</span></li><li><a href="#m-6"><span class="ix-n">#6</span> Assistant</a> <span class=ix-first>Tool call Read { &quot;file_path&quot;: &quot;/tmp/claude-1000/-home-mpuchstei…</span></li><li><a href="#m-7"><span class="ix-n">#7</span> Tool output</a> <span class=ix-first>Tool result 400 float nearSet = smoothstep(0.55, 0.97, h); 401…</span></li><li><a href="#m-8"><span class="ix-n">#8</span> Assistant</a> <span class=ix-first>Tool call Read { &quot;file_path&quot;: &quot;/tmp/claude-1000/-home-mpuchstei…</span></li><li><a href="#m-9"><span class="ix-n">#9</span> Tool output</a> <span class=ix-first>Tool result 850 const ox = Math.max(0, Math.min(view.cx + h, r.…</span></li><li><a href="#m-10"><span class="ix-n">#10</span> Assistant</a> <span class=ix-first>Tool call Read { &quot;file_path&quot;: &quot;/tmp/claude-1000/-home-mpuchstei…</span></li><li><a href="#m-11"><span class="ix-n">#11</span> Tool output</a> <span class=ix-first>Tool result 1329 if (s &gt; 0.01) for (let i = 0; i &lt; 8; i++) { 13…</span></li><li><a href="#m-12"><span class="ix-n">#12</span> Assistant</a> <span class=ix-first>Reading done; running static checks on the extracted script now.</span></li><li><a href="#m-13"><span class="ix-n">#13</span> Assistant</a> <span class=ix-first>Tool call Bash { &quot;command&quot;: &quot;cd /tmp/claude-1000/-home-mpuchste…</span></li><li><a href="#m-14"><span class="ix-n">#14</span> Tool output</a> <span class=ix-first>Tool result SYNTAX_OK 3 Shell cwd was reset to /home/mpuchstein…</span></li><li><a href="#m-15"><span class="ix-n">#15</span> Assistant</a> <span class=ix-first>Tool call Bash { &quot;command&quot;: &quot;mkdir -p /tmp/claude-1000/-home-mp…</span></li><li><a href="#m-16"><span class="ix-n">#16</span> Tool output</a> <span class=ix-first>Tool result written</span></li><li><a href="#m-17"><span class="ix-n">#17</span> Assistant</a> <span class=ix-first>I scored candidate-02 at 8.5/10 overall. Verdict: It&#x27;s an ambit…</span></li><li><a href="#m-18"><span class="ix-n">#18</span> User</a> <span class=ix-first>{&quot;type&quot;:&quot;shutdown_request&quot;,&quot;requestId&quot;:&quot;shutdown-1793312386048@…</span></li><li><a href="#m-19"><span class="ix-n">#19</span> Assistant</a> <span class=ix-first>Tool call ToolSearch { &quot;query&quot;: &quot;select:SendMessage&quot;, &quot;max_resu…</span></li><li><a href="#m-20"><span class="ix-n">#20</span> Tool output</a> <span class=ix-first>Tool result [tool_reference]</span></li></ol></details>
+<div class="toolbar tx-tools js-only" data-tx-tools><button class="btn" type="button" data-fold="open">Expand all</button><button class="btn" type="button" data-fold="close">Collapse all</button></div>
+<h2 class="tx-range">Messages 1–20</h2>
+<div class="msgs"><article class="msg msg-user" id="m-1" data-line="8"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">User</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:13:42.485Z" title="2026-10-29T21:13:42.485Z">29 Oct 2026, 21:13 UTC</time></span></h3><a class="msg-num" href="#m-1" title="Permalink to message 1">#1</a></header><div class="msg-body md"><p>You are a blind reviewer in a comparison of AI coding assistants. An AI assistant was given the task quoted below. You do not know which assistant or model produced the material, so don&#x27;t guess or mention vendors or models.</p>
+<p>The task given to the assistant (verbatim):
+&lt;&lt;&lt;
+Create a standalone html file that uses WebXR to visualize the Mandelbrotset in a virtual room. Focus on delivering the highest possible visual wow effect and good usability.</p>
+<p>Requirements: Viewable on HMDs like Meta Quest 3, Steam Frame, Pico VR 4 Ultra (not an exhaustive enumeration) and on modern Android and Apple phones.</p>
+<p>Done when:</p>
+<ol>
+<li>A person wearing a VR headset or AR glasses or a mobile phone can open the HTML file on the device (Browser) and enter a virtual room in which the Mandelbrot set is getting visualized in 3d.</li>
+</ol>
+<p>&gt;&gt;&gt;</p>
+<p>Your material: ONLY the HTML file the assistant delivered:
+/tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scratchpad/blind/candidate-02/index.html</p>
+<p>Scope: review the HTML source code. Read it in parts if it is large. Bundled vendor code (e.g. an embedded three.js build) may be skimmed; spend your effort on the application code. You may run read-only static checks in the shell (grep, extracting the inline &lt;script&gt; and running <code>node --check</code> on it, counting lines, and so on). Do NOT open it in a browser, do NOT start servers, and do NOT read any other file or directory (other candidates, transcripts, repositories).</p>
+<p>Rubric: score each criterion 1–10 with a short justification grounded in the code (cite line numbers or function names):</p>
+<ol>
+<li>Done-when fulfilment: can a person on a VR headset, AR glasses or a phone open the file in the device browser and enter a virtual room that shows the Mandelbrot set in 3D?</li>
+<li>Device/XR compatibility: Meta Quest 3, Steam Frame, Pico 4 Ultra, Android phones, iPhones (WebXR session types and features requested, fallbacks, secure-context needs, input: controllers/hands/gaze/touch).</li>
+<li>Visual wow effect, as far as the code shows it (rendering technique, lighting/shading, room design, fractal fidelity).</li>
+<li>Usability &amp; controls (onboarding, UI inside and outside XR, navigation, comfort).</li>
+<li>Code quality &amp; robustness (structure, error handling, XR frame-loop performance, resource use, bugs).</li>
+<li>Prompt adherence (stated technology constraints, standalone single file; are deviations justified?).
+Also list concrete <strong>Bugs found</strong> (with location).
+Then add: <strong>Overall score (1–10)</strong>, <strong>Top 5 issues</strong> (each with severity critical/major/minor, location or evidence, and a suggested fix), <strong>Strengths</strong> (up to 5), and a 2–3 sentence <strong>Verdict</strong>.</li>
+</ol>
+<p>Output: write the review as Markdown to exactly this file (create the directory if needed):
+/tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scratchpad/blind-out/html/candidate-02/REVIEW.md
+Start it with &quot;# HTML Review — candidate-02&quot;, followed by a score table (criterion | score | one-line reason). Write no other files except where stated above. Finish by replying with a 3-line summary: overall score, verdict, biggest issue.</p>
+</div></article>
+<article class="msg msg-assistant" id="m-2" data-line="41"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Assistant</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:13:45.055Z" title="2026-10-29T21:13:45.055Z">29 Oct 2026, 21:13 UTC</time></span></h3><a class="msg-num" href="#m-2" title="Permalink to message 2">#2</a></header><div class="msg-body md"><details class="fold fold-call"><summary><span class="fold-kind">Tool call</span> <code class="fold-tool" title="Bash">Bash</code> <span class=fold-peek>Count lines and locate scripts in candidate file</span> <span class="fold-size">4 lines · 284 B</span></summary>
+<pre><code>{
+ &quot;command&quot;: &quot;F=/tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scratchpad/blind/candidate-02/index.html; wc -lc $F; grep -n &#x27;&lt;script\\|&lt;/script&gt;\\|import&#x27; $F | head -30&quot;,
+ &quot;description&quot;: &quot;Count lines and locate scripts in candidate file&quot;
+}
+</code></pre>
+</details></div></article>
+<article class="msg msg-tool" id="m-3" data-line="51"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Tool output</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:13:46.572Z" title="2026-10-29T21:13:46.572Z">29 Oct 2026, 21:13 UTC</time></span></h3><a class="msg-num" href="#m-3" title="Permalink to message 3">#3</a></header><div class="msg-body md"><details class="fold fold-result"><summary><span class="fold-kind">Tool result</span> <span class=fold-peek>1826 111928 /tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d85…</span> <span class="fold-size">6 lines · 219 B</span></summary>
+<pre><code>  1826 111928 /tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scratchpad/blind/candidate-02/index.html
+22:[hidden]{display:none!important}
+101:&lt;script&gt;
+1824:&lt;/script&gt;
+</code></pre>
+</details></div></article>
+<article class="msg msg-assistant" id="m-4" data-line="64"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Assistant</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:13:48.610Z" title="2026-10-29T21:13:48.610Z">29 Oct 2026, 21:13 UTC</time></span></h3><a class="msg-num" href="#m-4" title="Permalink to message 4">#4</a></header><div class="msg-body md"><details class="fold fold-call"><summary><span class="fold-kind">Tool call</span> <code class="fold-tool" title="Read">Read</code> <span class=fold-peek>/tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scra…</span> <span class="fold-size">4 lines · 166 B</span></summary>
+<pre><code>{
+ &quot;file_path&quot;: &quot;/tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scratchpad/blind/candidate-02/index.html&quot;,
+ &quot;limit&quot;: 400
+}
+</code></pre>
+</details></div></article>
+<article class="msg msg-tool" id="m-5" data-line="74"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Tool output</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:13:48.623Z" title="2026-10-29T21:13:48.623Z">29 Oct 2026, 21:13 UTC</time></span></h3><a class="msg-num" href="#m-5" title="Permalink to message 5">#5</a></header><div class="msg-body md"><details class="fold fold-result"><summary><span class="fold-kind">Tool result</span> <span class=fold-peek>1 &lt;!doctype html&gt; 2 &lt;html lang=&quot;en&quot;&gt; 3 &lt;head&gt; 4 &lt;meta charset=&quot;utf-8&quot;&gt; 5 &lt;meta name=&quot;viewport&quot;…</span> <span class="fold-size">33 lines · 2.0 kB</span></summary>
+<pre><code>1	&lt;!doctype html&gt;
+2	&lt;html lang=&quot;en&quot;&gt;
+3	&lt;head&gt;
+4	&lt;meta charset=&quot;utf-8&quot;&gt;
+5	&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, viewport-fit=cover&quot;&gt;
+6	&lt;meta name=&quot;theme-color&quot; content=&quot;#03040b&quot;&gt;
+7	&lt;title&gt;Mandelbrot XR&lt;/title&gt;
+8	&lt;style&gt;
+9	:root{
+10	  --ink:#e9ecff; --muted:#a6aed3; --glass:rgba(8,10,28,.68); --line:rgba(196,204,255,.22);
+11	  --accent:#8fd8ff; --accent-soft:rgba(143,216,255,.45); --accent-ink:#04050f;
+12	  --serif:&quot;Iowan Old Style&quot;,&quot;Palatino Linotype&quot;,Palatino,&quot;Book Antiqua&quot;,&quot;URW Palladio L&quot;,P052,Georgia,serif;
+13	  --sans:Optima,Candara,&quot;Segoe UI&quot;,&quot;Noto Sans&quot;,Roboto,&quot;Helvetica Neue&quot;,Arial,sans-serif;
+14	  color-scheme:dark;
+15	}
+16	*{box-sizing:border-box}
+17	html,body{margin:0;height:100%;background:#03040b;color:var(--ink);overflow:hidden}
+18	body{font-family:var(--sans);-webkit-font-smoothing:antialiased;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+19	#gl{position:fixed;inset:0;width:100%;height:100%;display:block;outline:none}
+20	button{font:inherit;color:inherit;cursor:pointer}
+21	button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+22	[hidden]{display:none!important}
+23	#landing{position:fixed;inset:0;display:flex;align-items:flex-end;pointer-events:none;
+24	  background:linear-gradient(180deg,rgba(3,4,11,0) 30%,rgba(3,4,11,.5) 62%,rgba(3,4,11,.9) 100%)}
+25	#landing .intro{pointer-events:auto;max-width:38rem;padding:0 max(6vw,22px) max(7vh,calc(env(safe-area-inset-bottom) + 22px))}
+26	.formula{font-family:var(--serif);font-style:italic;font-size:clamp(3.1rem,9.5vw,6.6rem);line-height:1;margin:0 0 .3em;
+27	  letter-spacing:-.01em;text-shadow:0 0 42px var(--accent-soft)}
+28	.formula sup{font-size:.55em;font-style:normal;vertical-align:.75em;margin-left:.02em}
+29	h1{font-family:var(--serif);font-weight:400;font-size:clamp(1.3rem,2.5vw,1.85rem);line-height:1.25;margin:0 0 .55rem;max-width:23em}
+30	.lede{font-family:var(--serif);font-size:1.05rem;line-height:1.
+… [truncated, 21263 more chars]
+</code></pre>
+</details></div></article>
+<article class="msg msg-assistant" id="m-6" data-line="114"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Assistant</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:13:50.891Z" title="2026-10-29T21:13:50.891Z">29 Oct 2026, 21:13 UTC</time></span></h3><a class="msg-num" href="#m-6" title="Permalink to message 6">#6</a></header><div class="msg-body md"><details class="fold fold-call"><summary><span class="fold-kind">Tool call</span> <code class="fold-tool" title="Read">Read</code> <span class=fold-peek>/tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scra…</span> <span class="fold-size">5 lines · 182 B</span></summary>
+<pre><code>{
+ &quot;file_path&quot;: &quot;/tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scratchpad/blind/candidate-02/index.html&quot;,
+ &quot;offset&quot;: 400,
+ &quot;limit&quot;: 450
+}
+</code></pre>
+</details></div></article>
+<article class="msg msg-tool" id="m-7" data-line="125"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Tool output</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:13:51.099Z" title="2026-10-29T21:13:51.099Z">29 Oct 2026, 21:13 UTC</time></span></h3><a class="msg-num" href="#m-7" title="Permalink to message 7">#7</a></header><div class="msg-body md"><details class="fold fold-result"><summary><span class="fold-kind">Tool result</span> <span class=fold-peek>400 float nearSet = smoothstep(0.55, 0.97, h); 401 float lum = 0.05 + 0.95*pow(h, 2.2); 402 vec…</span> <span class="fold-size">47 lines · 2.0 kB</span></summary>
+<pre><code>400	  float nearSet = smoothstep(0.55, 0.97, h);
+401	  float lum = 0.05 + 0.95*pow(h, 2.2);
+402	  vec3 ext = base*(0.1 + 0.8*ndl)*lum;
+403	  ext += base*nearSet*nearSet*0.9;
+404	  ext += base*line*(0.25 + 0.8*nearSet)*(0.3 + 0.7*lum);
+405	  ext += env*fres*0.22;
+406	  if (uPulse &gt;= 0.0) ext += base*exp(-pow((r - uPulse)/0.012, 2.0))*(1.0 - smoothstep(0.15, 0.55, uPulse))*1.8;
+407	  vec3 tint = pal(ph);
+408	  float spec = pow(max(dot(R, L), 0.0), 90.0);
+409	  vec3 inn = vec3(0.006, 0.007, 0.012) + tint*0.05 + env*(0.04 + 0.9*fres) + vec3(spec)*0.9;
+410	  vec3 col = mix(ext, inn, inside);
+411	  col = mix(vec3(0.004, 0.006, 0.016) + uRim*0.025, col, built);
+412	  col += uRim*exp(-pow((r - uBuild)/0.01, 2.0))*step(uBuild, 0.7)*2.0;
+413	  if (uScan &gt;= 0.0) col += uRim*exp(-pow((r - uScan)/0.008, 2.0))*1.4;
+414	  col += uRim*smoothstep(0.472, 0.5, r)*(1.0 - uImm)*0.4;
+415	  float fogF = 1.0 - exp(-length(vW - uCam)*uFog);
+416	  fogF = max(fogF, smoothstep(0.3, 0.5, r)*uImm);
+417	  col = mix(col, uFogCol, fogF);
+418	  frag = vec4(tonemap(col), 1.0);
+419	}`;
+420	
+421	const VS_SKIRT = HDR + DATA + `
+422	layout(location=0) in vec2 aS;
+423	uniform mat4 uVP, uModel;
+424	uniform float uBuild;
+425	out vec3 vW; out float vY; out float vH; out vec2 vP;
+426	void main(){
+427	  vec2 p = 0.4985*vec2(cos(aS.x), sin(aS.x));
+428	  float built = 1.0 - smoothstep(uBuild - 0.12, uBuild, 0.5);
+429	  float h = dataAt(p).r*built;
+430	  float y = aS.y*h;
+431	  vY = y; vH = h; vP = p;
+432	  vec4 w = uModel*vec4(p.x, y, -p.y, 1.0); vW = w.xyz;
+433	  gl_Position = uVP*w;
+434	}`;
+435	const FS_SKIRT = HDR + COMMON + DATA + `
+436	in vec3 vW; in float vY; in float vH; in vec2 vP;
+437	uniform vec3 uCam, uFogCol; uniform float uTime, uCycle, uFog;
+438	out vec4 frag;
+439	void main(){
+440	  vec4 D = dataAt(vP);
+441	  vec2 cs = D.gb*2.0 - 1.0;
+442	  vec3 base = D.a &gt; 0.5 ? vec3(0.2, 0.26, 0.42) : pow(pal(atan(cs.y, cs.x)*0.15915494 + uTime*uCycle), vec3(1.5));
+443	  float rel = clamp(vY/max(vH, 1e-4), 0.0, 
+… [truncated, 25219 more chars]
+</code></pre>
+</details></div></article>
+<article class="msg msg-assistant" id="m-8" data-line="179"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Assistant</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:13:53.630Z" title="2026-10-29T21:13:53.630Z">29 Oct 2026, 21:13 UTC</time></span></h3><a class="msg-num" href="#m-8" title="Permalink to message 8">#8</a></header><div class="msg-body md"><details class="fold fold-call"><summary><span class="fold-kind">Tool call</span> <code class="fold-tool" title="Read">Read</code> <span class=fold-peek>/tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scra…</span> <span class="fold-size">5 lines · 182 B</span></summary>
+<pre><code>{
+ &quot;file_path&quot;: &quot;/tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scratchpad/blind/candidate-02/index.html&quot;,
+ &quot;offset&quot;: 850,
+ &quot;limit&quot;: 480
+}
+</code></pre>
+</details></div></article>
+<article class="msg msg-tool" id="m-9" data-line="190"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Tool output</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:13:53.808Z" title="2026-10-29T21:13:53.808Z">29 Oct 2026, 21:13 UTC</time></span></h3><a class="msg-num" href="#m-9" title="Permalink to message 9">#9</a></header><div class="msg-body md"><details class="fold fold-result"><summary><span class="fold-kind">Tool result</span> <span class=fold-peek>850 const ox = Math.max(0, Math.min(view.cx + h, r.cx + H) - Math.max(view.cx - h, r.cx - H));…</span> <span class="fold-size">40 lines · 2.0 kB</span></summary>
+<pre><code>850	  const ox = Math.max(0, Math.min(view.cx + h, r.cx + H) - Math.max(view.cx - h, r.cx - H));
+851	  const oy = Math.max(0, Math.min(view.cy + h, r.cy + H) - Math.max(view.cy - h, r.cy - H));
+852	  return ox * oy / (view.span * view.span);
+853	}
+854	function score(T) {
+855	  const eff = effRes(T), cov = coversR(T.region, view.cx, view.cy, view.span), q = Math.min(eff, 48) / 48;
+856	  return (cov &amp;&amp; eff &gt;= 48 ? 1e5 : 0) + (cov ? 1 : overlap(T.region)) * q * 1e4 + eff + T.serial * 1e-4;
+857	}
+858	const dispCovers = () =&gt; !!disp.B &amp;&amp; coversR(disp.B.region, view.cx, view.cy, view.span) &amp;&amp; effRes(disp.B) &gt;= 48;
+859	function chooseDisplay() {
+860	  let best = null, bs = -1;
+861	  for (const T of ALL) { if (!T.valid || (job &amp;&amp; job.T === T)) continue; const s = score(T); if (s &gt; bs) { bs = s; best = T; } }
+862	  if (best &amp;&amp; best !== disp.B) {
+863	    disp.A = disp.B; disp.B = best; disp.mix = disp.A ? 0 : 1;
+864	    rbWanted = best;
+865	    if (best.kind === &#x27;full&#x27;) { disp.pulseAt = now(); if (flight === null &amp;&amp; lastTapAt &gt; now() - 4000) audio.tone(523.25 * Math.pow(2, (Math.round(depthOct()) % 12) / 12), 1.6, 0.03); }
+866	  }
+867	}
+868	let grabActive = false, zoomDir = 0, zoomAt = -1e9, lastTapAt = -1e9;
+869	const markZoom = dir =&gt; { zoomAt = now(); zoomDir = dir; };
+870	function schedule() {
+871	  const t = now();
+872	  if (flight) {
+873	    if (!flight.started) { job = null; flight.started = startJob(&#x27;full&#x27;, flight.to.cx, flight.to.cy, flight.to.span, { snap: flight.long, flight: true }); return; }
+874	    if (job || flight.phase === &#x27;collapse&#x27;) return;
+875	    if (!dispCovers()) startJob(&#x27;preview&#x27;, view.cx, view.cy, view.span * 1.5);
+876	    return;
+877	  }
+878	  if (grabActive) {
+879	    if (job &amp;&amp; job.kind === &#x27;full&#x27;) job = null;
+880	    if (!job) startJob(&#x27;preview&#x27;, view.cx, view.cy, view.span * 1.5);
+881	    return;
+882	  }
+883	  if (t - zoomAt &lt; 140) {
+884	    if (job &amp;&amp; !coversR(job, view.cx, view.cy, view.span)) job = null;
+885	    if (!job) {
+886	      if (!di
+… [truncated, 30320 more chars]
+</code></pre>
+</details></div></article>
+<article class="msg msg-assistant" id="m-10" data-line="237"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Assistant</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:13:56.436Z" title="2026-10-29T21:13:56.436Z">29 Oct 2026, 21:13 UTC</time></span></h3><a class="msg-num" href="#m-10" title="Permalink to message 10">#10</a></header><div class="msg-body md"><details class="fold fold-call"><summary><span class="fold-kind">Tool call</span> <code class="fold-tool" title="Read">Read</code> <span class=fold-peek>/tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scra…</span> <span class="fold-size">5 lines · 183 B</span></summary>
+<pre><code>{
+ &quot;file_path&quot;: &quot;/tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scratchpad/blind/candidate-02/index.html&quot;,
+ &quot;offset&quot;: 1329,
+ &quot;limit&quot;: 500
+}
+</code></pre>
+</details></div></article>
+<article class="msg msg-tool" id="m-11" data-line="248"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Tool output</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:13:56.629Z" title="2026-10-29T21:13:56.629Z">29 Oct 2026, 21:13 UTC</time></span></h3><a class="msg-num" href="#m-11" title="Permalink to message 11">#11</a></header><div class="msg-body md"><details class="fold fold-result"><summary><span class="fold-kind">Tool result</span> <span class=fold-peek>1329 if (s &gt; 0.01) for (let i = 0; i &lt; 8; i++) { 1330 const a = i / 8 * TAU + Math.PI / 8; 1331…</span> <span class="fold-size">34 lines · 2.0 kB</span></summary>
+<pre><code>1329	  if (s &gt; 0.01) for (let i = 0; i &lt; 8; i++) {
+1330	    const a = i / 8 * TAU + Math.PI / 8;
+1331	    lit(box, M.trsY(MDL, table.x + Math.sin(a) * 6.5, 2.3 * s, table.z + Math.cos(a) * 6.5, a + Math.PI, 0.32, 4.6 * s, 0.32), [0.02, 0.024, 0.04], scl(glowCol, 0.9), 3, 1);
+1332	  }
+1333	}
+1334	function drawProjector() {
+1335	  const s0 = baseSize();
+1336	  lit(cyl, M.trsY(MDL, table.x, table.top, table.z, 0, s0 * 0.36, 0.022, s0 * 0.36), [0.03, 0.035, 0.06], [0, 0, 0], 3, 0);
+1337	  lit(cyl, M.trsY(MDL, table.x, table.top + 0.016, table.z, 0, s0 * 0.362, 0.006, s0 * 0.362), [0, 0, 0], scl(glowCol, 1.3), 3, 0);
+1338	}
+1339	function drawDevices() {
+1340	  for (const s of inputs.values()) {
+1341	    if (s.gripM) lit(box, M.mul(MDL, s.gripM, M.trsY(TMP, 0, -0.012, 0.04, 0, 0.03, 0.026, 0.1)), [0.02, 0.024, 0.04], scl(rimColor, 0.22), 2, 0);
+1342	    if (s.joints) for (let j = 0; j &lt; 25; j++) {
+1343	      const o = j * 16, r = Math.max(s.jr[j], 0.005);
+1344	      lit(sphere, M.trsY(MDL, s.jm[o + 12], s.jm[o + 13], s.jm[o + 14], 0, r, r, r), [0.25, 0.35, 0.5], scl(rimColor, 0.3), 2, 0);
+1345	    }
+1346	  }
+1347	}
+1348	function drawTerrain(v, k, fog) {
+1349	  const P = P_TERRAIN, u = P.u; gl.useProgram(P.p);
+1350	  gl.uniformMatrix4fv(u.uVP, false, VP); gl.uniformMatrix4fv(u.uModel, false, terrainM);
+1351	  bindData(P); bindSky(P, 2); setPal(P);
+1352	  const B = disp.B;
+1353	  gl.uniform1f(u.uEps, B ? clamp(1 / (B.N * view.span / B.region.span), 1 / 1600, 1 / 60) : 1 / 400);
+1354	  gl.uniform1f(u.uK, TX.H / TX.size); gl.uniform1f(u.uYaw, TX.yaw);
+1355	  gl.uniform3f(u.uCam, v.cam[0], v.cam[1], v.cam[2]); gl.uniform1f(u.uTime, tNow); gl.uniform1f(u.uCycle, CYCLE);
+1356	  gl.uniform1f(u.uImm, k); gl.uniform1f(u.uBuild, build);
+1357	  const pr = (now() - disp.pulseAt) / 1000 * 0.45; gl.uniform1f(u.uPulse, pr &lt; 0.75 ? pr : -1);
+1358	  gl.uniform1f(u.uScan, flight &amp;&amp; flight.phase === &#x27;wait&#x27; &amp;&amp; job ? 0.06 + 0.42 * job.row / job.N : -1);
+1359	  gl.uniform3fv(u.uFogCol, fog.col)
+… [truncated, 33405 more chars]
+</code></pre>
+</details></div></article>
+<article class="msg msg-assistant" id="m-12" data-line="289"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Assistant</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:15:40.529Z" title="2026-10-29T21:15:40.529Z">29 Oct 2026, 21:15 UTC</time></span></h3><a class="msg-num" href="#m-12" title="Permalink to message 12">#12</a></header><div class="msg-body md"><p>Reading done; running static checks on the extracted script now.</p>
+</div></article>
+<article class="msg msg-assistant" id="m-13" data-line="293"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Assistant</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:15:43.832Z" title="2026-10-29T21:15:43.832Z">29 Oct 2026, 21:15 UTC</time></span></h3><a class="msg-num" href="#m-13" title="Permalink to message 13">#13</a></header><div class="msg-body md"><details class="fold fold-call"><summary><span class="fold-kind">Tool call</span> <code class="fold-tool" title="Bash">Bash</code> <span class=fold-peek>Extract inline script and syntax-check it</span> <span class="fold-size">4 lines · 491 B</span></summary>
+<pre><code>{
+ &quot;command&quot;: &quot;cd /tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/b3060dc3-5117-4831-bb05-9a5ced81aa18/scratchpad &amp;&amp; F=/tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scratchpad/blind/candidate-02/index.html; sed -n &#x27;102,1823p&#x27; $F &gt; c02.js &amp;&amp; node --check c02.js &amp;&amp; echo SYNTAX_OK; grep -nE &#x27;https?://|&lt;link|import\\(&#x27; $F | head; grep -c &#x27;requestSession\\|isSessionSupported&#x27; $F&quot;,
+ &quot;description&quot;: &quot;Extract inline script and syntax-check it&quot;
+}
+</code></pre>
+</details></div></article>
+<article class="msg msg-tool" id="m-14" data-line="303"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Tool output</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:15:45.322Z" title="2026-10-29T21:15:45.322Z">29 Oct 2026, 21:15 UTC</time></span></h3><a class="msg-num" href="#m-14" title="Permalink to message 14">#14</a></header><div class="msg-body md"><details class="fold fold-result"><summary><span class="fold-kind">Tool result</span> <span class=fold-peek>SYNTAX_OK 3 Shell cwd was reset to /home/mpuchstein/Dev/AI/MandelbrotXR</span> <span class="fold-size">5 lines · 81 B</span></summary>
+<pre><code>SYNTAX_OK
+3
+Shell cwd was reset to /home/mpuchstein/Dev/AI/MandelbrotXR
+</code></pre>
+</details></div></article>
+<article class="msg msg-assistant" id="m-15" data-line="315"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Assistant</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:16:57.039Z" title="2026-10-29T21:16:57.039Z">29 Oct 2026, 21:16 UTC</time></span></h3><a class="msg-num" href="#m-15" title="Permalink to message 15">#15</a></header><div class="msg-body md"><details class="fold fold-call"><summary><span class="fold-kind">Tool call</span> <code class="fold-tool" title="Bash">Bash</code> <span class=fold-peek>mkdir -p /tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d2…</span> <span class="fold-size">3 lines · 4.1 kB</span></summary>
+<pre><code>{
+ &quot;command&quot;: &quot;mkdir -p /tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scratchpad/blind-out/html/candidate-02 &amp;&amp; cat &gt; /tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scratchpad/blind-out/html/candidate-02/REVIEW.md &lt;&lt;&#x27;EOF&#x27;\n# HTML Review — candidate-02\n\n| Criterion | Score | One-line reason |\n|---|---|---|\n| 1. Done-when fulfilment | 8 | Immersive VR and AR sessions place a 3D Mandelbrot heightfield \&quot;hologram\&quot; on a pedestal in a sky-domed arena; iPhones get a gyro and Cardboard fallback. It is an open arena, not an enclosed room. |\n| 2. Device/XR compatibility | 8 | No required features, `local-floor`→`local` fallback, optional hand-tracking, transient-pointer, screen-space AR with hit-test and dom-overlay, xr-standard gamepads, WebGL2 float-format fallbacks. |\n| 3. Visual wow effect | 9 | GPU perturbation deep zoom (~43 octaves), distance-estimate terrain, procedural nebula cubemap with env reflections and fresnel, ACES tonemap, palette cycling, glows, particles, build/scan animations, Julia inset. |\n| 4. Usability &amp; controls | 8 | Clear landing page, per-input-type help, a world-space panel that follows the head, grab-pan, two-hand zoom and rotate, tap-to-dive, history, guided \&quot;Dive\&quot; tour, haptics, audio. No comfort vignette. |\n| 5. Code quality &amp; robustness | 7 | Strong engineering (async PBO readback, adaptive GPU budget, scissored progressive rendering), but dense one-liner style, a leaked XR session on the error path, synchronous CPU probes and leftover debug hooks. |\n| 6. Prompt adherence | 9 | Truly standalone: one file with zero external requests (raw WebGL2 + WebXR, no three.js) and an XR-first design. |\n\n**Overall score: 8.5 / 10**\n\n## Summary of what the file is\n- 1826 lines and ~112 KB. A single inline IIFE script (L102–1823) that passes `node --check`. It has no CDN, import or network dependency (grep for `http`/`&lt;link`/`import(` finds nothing).\n- Custom matrix and quaternion helpers (L120–185) and 12 GLSL ES 3.0 programs (L214–592) on hand-written WebGL2. No engine.\n- The fractal is computed into 640² / 160² float textures by `FS_MANDEL` (L241). It uses perturbation iteration with Zhuoran-style rebasing, a float64 reference orbit (`uploadRef`, L781), dual-number derivative distance estimation and interior detection. A height-mapped 256² disc mesh then displaces it (`VS_TERRAIN`, L354).\n\n## 1. Done-when fulfilment — 8\n- `detect()` (L1798) calls `isSessionSupported` for `immersive-vr` and `immersive-ar` and shows \&quot;Enter VR\&quot; / \&quot;Enter AR\&quot;. `startXR()` (L1753) creates the session, `XRWebGLLayer` and reference space, then drives `onXRFrame` (L1725).\n- In VR the scene has a procedural nebula skybox (`FS_SKYGEN`, L306), a reflective grid floor with animated rings (`FS_FLOOR`, L491), 8 emissive pillars, a halo ring, a pedestal (`drawRoom`, L1322), dust particles and the fractal hologram on the pedestal. \&quot;Immerse\&quot; (`toggleImmerse`, L1650) scales the landscape to 36 m around the user.\n- In AR on headsets the hologram is auto-placed in front of the user (L1733). On Android phones in AR it uses hit-test reticle placement (L1735, `placeAR` L1645).\n- On iPhones (no WebXR) the status text says so explicitly (L1810). The in-browser explorer offers \&quot;Look around\&quot; (DeviceOrientation with the iOS permission request, L1599) and a \&quot;Cardboard\&quot; side-by-side stereo mode (L1611, L1522).\n- Deductions:\n  - The \&quot;room\&quot; is an open arena (sky, floor, pillars) rather than an enclosed room.\n  - The iPhone path is not a WebXR session and has no lens distortion.\n  - WebXR needs HTTPS or localhost. This is correctly detected and explained (L1809), but it means the file cannot simply be opened from a plain-HTTP LAN server.\n\n## 2. Device/XR compatibility — 8\n- **Session features:** only `optionalFeatures` are requested: `local-floor` and `hand-tracking`, plus `hit-test` and `dom-overlay` for AR (L1758–1759). No required 
+… [truncated, 10358 more chars]
+</code></pre>
+</details></div></article>
+<article class="msg msg-tool" id="m-16" data-line="324"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Tool output</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:16:57.776Z" title="2026-10-29T21:16:57.776Z">29 Oct 2026, 21:16 UTC</time></span></h3><a class="msg-num" href="#m-16" title="Permalink to message 16">#16</a></header><div class="msg-body md"><details class="fold fold-result"><summary><span class="fold-kind">Tool result</span> <span class=fold-peek>written</span> <span class="fold-size">3 lines · 17 B</span></summary>
+<pre><code>written
+</code></pre>
+</details></div></article>
+<article class="msg msg-assistant" id="m-17" data-line="334"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Assistant</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T21:17:02.337Z" title="2026-10-29T21:17:02.337Z">29 Oct 2026, 21:17 UTC</time></span></h3><a class="msg-num" href="#m-17" title="Permalink to message 17">#17</a></header><div class="msg-body md"><p>I scored candidate-02 at <strong>8.5/10 overall</strong>.</p>
+<p><strong>Verdict:</strong> It&#x27;s an ambitious single file with no external dependencies, written in plain WebGL2 + WebXR. It renders the Mandelbrot set as a 3D landscape you can zoom into very deeply (~2^43), on a pedestal under a generated starry sky. It should impress on Quest/Pico and in Android AR, and iPhones get a motion-sensor and Cardboard fallback. Its weak points are robustness and very dense code, but nothing blocks entering the room and seeing the set in 3D.</p>
+<p><strong>Biggest issue (major):</strong> if VR/AR setup fails after the session has already opened, the error handler never closes it (<code>startXR</code>, L1760–1785). The user is left stuck in a black, frozen headset view.</p>
+<p>The full review is at <code>/tmp/claude-1000/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-2d81-433c-9df8-b0d851d25219/scratchpad/blind-out/html/candidate-02/REVIEW.md</code>.</p>
+</div></article>
+<article class="msg msg-user" id="m-18" data-line="344"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">User</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T22:19:46.821Z" title="2026-10-29T22:19:46.821Z">29 Oct 2026, 22:19 UTC</time></span></h3><a class="msg-num" href="#m-18" title="Permalink to message 18">#18</a></header><div class="msg-body md"><p>{&quot;type&quot;:&quot;shutdown_request&quot;,&quot;requestId&quot;:&quot;shutdown-1793312386048@html-c02&quot;,&quot;from&quot;:&quot;team-lead&quot;,&quot;reason&quot;:&quot;Review finished and committed; shutting down.&quot;,&quot;timestamp&quot;:&quot;2026-10-29T22:19:46.048Z&quot;}</p>
+<p>This is a shutdown request. To approve it, call SendMessage with exactly this input, where &quot;message&quot; is a JSON object rather than a string: {&quot;to&quot;:&quot;team-lead&quot;,&quot;message&quot;:{&quot;type&quot;:&quot;shutdown_response&quot;,&quot;request_id&quot;:&quot;shutdown-1793312386048@html-c02&quot;,&quot;approve&quot;:true}}. Approving ends your process; a plain-text acknowledgment does not shut you down. To decline, for example because you&#x27;re mid-task, send the same input with &quot;approve&quot;: false and a &quot;reason&quot;.</p>
+</div></article>
+<article class="msg msg-assistant" id="m-19" data-line="350"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Assistant</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T22:19:49.063Z" title="2026-10-29T22:19:49.063Z">29 Oct 2026, 22:19 UTC</time></span></h3><a class="msg-num" href="#m-19" title="Permalink to message 19">#19</a></header><div class="msg-body md"><details class="fold fold-call"><summary><span class="fold-kind">Tool call</span> <code class="fold-tool" title="ToolSearch">ToolSearch</code> <span class=fold-peek>select:SendMessage</span> <span class="fold-size">4 lines · 53 B</span></summary>
+<pre><code>{
+ &quot;query&quot;: &quot;select:SendMessage&quot;,
+ &quot;max_results&quot;: 1
+}
+</code></pre>
+</details></div></article>
+<article class="msg msg-tool" id="m-20" data-line="360"><header class="msg-head"><h3 class="msg-title"><span class="msg-role">Tool output</span> <span class="msg-meta"><time class="tx-time" datetime="2026-10-29T22:19:49.071Z" title="2026-10-29T22:19:49.071Z">29 Oct 2026, 22:19 UTC</time></span></h3><a class="msg-num" href="#m-20" title="Permalink to message 20">#20</a></header><div class="msg-body md"><details class="fold fold-result"><summary><span class="fold-kind">Tool result</span> <span class=fold-peek>[tool_reference]</span> <span class="fold-size">3 lines · 26 B</span></summary>
+<pre><code>[tool_reference]
+</code></pre>
+</details></div></article>
+</div>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../../data/">Data &amp; schema</a> · <a href="../../data/changelog/">Changelog</a> · <a href="../../feed.xml">Atom feed</a> · <a href="../../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>

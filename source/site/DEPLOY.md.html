@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DEPLOY.md · site · MandelbrotXR results</title>
+<meta name="description" content="Rendered copy of site/DEPLOY.md from the MandelbrotXR repository.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/source/site/DEPLOY.md.html">
+<link rel="icon" href="../../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../../feed.xml">
+<script src="../../assets/js/theme.js?v=7a718e6155"></script>
+<script src="../../assets/js/transcripts.js?v=54e22884d0" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../../">Home</a></li><li><a href="../../rankings/">Rankings</a></li><li><a href="../../candidates/">Candidates</a></li><li><a href="../../compare/">Compare</a></li><li><a href="../../techniques/">Techniques</a></li><li><a href="../../judges/">Judges &amp; reviews</a></li><li><a href="../../transcripts/" aria-current="page">Transcripts</a></li><li><a href="../../methodology/">Methodology</a></li><li><a href="../../data/">Data</a></li><li><a href="../../search/">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../">Home</a></li><li><a href="../../transcripts/">Transcripts</a></li><li><a href="../../source/">Source files</a></li><li><a href="../../source/site/">site</a></li><li><span aria-current="page">DEPLOY.md</span></li></ol></nav>
+<h1 class="src-path">DEPLOY.md</h1><ul class="tx-meta src-meta"><li><code>site/<wbr>DEPLOY.md</code></li><li>104 lines · 4.8 kB</li><li>in <a href="../../source/site/">site/</a></li><li><a href="https://github.com/mpuchstein/MandelbrotXR/blob/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a/site/DEPLOY.md" rel="noopener">Original on GitHub at 75d36a0</a></li></ul><section class="src-doc" aria-label="Rendered Markdown"><div class="md"><h2 id="md-deploying-the-mandelbrotxr-results-site">Deploying the MandelbrotXR results site</h2>
+<p>Recommendations only, for the owner to apply. The build does not deploy anything.</p>
+<h3 id="md-build">Build</h3>
+<p>From a clean clone, at the repository root (stdlib only, Python ≥ 3.12):</p>
+<pre><code class="language-bash">python3 -I site/build.py --out site/dist
+</code></pre>
+<p>The output directory (<code><span class="nw">site</span>/<wbr><span class="nw">dist</span>/<wbr></code>, gitignored) is the complete site. Publish a copy of it as the web
+root of <code><span class="nw">https:</span>/<wbr>/<wbr><span class="nw">mandelbrotxr.puchstein.dev</span>/<wbr></code>. <code>--base-url</code> (default <code><span class="nw">https:</span>/<wbr>/<wbr><span class="nw">mandelbrotxr.puchstein.dev</span>/<wbr></code>) only
+changes the QR codes, the Atom feed and the canonical links; everything else is relative, so the same
+build also works under any path prefix.</p>
+<p>The build empties <code>--out</code> before it writes, so a running build blanks that directory and a failed one
+leaves it partial. Build into a scratch directory and publish the finished tree; never point <code>--out</code> at
+the directory the web server serves or at a git checkout of the published site.</p>
+<p>The build needs the git history (changelog and feed). A shallow clone is unshallowed automatically
+(<code>git fetch --unshallow</code>), so the build host needs network access to the remote in that case.</p>
+<h3 id="md-webxr-requires-https">WebXR requires HTTPS</h3>
+<p>WebXR sessions (<code>navigator.xr.requestSession</code>) only exist in a secure context. Serve the site over
+HTTPS (Caddy does this automatically); over plain HTTP the products load, but &quot;Enter VR/AR&quot; fails on
+every headset and phone. <code>localhost</code> counts as secure for local testing.</p>
+<h3 id="md-caddy">Caddy</h3>
+<p>Two policies: strict for site pages, permissive for the products under <code>/<wbr><span class="nw">play</span>/<wbr><span class="nw">*</span></code>. The products are
+untouched single-file HTML pages with inline scripts and styles; one of them
+(<code>Google-Web-Gemini4Argon-High-v1</code>) loads three.js r128 from <code>cdnjs.cloudflare.com</code>, the Tailwind play
+CDN from <code>cdn.tailwindcss.com</code> and fonts from Google Fonts at runtime.</p>
+<pre><code class="language-caddyfile">mandelbrotxr.puchstein.dev {
+	# a published copy of the build output, never a build&#x27;s --out directory
+	root * /srv/mandelbrotxr/www
+	encode zstd gzip
+
+	# never serve repository internals if the site is deployed from a checkout
+	@hidden path /.git /.git/* */.git/* /.mandelbrotxr-site
+	respond @hidden 404
+
+	header {
+		X-Content-Type-Options &quot;nosniff&quot;
+		Referrer-Policy &quot;strict-origin-when-cross-origin&quot;
+		Strict-Transport-Security &quot;max-age=31536000&quot;
+		-Server
+	}
+
+	# site pages: strict CSP (the build has no inline scripts, no on*= handlers, no third-party requests)
+	@site not path /play/*
+	header @site {
+		Content-Security-Policy &quot;default-src &#x27;self&#x27;; img-src &#x27;self&#x27; data:; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27;; script-src &#x27;self&#x27;; frame-ancestors &#x27;self&#x27;&quot;
+		Permissions-Policy &quot;camera=(), microphone=(), geolocation=()&quot;
+	}
+
+	# products: inline scripts/styles + the Gemini CDNs, and the sensor/XR features WebXR needs
+	header /play/* {
+		Content-Security-Policy &quot;default-src &#x27;self&#x27;; script-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; blob: https://cdnjs.cloudflare.com https://cdn.tailwindcss.com; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; https://fonts.googleapis.com; font-src &#x27;self&#x27; data: https://fonts.gstatic.com; img-src &#x27;self&#x27; data: blob:; connect-src &#x27;self&#x27; data: blob:; worker-src &#x27;self&#x27; blob:; frame-ancestors &#x27;self&#x27;&quot;
+		Permissions-Policy &quot;xr-spatial-tracking=(self), gyroscope=(self), accelerometer=(self), magnetometer=(self)&quot;
+	}
+
+	# caching: hashed assets are immutable (URLs carry ?v=&lt;content hash&gt;); pages revalidate
+	@assets path /assets/*
+	header @assets Cache-Control &quot;public, max-age=31536000, immutable&quot;
+	@media path /media/*
+	header @media Cache-Control &quot;public, max-age=604800&quot;
+	@data path /data/* /search-index/* /feed.xml
+	header @data Cache-Control &quot;public, max-age=300, must-revalidate&quot;
+	@pages path *.html */
+	header @pages Cache-Control &quot;public, max-age=0, must-revalidate&quot;
+
+	file_server
+}
+</code></pre>
+<p>Notes:</p>
+<ul>
+<li>If you prefer no CSP at all for <code>/<wbr><span class="nw">play</span>/<wbr><span class="nw">*</span></code>, drop that <code>Content-Security-Policy</code> line but keep the
+<code>Permissions-Policy</code>. <code>&#x27;unsafe-eval&#x27;</code> and <code>blob:</code> are listed because bundled three.js builds and the
+Tailwind play CDN may compile code or spawn workers at runtime; tighten them only after testing every
+product on a headset.</li>
+<li><code>Permissions-Policy</code> for <code>/<wbr><span class="nw">play</span>/<wbr><span class="nw">*</span></code> allows <code>xr-spatial-tracking</code>, <code>gyroscope</code>, <code>accelerometer</code> and
+<code>magnetometer</code> for <code>self</code>, which the products need for immersive sessions and the phone
+&quot;look around&quot; fallbacks. Site pages do not need them.</li>
+<li>The search index (<code>/<wbr><span class="nw">search-index</span>/<wbr><span class="nw">*.json</span></code>) and <code><span class="nw">data</span>/<wbr><span class="nw">*.json</span></code> are plain static files; compression helps.</li>
+<li><code>.mandelbrotxr-site</code> is a marker the build writes so it never wipes a foreign directory; it is harmless
+but need not be served.</li>
+</ul>
+<h3 id="md-checks-after-deploying">Checks after deploying</h3>
+<pre><code class="language-bash">curl -sI https://mandelbrotxr.puchstein.dev/ | grep -i content-security-policy
+</code></pre>
+<pre><code class="language-bash">curl -sI https://mandelbrotxr.puchstein.dev/play/opus55-max-v1/ | grep -i permissions-policy
+</code></pre>
+<p>Then open a product on a Quest or an Android phone and enter VR/AR.</p>
+</div></section><details class="src-view"><summary>Source with line numbers</summary><pre class="src"><code><span id="L1"># Deploying the MandelbrotXR results site</span><span id="L2"></span><span id="L3">Recommendations only, for the owner to apply. The build does not deploy anything.</span><span id="L4"></span><span id="L5">## Build</span><span id="L6"></span><span id="L7">From a clean clone, at the repository root (stdlib only, Python ≥ 3.12):</span><span id="L8"></span><span id="L9">```bash</span><span id="L10">python3 -I site/build.py --out site/dist</span><span id="L11">```</span><span id="L12"></span><span id="L13">The output directory (`site/dist/`, gitignored) is the complete site. Publish a copy of it as the web</span><span id="L14">root of `https://mandelbrotxr.puchstein.dev/`. `--base-url` (default `https://mandelbrotxr.puchstein.dev/`) only</span><span id="L15">changes the QR codes, the Atom feed and the canonical links; everything else is relative, so the same</span><span id="L16">build also works under any path prefix.</span><span id="L17"></span><span id="L18">The build empties `--out` before it writes, so a running build blanks that directory and a failed one</span><span id="L19">leaves it partial. Build into a scratch directory and publish the finished tree; never point `--out` at</span><span id="L20">the directory the web server serves or at a git checkout of the published site.</span><span id="L21"></span><span id="L22">The build needs the git history (changelog and feed). A shallow clone is unshallowed automatically</span><span id="L23">(`git fetch --unshallow`), so the build host needs network access to the remote in that case.</span><span id="L24"></span><span id="L25">## WebXR requires HTTPS</span><span id="L26"></span><span id="L27">WebXR sessions (`navigator.xr.requestSession`) only exist in a secure context. Serve the site over</span><span id="L28">HTTPS (Caddy does this automatically); over plain HTTP the products load, but &quot;Enter VR/AR&quot; fails on</span><span id="L29">every headset and phone. `localhost` counts as secure for local testing.</span><span id="L30"></span><span id="L31">## Caddy</span><span id="L32"></span><span id="L33">Two policies: strict for site pages, permissive for the products under `/play/*`. The products are</span><span id="L34">untouched single-file HTML pages with inline scripts and styles; one of them</span><span id="L35">(`Google-Web-Gemini4Argon-High-v1`) loads three.js r128 from `cdnjs.cloudflare.com`, the Tailwind play</span><span id="L36">CDN from `cdn.tailwindcss.com` and fonts from Google Fonts at runtime.</span><span id="L37"></span><span id="L38">```caddyfile</span><span id="L39">mandelbrotxr.puchstein.dev {</span><span id="L40">	# a published copy of the build output, never a build&#x27;s --out directory</span><span id="L41">	root * /srv/mandelbrotxr/www</span><span id="L42">	encode zstd gzip</span><span id="L43"></span><span id="L44">	# never serve repository internals if the site is deployed from a checkout</span><span id="L45">	@hidden path /.git /.git/* */.git/* /.mandelbrotxr-site</span><span id="L46">	respond @hidden 404</span><span id="L47"></span><span id="L48">	header {</span><span id="L49">		X-Content-Type-Options &quot;nosniff&quot;</span><span id="L50">		Referrer-Policy &quot;strict-origin-when-cross-origin&quot;</span><span id="L51">		Strict-Transport-Security &quot;max-age=31536000&quot;</span><span id="L52">		-Server</span><span id="L53">	}</span><span id="L54"></span><span id="L55">	# site pages: strict CSP (the build has no inline scripts, no on*= handlers, no third-party requests)</span><span id="L56">	@site not path /play/*</span><span id="L57">	header @site {</span><span id="L58">		Content-Security-Policy &quot;default-src &#x27;self&#x27;; img-src &#x27;self&#x27; data:; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27;; script-src &#x27;self&#x27;; frame-ancestors &#x27;self&#x27;&quot;</span><span id="L59">		Permissions-Policy &quot;camera=(), microphone=(), geolocation=()&quot;</span><span id="L60">	}</span><span id="L61"></span><span id="L62">	# products: inline scripts/styles + the Gemini CDNs, and the sensor/XR features WebXR needs</span><span id="L63">	header /play/* {</span><span id="L64">		Content-Security-Policy &quot;default-src &#x27;self&#x27;; script-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; blob: https://cdnjs.cloudflare.com https://cdn.tailwindcss.com; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; https://fonts.googleapis.com; font-src &#x27;self&#x27; data: https://fonts.gstatic.com; img-src &#x27;self&#x27; data: blob:; connect-src &#x27;self&#x27; data: blob:; worker-src &#x27;self&#x27; blob:; frame-ancestors &#x27;self&#x27;&quot;</span><span id="L65">		Permissions-Policy &quot;xr-spatial-tracking=(self), gyroscope=(self), accelerometer=(self), magnetometer=(self)&quot;</span><span id="L66">	}</span><span id="L67"></span><span id="L68">	# caching: hashed assets are immutable (URLs carry ?v=&lt;content hash&gt;); pages revalidate</span><span id="L69">	@assets path /assets/*</span><span id="L70">	header @assets Cache-Control &quot;public, max-age=31536000, immutable&quot;</span><span id="L71">	@media path /media/*</span><span id="L72">	header @media Cache-Control &quot;public, max-age=604800&quot;</span><span id="L73">	@data path /data/* /search-index/* /feed.xml</span><span id="L74">	header @data Cache-Control &quot;public, max-age=300, must-revalidate&quot;</span><span id="L75">	@pages path *.html */</span><span id="L76">	header @pages Cache-Control &quot;public, max-age=0, must-revalidate&quot;</span><span id="L77"></span><span id="L78">	file_server</span><span id="L79">}</span><span id="L80">```</span><span id="L81"></span><span id="L82">Notes:</span><span id="L83">- If you prefer no CSP at all for `/play/*`, drop that `Content-Security-Policy` line but keep the</span><span id="L84">  `Permissions-Policy`. `&#x27;unsafe-eval&#x27;` and `blob:` are listed because bundled three.js builds and the</span><span id="L85">  Tailwind play CDN may compile code or spawn workers at runtime; tighten them only after testing every</span><span id="L86">  product on a headset.</span><span id="L87">- `Permissions-Policy` for `/play/*` allows `xr-spatial-tracking`, `gyroscope`, `accelerometer` and</span><span id="L88">  `magnetometer` for `self`, which the products need for immersive sessions and the phone</span><span id="L89">  &quot;look around&quot; fallbacks. Site pages do not need them.</span><span id="L90">- The search index (`/search-index/*.json`) and `data/*.json` are plain static files; compression helps.</span><span id="L91">- `.mandelbrotxr-site` is a marker the build writes so it never wipes a foreign directory; it is harmless</span><span id="L92">  but need not be served.</span><span id="L93"></span><span id="L94">## Checks after deploying</span><span id="L95"></span><span id="L96">```bash</span><span id="L97">curl -sI https://mandelbrotxr.puchstein.dev/ | grep -i content-security-policy</span><span id="L98">```</span><span id="L99"></span><span id="L100">```bash</span><span id="L101">curl -sI https://mandelbrotxr.puchstein.dev/play/opus55-max-v1/ | grep -i permissions-policy</span><span id="L102">```</span><span id="L103"></span><span id="L104">Then open a product on a Quest or an Android phone and enter VR/AR.</span></code></pre></details>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../../data/">Data &amp; schema</a> · <a href="../../data/changelog/">Changelog</a> · <a href="../../feed.xml">Atom feed</a> · <a href="../../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>

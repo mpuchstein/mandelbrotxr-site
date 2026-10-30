@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search · MandelbrotXR results</title>
+<meta name="description" content="Search the MandelbrotXR reviews, judge rankings, summaries and transcripts.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/search/">
+<link rel="icon" href="../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../feed.xml">
+<script src="../assets/js/theme.js?v=7a718e6155"></script>
+<script src="../assets/js/search.js?v=5284ec0bdf" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../">Home</a></li><li><a href="../rankings/">Rankings</a></li><li><a href="../candidates/">Candidates</a></li><li><a href="../compare/">Compare</a></li><li><a href="../techniques/">Techniques</a></li><li><a href="../judges/">Judges &amp; reviews</a></li><li><a href="../transcripts/">Transcripts</a></li><li><a href="../methodology/">Methodology</a></li><li><a href="../data/">Data</a></li><li><a href="../search/" aria-current="page">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../">Home</a></li><li><span aria-current="page">Search</span></li></ol></nav>
+<header class="search-head"><h1>Search</h1>
+<p class="lede">Full-text search over the reviews, judge rankings and summaries, the techniques catalog, the methodology and every transcript.</p></header>
+<form id="search-form" role="search" method="get" action="../search/" data-index="../search-index/" data-root="../">
+<label for="q" class="sr-only">Search the results</label>
+<input type="search" id="q" name="q" autocomplete="off" spellcheck="false" placeholder="Search reviews, rankings, transcripts…" aria-describedby="search-help">
+<button type="submit" class="btn btn-primary">Search</button>
+<div id="search-kinds" role="group" aria-label="Filter by kind"></div>
+</form>
+<p id="search-help" class="small muted">All words must match; the last word also matches as a prefix while you type; put a phrase in "quotes" to match it exactly.</p>
+<p class="search-examples small"><span class="muted">Try:</span> <a href="../search/?q=perturbation">perturbation</a><span class="sep" aria-hidden="true"> · </span><a href="../search/?q=alert">alert</a><span class="sep" aria-hidden="true"> · </span><a href="../search/?q=%22Cardboard%20stereo%22">&quot;Cardboard stereo&quot;</a><span class="sep" aria-hidden="true"> · </span><a href="../search/?q=hallucination">hallucination</a><span class="sep" aria-hidden="true"> · </span><a href="../search/?q=gaze%20dwell">gaze dwell</a><span class="sep" aria-hidden="true"> · </span><a href="../search/?q=shader%20compile">shader compile</a></p>
+<p id="search-status" aria-live="polite"></p>
+<ol id="search-results"></ol>
+<p id="search-nojs" class="nojs-note small muted">Search runs in your browser and needs JavaScript. Without it, browse the
+<a href="../rankings/">Rankings</a>, <a href="../candidates/">Candidates</a>, <a href="../judges/">Judges &amp; reviews</a>,
+<a href="../techniques/">Techniques</a> and <a href="../transcripts/">Transcripts</a> indexes.
+The index covers 2,443 documents in 4,049 passages: page (39), ranking (5), review (24), summary (5), transcript (2370).</p>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../data/">Data &amp; schema</a> · <a href="../data/changelog/">Changelog</a> · <a href="../feed.xml">Atom feed</a> · <a href="../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>

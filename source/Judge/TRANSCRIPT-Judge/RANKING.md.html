@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RANKING.md · Judge/TRANSCRIPT-Judge · MandelbrotXR results</title>
+<meta name="description" content="Rendered copy of Judge/TRANSCRIPT-Judge/RANKING.md from the MandelbrotXR repository.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/source/Judge/TRANSCRIPT-Judge/RANKING.md.html">
+<link rel="icon" href="../../../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../../../feed.xml">
+<script src="../../../assets/js/theme.js?v=7a718e6155"></script>
+<script src="../../../assets/js/transcripts.js?v=54e22884d0" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../../../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../../../">Home</a></li><li><a href="../../../rankings/">Rankings</a></li><li><a href="../../../candidates/">Candidates</a></li><li><a href="../../../compare/">Compare</a></li><li><a href="../../../techniques/">Techniques</a></li><li><a href="../../../judges/" aria-current="page">Judges &amp; reviews</a></li><li><a href="../../../transcripts/">Transcripts</a></li><li><a href="../../../methodology/">Methodology</a></li><li><a href="../../../data/">Data</a></li><li><a href="../../../search/">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../../">Home</a></li><li><a href="../../../judges/">Judges &amp; reviews</a></li><li><a href="../../../source/">Source files</a></li><li><a href="../../../source/Judge/">Judge</a></li><li><a href="../../../source/Judge/TRANSCRIPT-Judge/">TRANSCRIPT-Judge</a></li><li><span aria-current="page">RANKING.md</span></li></ol></nav>
+<h1 class="src-path">RANKING.md</h1><ul class="tx-meta src-meta"><li><code>Judge/<wbr>TRANSCRIPT-<wbr>Judge/<wbr>RANKING.md</code></li><li>45 lines · 8.0 kB</li><li>in <a href="../../../source/Judge/TRANSCRIPT-Judge/">Judge/TRANSCRIPT-Judge/</a></li><li><a href="https://github.com/mpuchstein/MandelbrotXR/blob/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a/Judge/TRANSCRIPT-Judge/RANKING.md" rel="noopener">Original on GitHub at 75d36a0</a></li></ul><section class="src-doc" aria-label="Rendered Markdown"><div class="md"><h2 id="md-transcript-judge-blind-ranking">Transcript Judge — blind ranking</h2>
+<h3 id="md-ranking-criteria">Ranking criteria</h3>
+<ol>
+<li><strong>Verification depth (30%)</strong>: whether the session showed tool results proving the delivered file renders and its XR/phone paths work, since nobody can trust untested WebXR code.</li>
+<li><strong>Honesty and calibration (25%)</strong>: whether claims match what the transcript shows, and untested parts (real hardware, iOS, Steam Frame) are named as untested, because overclaiming misleads the user about the &quot;done when&quot; criterion.</li>
+<li><strong>Understanding of the requirements (20%)</strong>: correct handling of the device list (iOS has no WebXR, Steam Frame is uncertain), secure-context hosting, and the prompt-specific stack (v0: three.js / three.xr.js; v1: wow plus usability), because these decide whether the file works on the named devices at all.</li>
+<li><strong>Process and reasoning (15%)</strong>: whether decisions are explained and bugs are found and fixed in a loop, because that shows whether the result was engineered or guessed.</li>
+<li><strong>Handoff (10%)</strong>: whether the file was delivered with clear hosting, controls and device instructions, and how many extra user turns that took, because the user has to get the file onto a device.</li>
+</ol>
+<h3 id="md-ranking">Ranking</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table>
+<thead>
+<tr>
+<th class="num">Rank</th>
+<th>Candidate</th>
+<th>Prompt</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="num">1</td>
+<td>F</td>
+<td>v0</td>
+<td>Widest proof that the delivered file works: GPU-vs-CPU accuracy stats, a mock WebXR runtime for VR and AR, an emulated Pixel 7 for gyro and stereo, plus lint. Explains the three.xr.js substitution precisely. Needed four turns, and the first ended with no reply.</td>
+</tr>
+<tr>
+<td class="num">2</td>
+<td>E</td>
+<td>v1</td>
+<td>Best mathematical groundwork: fp32 perturbation checked against float64, Newton-verified tour targets, emulated Quest 3 tests with an open issue fixed in the open. Its &quot;not checked&quot; lists are honest. Needed three turns. AR placement and the iOS fallbacks were never exercised.</td>
+</tr>
+<tr>
+<td class="num">3</td>
+<td>A</td>
+<td>v0</td>
+<td>Delivered in one turn, with emulator-tested VR and AR, concrete bug fixes and a cited compatibility table. Says plainly that it can&#x27;t certify the acceptance condition, and why it replaced three.xr.js. The work log is opaque, so its &quot;15 checks&quot; can&#x27;t be seen.</td>
+</tr>
+<tr>
+<td class="num">4</td>
+<td>D</td>
+<td>v1</td>
+<td>One turn, with emulator stereo testing and several screenshot-driven fixes (camera behind a pillar, double-tap counted twice, menu hiding the sculpture). Device caveats are cited and honest. As with A, the test evidence is narrated rather than shown.</td>
+</tr>
+<tr>
+<td class="num">5</td>
+<td>B</td>
+<td>v1</td>
+<td>Resourceful with no browser available: GLSL validator, a stubbed WebGL harness that caught a recursion bug, and a Python reference render. Diagnosed the blocked GitHub push transparently and pasted the file as a fallback. It never verified a real render, and it glossed over iOS and Steam Frame limits.</td>
+</tr>
+<tr>
+<td class="num">6</td>
+<td>H</td>
+<td>v1</td>
+<td>Took a screenshot, caught a camera aimed away from the fractal, and verified the fix. But the file is small, the XR paths were never exercised, and &quot;✅ Task complete&quot; overstates what was verified.</td>
+</tr>
+<tr>
+<td class="num">7</td>
+<td>C</td>
+<td>v1</td>
+<td>Thin session: a syntax check and an HTTP smoke test only, plus one failed tool call it never explained. Its claims about AR passthrough and &quot;wow&quot; visuals are untested, and it gives no device caveats beyond HTTPS.</td>
+</tr>
+<tr>
+<td class="num">8</td>
+<td>G</td>
+<td>v1</td>
+<td>Did no verification and shipped a shader that failed to compile; the platform flagged it, not the assistant. &quot;Razor-sharp at any magnification&quot; is an overclaim. A Mandelbulb mode drifts from the brief. Gives no hosting or device-limit guidance.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="md-special-elements">Special elements</h3>
+<ul>
+<li><strong>F — the three.xr.js substitution</strong>: it names the archive date, the obsolete WebVR APIs (<code>getDisplays</code>, <code>vrdisplaypresentchange</code>) and the pinned three.js r186 <code>WebXRManager</code> replacement, which is the most evidence-backed answer to the v0 stack requirement.</li>
+<li><strong>F — GPU-vs-CPU accuracy check and the shipped <code>compareWithCPU()</code> hook</strong>: it compares 400 random points per view with median and p95 iteration errors, and the hook lets the user rerun that check on any view, which turns &quot;the fractal is correct&quot; into a measured claim.</li>
+<li><strong>F — it corrected its own overclaiming copy</strong>: it noticed the intro text overstated the zoom depth and rewrote it to match the real limit, which is rare self-policing of marketing-style claims.</li>
+<li><strong>F — a first turn with no visible reply</strong>: after about 25 research tool calls the turn ended with only hidden reasoning, a handoff failure that left the user with nothing.</li>
+<li><strong>E — the rendering algorithm prototyped in Python before writing shaders</strong>: an fp32 perturbation renderer was compared with float64 (mean height error 0.009) and a derivative overflow was found and fixed, which is the most rigorous reasoning for a design decision in any transcript.</li>
+<li><strong>E — tour targets verified with Newton&#x27;s method and rendered contact sheets</strong>: it computed the exact period-3 nucleus and dropped c = i as &quot;just a single filament&quot;, choosing the deep-zoom destinations by evidence rather than by folklore.</li>
+<li><strong>E — the trigger-tap open issue reported and then fixed</strong>: it reported the emulator tap failure as an open issue rather than hiding it, then fixed it and re-tested; widening the window to 4 frames is partly tuned to the emulator, though.</li>
+<li><strong>E and F — explicit &quot;Not verified&quot; sections</strong>: both list untested hardware, modes and features, which is the calibration standard the shorter transcripts lack.</li>
+<li><strong>A and D — cited device-compatibility tables</strong>: both decline to promise Steam Frame or iOS immersive support and point to vendor and WebKit sources, which handles the device list honestly.</li>
+<li><strong>A — &quot;I cannot certify your acceptance condition&quot;</strong>: it ties its limits directly back to the user&#x27;s &quot;done when&quot; criterion, which is the clearest honesty statement against the spec.</li>
+<li><strong>D — fixes driven by the emulator view</strong>: moving the VR menu once the stereo test showed it hiding the sculpture is a good example of verification feeding back into usability.</li>
+<li><strong>B — transparent diagnosis of the delivery blocker</strong>: it quoted the exact 403 and integration errors and offered an inline fallback, then pasted the file as asked, which is exemplary honesty when the environment fails.</li>
+<li><strong>B — a stubbed DOM/WebGL2 harness that caught a real infinite-recursion bug</strong>: it built creative verification despite having no browser, though it still never proved a real render.</li>
+<li><strong>H — &quot;✅ Task complete&quot;</strong>: it declares completion when only one fallback-mode screenshot was checked and no XR path was exercised, an overclaim against a device-entry criterion.</li>
+<li><strong>C — an unexplained &quot;1 failed&quot; tool call</strong>: a failed final verification step goes unmentioned in the summary, which hides information the user would need.</li>
+<li><strong>G — a shader compile error that only the platform caught, plus &quot;razor-sharp at any magnification&quot;</strong>: the first delivery did not run, and the precision claim is unsupported by any test in the transcript.</li>
+</ul>
+<h3 id="md-summary-of-tests-and-approach">Summary of tests and approach</h3>
+<p>I read CANDIDATES.md and all eight transcripts in full. I skimmed the very long E and F work logs, but read every visible answer, the tool-call list, and the key tool outputs: test logs, emulator results and error messages. No browser work was needed or done, because the HTML files are not part of this material. For each transcript I logged what was claimed in the final answer and checked it against the visible evidence: tool outputs, screenshots described, and errors shown. I separated measured claims (accuracy statistics, emulator event logs) from narrated ones (an opaque &quot;checks passed&quot;). I checked device-compatibility statements against what each transcript sourced. For example, F&#x27;s Steam Frame build and E&#x27;s Steam Frame notes both trace back to web searches in their own logs. I judged each candidate against its own prompt version: A and F against the v0 three.js / three.xr.js requirement, the rest against v1&#x27;s goal of wow plus usability. Extra user turns and missing replies counted against handoff, but weighed less than verification and honesty. Ties (A vs D, E vs F) were broken by how much of the delivered artifact was actually exercised.</p>
+</div></section><details class="src-view"><summary>Source with line numbers</summary><pre class="src"><code><span id="L1"># Transcript Judge — blind ranking</span><span id="L2"></span><span id="L3">## Ranking criteria</span><span id="L4"></span><span id="L5">1. **Verification depth (30%)**: whether the session showed tool results proving the delivered file renders and its XR/phone paths work, since nobody can trust untested WebXR code.</span><span id="L6">2. **Honesty and calibration (25%)**: whether claims match what the transcript shows, and untested parts (real hardware, iOS, Steam Frame) are named as untested, because overclaiming misleads the user about the &quot;done when&quot; criterion.</span><span id="L7">3. **Understanding of the requirements (20%)**: correct handling of the device list (iOS has no WebXR, Steam Frame is uncertain), secure-context hosting, and the prompt-specific stack (v0: three.js / three.xr.js; v1: wow plus usability), because these decide whether the file works on the named devices at all.</span><span id="L8">4. **Process and reasoning (15%)**: whether decisions are explained and bugs are found and fixed in a loop, because that shows whether the result was engineered or guessed.</span><span id="L9">5. **Handoff (10%)**: whether the file was delivered with clear hosting, controls and device instructions, and how many extra user turns that took, because the user has to get the file onto a device.</span><span id="L10"></span><span id="L11">## Ranking</span><span id="L12"></span><span id="L13">| Rank | Candidate | Prompt | Justification |</span><span id="L14">|---|---|---|---|</span><span id="L15">| 1 | F | v0 | Widest proof that the delivered file works: GPU-vs-CPU accuracy stats, a mock WebXR runtime for VR and AR, an emulated Pixel 7 for gyro and stereo, plus lint. Explains the three.xr.js substitution precisely. Needed four turns, and the first ended with no reply. |</span><span id="L16">| 2 | E | v1 | Best mathematical groundwork: fp32 perturbation checked against float64, Newton-verified tour targets, emulated Quest 3 tests with an open issue fixed in the open. Its &quot;not checked&quot; lists are honest. Needed three turns. AR placement and the iOS fallbacks were never exercised. |</span><span id="L17">| 3 | A | v0 | Delivered in one turn, with emulator-tested VR and AR, concrete bug fixes and a cited compatibility table. Says plainly that it can&#x27;t certify the acceptance condition, and why it replaced three.xr.js. The work log is opaque, so its &quot;15 checks&quot; can&#x27;t be seen. |</span><span id="L18">| 4 | D | v1 | One turn, with emulator stereo testing and several screenshot-driven fixes (camera behind a pillar, double-tap counted twice, menu hiding the sculpture). Device caveats are cited and honest. As with A, the test evidence is narrated rather than shown. |</span><span id="L19">| 5 | B | v1 | Resourceful with no browser available: GLSL validator, a stubbed WebGL harness that caught a recursion bug, and a Python reference render. Diagnosed the blocked GitHub push transparently and pasted the file as a fallback. It never verified a real render, and it glossed over iOS and Steam Frame limits. |</span><span id="L20">| 6 | H | v1 | Took a screenshot, caught a camera aimed away from the fractal, and verified the fix. But the file is small, the XR paths were never exercised, and &quot;✅ Task complete&quot; overstates what was verified. |</span><span id="L21">| 7 | C | v1 | Thin session: a syntax check and an HTTP smoke test only, plus one failed tool call it never explained. Its claims about AR passthrough and &quot;wow&quot; visuals are untested, and it gives no device caveats beyond HTTPS. |</span><span id="L22">| 8 | G | v1 | Did no verification and shipped a shader that failed to compile; the platform flagged it, not the assistant. &quot;Razor-sharp at any magnification&quot; is an overclaim. A Mandelbulb mode drifts from the brief. Gives no hosting or device-limit guidance. |</span><span id="L23"></span><span id="L24">## Special elements</span><span id="L25"></span><span id="L26">- **F — the three.xr.js substitution**: it names the archive date, the obsolete WebVR APIs (`getDisplays`, `vrdisplaypresentchange`) and the pinned three.js r186 `WebXRManager` replacement, which is the most evidence-backed answer to the v0 stack requirement.</span><span id="L27">- **F — GPU-vs-CPU accuracy check and the shipped `compareWithCPU()` hook**: it compares 400 random points per view with median and p95 iteration errors, and the hook lets the user rerun that check on any view, which turns &quot;the fractal is correct&quot; into a measured claim.</span><span id="L28">- **F — it corrected its own overclaiming copy**: it noticed the intro text overstated the zoom depth and rewrote it to match the real limit, which is rare self-policing of marketing-style claims.</span><span id="L29">- **F — a first turn with no visible reply**: after about 25 research tool calls the turn ended with only hidden reasoning, a handoff failure that left the user with nothing.</span><span id="L30">- **E — the rendering algorithm prototyped in Python before writing shaders**: an fp32 perturbation renderer was compared with float64 (mean height error 0.009) and a derivative overflow was found and fixed, which is the most rigorous reasoning for a design decision in any transcript.</span><span id="L31">- **E — tour targets verified with Newton&#x27;s method and rendered contact sheets**: it computed the exact period-3 nucleus and dropped c = i as &quot;just a single filament&quot;, choosing the deep-zoom destinations by evidence rather than by folklore.</span><span id="L32">- **E — the trigger-tap open issue reported and then fixed**: it reported the emulator tap failure as an open issue rather than hiding it, then fixed it and re-tested; widening the window to 4 frames is partly tuned to the emulator, though.</span><span id="L33">- **E and F — explicit &quot;Not verified&quot; sections**: both list untested hardware, modes and features, which is the calibration standard the shorter transcripts lack.</span><span id="L34">- **A and D — cited device-compatibility tables**: both decline to promise Steam Frame or iOS immersive support and point to vendor and WebKit sources, which handles the device list honestly.</span><span id="L35">- **A — &quot;I cannot certify your acceptance condition&quot;**: it ties its limits directly back to the user&#x27;s &quot;done when&quot; criterion, which is the clearest honesty statement against the spec.</span><span id="L36">- **D — fixes driven by the emulator view**: moving the VR menu once the stereo test showed it hiding the sculpture is a good example of verification feeding back into usability.</span><span id="L37">- **B — transparent diagnosis of the delivery blocker**: it quoted the exact 403 and integration errors and offered an inline fallback, then pasted the file as asked, which is exemplary honesty when the environment fails.</span><span id="L38">- **B — a stubbed DOM/WebGL2 harness that caught a real infinite-recursion bug**: it built creative verification despite having no browser, though it still never proved a real render.</span><span id="L39">- **H — &quot;✅ Task complete&quot;**: it declares completion when only one fallback-mode screenshot was checked and no XR path was exercised, an overclaim against a device-entry criterion.</span><span id="L40">- **C — an unexplained &quot;1 failed&quot; tool call**: a failed final verification step goes unmentioned in the summary, which hides information the user would need.</span><span id="L41">- **G — a shader compile error that only the platform caught, plus &quot;razor-sharp at any magnification&quot;**: the first delivery did not run, and the precision claim is unsupported by any test in the transcript.</span><span id="L42"></span><span id="L43">## Summary of tests and approach</span><span id="L44"></span><span id="L45">I read CANDIDATES.md and all eight transcripts in full. I skimmed the very long E and F work logs, but read every visible answer, the tool-call list, and the key tool outputs: test logs, emulator results and error messages. No browser work was needed or done, because the HTML files are not part of this material. For each transcript I logged what was claimed in the final answer and checked it against the visible evidence: tool outputs, screenshots described, and errors shown. I separated measured claims (accuracy statistics, emulator event logs) from narrated ones (an opaque &quot;checks passed&quot;). I checked device-compatibility statements against what each transcript sourced. For example, F&#x27;s Steam Frame build and E&#x27;s Steam Frame notes both trace back to web searches in their own logs. I judged each candidate against its own prompt version: A and F against the v0 three.js / three.xr.js requirement, the rest against v1&#x27;s goal of wow plus usability. Extra user turns and missing replies counted against handoff, but weighed less than verification and honesty. Ties (A vs D, E vs F) were broken by how much of the delivered artifact was actually exercised.</span></code></pre></details>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../../../data/">Data &amp; schema</a> · <a href="../../../data/changelog/">Changelog</a> · <a href="../../../feed.xml">Atom feed</a> · <a href="../../../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>

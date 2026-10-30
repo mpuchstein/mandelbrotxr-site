@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REVIEW.md · Review/TRANSCRIPT-Review/Mistral-VibeCode-MistralLarge4-Default-v1 · MandelbrotXR results</title>
+<meta name="description" content="Rendered copy of Review/TRANSCRIPT-Review/Mistral-VibeCode-MistralLarge4-Default-v1/REVIEW.md from the MandelbrotXR repository.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/source/Review/TRANSCRIPT-Review/Mistral-VibeCode-MistralLarge4-Default-v1/REVIEW.md.html">
+<link rel="icon" href="../../../../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../../../../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../../../../feed.xml">
+<script src="../../../../assets/js/theme.js?v=7a718e6155"></script>
+<script src="../../../../assets/js/transcripts.js?v=54e22884d0" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../../../../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../../../../">Home</a></li><li><a href="../../../../rankings/">Rankings</a></li><li><a href="../../../../candidates/">Candidates</a></li><li><a href="../../../../compare/">Compare</a></li><li><a href="../../../../techniques/">Techniques</a></li><li><a href="../../../../judges/" aria-current="page">Judges &amp; reviews</a></li><li><a href="../../../../transcripts/">Transcripts</a></li><li><a href="../../../../methodology/">Methodology</a></li><li><a href="../../../../data/">Data</a></li><li><a href="../../../../search/">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../">Home</a></li><li><a href="../../../../judges/">Judges &amp; reviews</a></li><li><a href="../../../../source/">Source files</a></li><li><a href="../../../../source/Review/">Review</a></li><li><a href="../../../../source/Review/TRANSCRIPT-Review/">TRANSCRIPT-Review</a></li><li><a href="../../../../source/Review/TRANSCRIPT-Review/Mistral-VibeCode-MistralLarge4-Default-v1/">Mistral-VibeCode-MistralLarge4-Default-v1</a></li><li><span aria-current="page">REVIEW.md</span></li></ol></nav>
+<h1 class="src-path">REVIEW.md</h1><ul class="tx-meta src-meta"><li><code>Review/<wbr>TRANSCRIPT-<wbr>Review/<wbr>Mistral-<wbr>VibeCode-<wbr>MistralLarge4-<wbr>Default-<wbr>v1/<wbr>REVIEW.md</code></li><li>82 lines · 10.3 kB</li><li>in <a href="../../../../source/Review/TRANSCRIPT-Review/Mistral-VibeCode-MistralLarge4-Default-v1/">Review/TRANSCRIPT-Review/Mistral-VibeCode-MistralLarge4-Default-v1/</a></li><li><a href="https://github.com/mpuchstein/MandelbrotXR/blob/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a/Review/TRANSCRIPT-Review/Mistral-VibeCode-MistralLarge4-Default-v1/REVIEW.md" rel="noopener">Original on GitHub at 75d36a0</a></li></ul><section class="src-doc" aria-label="Rendered Markdown"><div class="md"><h2 id="md-transcript-review-candidate-03">TRANSCRIPT Review — candidate-03</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Score</th>
+<th>One-line reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Requirement understanding</td>
+<td>7</td>
+<td>Covered VR, AR and a phone &quot;magic window&quot; fallback, and flagged the secure-context constraint. It never says plainly that iOS Safari has no immersive WebXR, and its LAN serving advice breaks WebXR.</td>
+</tr>
+<tr>
+<td>2. Engineering process</td>
+<td>7</td>
+<td>Checked the sandbox first, then ran a layered toolchain (node --check, glslangValidator, a stubbed WebGL2 harness, a Python reference render) and recovered cleanly from its own bugs. There was no device or browser research.</td>
+</tr>
+<tr>
+<td>3. Verification rigor</td>
+<td>6</td>
+<td>Static and stubbed checks were real and caught a real bug. Nothing was rendered on a GPU or in a browser, so the visual &quot;wow&quot; and the XR paths are unverified.</td>
+</tr>
+<tr>
+<td>4. Honesty &amp; calibration</td>
+<td>8</td>
+<td>It says up front there was &quot;no headless browser in the sandbox&quot;, and the delivery failure is reported with exact error strings. The feature list is still worded as working fact.</td>
+</tr>
+<tr>
+<td>5. Communication &amp; handoff</td>
+<td>6</td>
+<td>Delivery took 4 user turns. The first finish left the file somewhere the user could not reach. The final inline paste and the push recipe are usable, but the serving instructions are wrong for headsets.</td>
+</tr>
+<tr>
+<td>6. Expected deliverable quality</td>
+<td>6</td>
+<td>An ambitious, dependency-free WebGL2/WebXR file with a rich feature list. It was never run on real hardware; the fractal is a 2.5D relief, and fp32 deep zoom will pixelate.</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>7</strong></td>
+<td>Solid engineering and candid reporting, held back by verification that never touched a browser and a clumsy handoff.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="md-criterion-details">Criterion details</h3>
+<p><strong>1. Requirement understanding (7).</strong> The assistant read the done-when as &quot;open in a device browser and enter a room&quot; and built three entry paths: &quot;Enter VR&quot; for a neon void room, &quot;Enter AR&quot; that &quot;places the fractal into your real room at ~1.5 m&quot;, and a &quot;touch/orientation &#x27;magic window&#x27; fallback for phones&quot; with an &quot;iOS motion-permission button&quot;. That matches the device list sensibly. It also raised the secure-context requirement unprompted: &quot;WebXR requires a secure context — serve the file over HTTPS or localhost … rather than file://&quot;.</p>
+<p>What&#x27;s missing:</p>
+<ul>
+<li>It never says that iPhones cannot enter an immersive WebXR session at all. That is the main infeasible part of the brief. The fallback handles it silently, but the user is not told what an Apple phone will actually experience.</li>
+<li>&quot;AR glasses&quot; and Steam Frame / Pico specifics are not discussed.</li>
+<li>&quot;Visualized in 3d&quot; is met with a heightfield relief slab (l.66), which is reasonable but is the most conservative reading of the brief.</li>
+</ul>
+<p><strong>2. Engineering process (7).</strong></p>
+<ul>
+<li>It started with &quot;check what&#x27;s available in the sandbox&quot; and adapted to the absence of a browser.</li>
+<li>It cleaned up its own dead helpers.</li>
+<li>It recovered from a tool-schema misuse (&quot;The tool needs the blocks as structured objects&quot;) and from a syntax bug (&quot;I wrote {true} instead of true&quot;).</li>
+<li>It went looking for a GLSL validator, and noticed that its regex had missed some shaders and went back for them (l.50).</li>
+<li>It built a harness that found an unbounded recursion in the FBO fallback and fixed it (l.54). It also correctly diagnosed a bug in its own harness stub (l.58).</li>
+</ul>
+<p>There was no visible research into WebXR browser quirks on Quest, Pico, Steam Frame or Android. The delivery phase used &quot;11 commands&quot; and then &quot;4 commands … 4 tools&quot; probing push routes, which was thorough but partly redundant.</p>
+<p><strong>3. Verification rigor (6).</strong> What was actually run:</p>
+<ul>
+<li>JS syntax via <code>node --check</code>.</li>
+<li>&quot;All 10 GLSL shaders pass glslangValidator&quot;.</li>
+<li>&quot;A stubbed-DOM/WebGL2 harness ran 180+ frames plus pointer/keyboard/device-orientation events with zero errors&quot;.</li>
+<li>&quot;The Mandelbrot fragment shader&#x27;s math was validated against a Python reference render&quot;.</li>
+</ul>
+<p>That is above-average static rigor. But a stubbed WebGL2 context proves only that no JS exception was thrown. glslang does not enforce WebGL driver limits or catch precision issues. No pixel was ever drawn by a real GL implementation, so the visual quality, framebuffer completeness and XR projection/layer setup are all untested. How the Python comparison was done (a port, not a shader run) is not explained.</p>
+<p><strong>4. Honesty &amp; calibration (8).</strong> Limitations are stated next to the claims (&quot;no headless browser in the sandbox&quot;). The delivery blocker report is exemplary: exact errors (<code>403 Permission … denied</code>, <code>Resource not accessible by integration</code>, <code>Pushing files to GitHub is not allowed</code>, <code>401 Bad credentials</code>), plus the contradictory <code>push: true</code> from the REST API. It never claimed a push succeeded.</p>
+<p>Minor overconfidence:</p>
+<ul>
+<li>The summary lists unverified behaviour as fact: &quot;Adaptive quality … step up/down&quot;, &quot;iterations auto-scale … up to ~760&quot;, hand-pinch support.</li>
+<li>&quot;All checks pass. The file is complete&quot; reads stronger than the checks justify.</li>
+<li>The size is given as both ~43 KB and 42 KB (trivial).</li>
+</ul>
+<p><strong>5. Communication &amp; handoff (6).</strong></p>
+<ul>
+<li>The first final message (l.62–76) is clear and well structured. But it delivered the file to <code>/<wbr><span class="nw">workspace</span>/<wbr><span class="nw">…</span></code>, which the user cannot reach, and only offered GitHub. The user had to ask how to get it (l.85).</li>
+<li>In turn 3 it asked again whether to paste the file instead of just pasting it, which cost another round trip. The user had to restate it (l.148).</li>
+<li>The final turn did deliver: the full HTML inline, a README, and a git recipe.</li>
+<li>The README&#x27;s run instructions are wrong for the target devices. <code>python3 -m http.server</code> plus &quot;open http://&lt;host&gt;:8000/…&quot; from a headset or phone is a plain-HTTP LAN origin. That is not a secure context, so <code>navigator.xr</code> will be unavailable and &quot;Enter VR&quot; will not work. The headset case needs HTTPS (or adb reverse / localhost tunnelling), which is not mentioned.</li>
+<li>The manual push recipe sends the owner to a <code><span class="nw">vibe</span>/<wbr><span class="nw">…</span></code> branch plus a PR for an empty repo they own. The user had asked for a push to the repo, with a PR only as fallback.</li>
+</ul>
+<p><strong>6. Expected deliverable quality (6).</strong> From the description, the scope is impressive for a single file with no dependencies:</p>
+<ul>
+<li>Raw WebGL2 with a half-float FBO, a tonemapping pass, fog, particles, a grid floor and light rings.</li>
+<li>An escape-time heightfield with normal mapping, fresnel and specular shading.</li>
+<li>Controller and hand-pinch grab, stick zoom into the set, and an in-world help panel.</li>
+<li>Adaptive resolution, AR passthrough placement, and a touch/gyro fallback.</li>
+</ul>
+<p>If it runs, the wow factor is plausibly good. The risks:</p>
+<ul>
+<li>It was never executed against a real GL driver or XR runtime, and hand-written raw WebXR code has many ways to fail silently: wrong framebuffer binding, missing <code>makeXRCompatible</code>, projection or viewport errors.</li>
+<li>&quot;Zoom-into-the-set&quot; with fp32 shaders will block-pixelate after roughly a 1e4–1e5× zoom, and nothing in the transcript addresses that.</li>
+<li>The 3D representation is a relief slab, not a volumetric or truly spatial fractal.</li>
+</ul>
+<h3 id="md-top-5-issues">Top 5 issues</h3>
+<ol>
+<li><strong>Major: the serving instructions defeat WebXR on the target devices.</strong> README (l.183–187): &quot;python3 -m http.server 8000 … open http://&lt;host&gt;:8000/…&quot;. From a Quest, Pico or phone, <code>&lt;host&gt;</code> is a LAN IP over plain HTTP, which is not a secure context, so there is no WebXR. <strong>Fix:</strong> document an HTTPS route (GitHub Pages on the repo just created, <code>npx http-server -S</code> with a cert, a tunnel such as cloudflared or ngrok, or <code>adb reverse tcp:8000</code> so the device itself can use localhost). Have the in-page UI detect <code>!isSecureContext</code> and say why the VR button is missing.</li>
+<li><strong>Major: no real-browser or GPU verification.</strong> l.72: &quot;no headless browser in the sandbox; … stubbed-DOM/WebGL2 harness&quot;. Visual output, FBO completeness and XR session setup were never exercised. <strong>Fix:</strong> install headless Chromium with SwiftShader (or Playwright) and take a screenshot of the flat path, run it with the WebXR emulator / Immersive Web Emulator extension, and list device testing as an open item.</li>
+<li><strong>Major: delivery friction cost extra user turns.</strong> l.62–76 finished with the file only in <code>/<wbr><span class="nw">workspace</span></code>. l.139 asked &quot;Want me to do that?&quot; instead of pasting. The user had to step in at l.85 and l.148. <strong>Fix:</strong> say at the first finish that the sandbox file is not reachable and offer the inline paste immediately. Once a push fails, fall back to the paste without asking again.</li>
+<li><strong>Minor: the iOS and other platform limits are not spelled out.</strong> The phone fallback is described, but the transcript never says that iPhones cannot enter immersive VR or AR in Safari, or what the user gets on Vision Pro, Steam Frame or Pico. <strong>Fix:</strong> add a short per-device compatibility matrix to the README and the final message: immersive VR / AR / fallback per platform.</li>
+<li><strong>Minor: deep-zoom precision is unaddressed, and unverified features are listed as fact.</strong> l.69 promises &quot;zoom-into-the-set (iterations auto-scale … up to ~760)&quot; with no mention of the fp32 limit. Adaptive quality and hand pinch are presented as working. <strong>Fix:</strong> clamp the zoom near the fp32 floor or implement a double-single / perturbation mode, and label features &quot;implemented, untested on device&quot;.</li>
+</ol>
+<h3 id="md-strengths">Strengths</h3>
+<ol>
+<li>A layered static verification chain (node, glslang, a stubbed harness, a Python reference) that caught and fixed a real infinite-recursion bug in the FBO fallback (l.54).</li>
+<li>Unusually precise, honest failure reporting during delivery, with exact error messages and no claim of success (l.130–137, l.159–163).</li>
+<li>Good coverage of the device spectrum: VR, AR passthrough, and a touch/gyro magic window that includes the iOS motion-permission flow.</li>
+<li>A zero-dependency single file, which fits the &quot;standalone HTML&quot; constraint exactly, with adaptive quality aimed at mobile and standalone-headset GPUs.</li>
+<li>A usable final handoff: the full file inline, a README, and a copy-paste git recipe, so the user was not left empty-handed despite the blocked integration.</li>
+</ol>
+<h3 id="md-verdict">Verdict</h3>
+<p>A capable, honest session: a feature-rich, dependency-free WebXR Mandelbrot room built with more verification effort than usual, and limits stated openly. But every check was static or stubbed, so none of the &quot;wow&quot; or the XR behaviour was ever seen working. The handoff took four user turns and ended with serving instructions that would leave the VR button missing on the very headsets targeted.</p>
+</div></section><details class="src-view"><summary>Source with line numbers</summary><pre class="src"><code><span id="L1"># TRANSCRIPT Review — candidate-03</span><span id="L2"></span><span id="L3">| Criterion | Score | One-line reason |</span><span id="L4">|---|---|---|</span><span id="L5">| 1. Requirement understanding | 7 | Covered VR, AR and a phone &quot;magic window&quot; fallback, and flagged the secure-context constraint. It never says plainly that iOS Safari has no immersive WebXR, and its LAN serving advice breaks WebXR. |</span><span id="L6">| 2. Engineering process | 7 | Checked the sandbox first, then ran a layered toolchain (node --check, glslangValidator, a stubbed WebGL2 harness, a Python reference render) and recovered cleanly from its own bugs. There was no device or browser research. |</span><span id="L7">| 3. Verification rigor | 6 | Static and stubbed checks were real and caught a real bug. Nothing was rendered on a GPU or in a browser, so the visual &quot;wow&quot; and the XR paths are unverified. |</span><span id="L8">| 4. Honesty &amp; calibration | 8 | It says up front there was &quot;no headless browser in the sandbox&quot;, and the delivery failure is reported with exact error strings. The feature list is still worded as working fact. |</span><span id="L9">| 5. Communication &amp; handoff | 6 | Delivery took 4 user turns. The first finish left the file somewhere the user could not reach. The final inline paste and the push recipe are usable, but the serving instructions are wrong for headsets. |</span><span id="L10">| 6. Expected deliverable quality | 6 | An ambitious, dependency-free WebGL2/WebXR file with a rich feature list. It was never run on real hardware; the fractal is a 2.5D relief, and fp32 deep zoom will pixelate. |</span><span id="L11">| **Overall** | **7** | Solid engineering and candid reporting, held back by verification that never touched a browser and a clumsy handoff. |</span><span id="L12"></span><span id="L13">## Criterion details</span><span id="L14"></span><span id="L15">**1. Requirement understanding (7).** The assistant read the done-when as &quot;open in a device browser and enter a room&quot; and built three entry paths: &quot;Enter VR&quot; for a neon void room, &quot;Enter AR&quot; that &quot;places the fractal into your real room at ~1.5 m&quot;, and a &quot;touch/orientation &#x27;magic window&#x27; fallback for phones&quot; with an &quot;iOS motion-permission button&quot;. That matches the device list sensibly. It also raised the secure-context requirement unprompted: &quot;WebXR requires a secure context — serve the file over HTTPS or localhost … rather than file://&quot;.</span><span id="L16"></span><span id="L17">What&#x27;s missing:</span><span id="L18">- It never says that iPhones cannot enter an immersive WebXR session at all. That is the main infeasible part of the brief. The fallback handles it silently, but the user is not told what an Apple phone will actually experience.</span><span id="L19">- &quot;AR glasses&quot; and Steam Frame / Pico specifics are not discussed.</span><span id="L20">- &quot;Visualized in 3d&quot; is met with a heightfield relief slab (l.66), which is reasonable but is the most conservative reading of the brief.</span><span id="L21"></span><span id="L22">**2. Engineering process (7).**</span><span id="L23">- It started with &quot;check what&#x27;s available in the sandbox&quot; and adapted to the absence of a browser.</span><span id="L24">- It cleaned up its own dead helpers.</span><span id="L25">- It recovered from a tool-schema misuse (&quot;The tool needs the blocks as structured objects&quot;) and from a syntax bug (&quot;I wrote {true} instead of true&quot;).</span><span id="L26">- It went looking for a GLSL validator, and noticed that its regex had missed some shaders and went back for them (l.50).</span><span id="L27">- It built a harness that found an unbounded recursion in the FBO fallback and fixed it (l.54). It also correctly diagnosed a bug in its own harness stub (l.58).</span><span id="L28"></span><span id="L29">There was no visible research into WebXR browser quirks on Quest, Pico, Steam Frame or Android. The delivery phase used &quot;11 commands&quot; and then &quot;4 commands … 4 tools&quot; probing push routes, which was thorough but partly redundant.</span><span id="L30"></span><span id="L31">**3. Verification rigor (6).** What was actually run:</span><span id="L32">- JS syntax via `node --check`.</span><span id="L33">- &quot;All 10 GLSL shaders pass glslangValidator&quot;.</span><span id="L34">- &quot;A stubbed-DOM/WebGL2 harness ran 180+ frames plus pointer/keyboard/device-orientation events with zero errors&quot;.</span><span id="L35">- &quot;The Mandelbrot fragment shader&#x27;s math was validated against a Python reference render&quot;.</span><span id="L36"></span><span id="L37">That is above-average static rigor. But a stubbed WebGL2 context proves only that no JS exception was thrown. glslang does not enforce WebGL driver limits or catch precision issues. No pixel was ever drawn by a real GL implementation, so the visual quality, framebuffer completeness and XR projection/layer setup are all untested. How the Python comparison was done (a port, not a shader run) is not explained.</span><span id="L38"></span><span id="L39">**4. Honesty &amp; calibration (8).** Limitations are stated next to the claims (&quot;no headless browser in the sandbox&quot;). The delivery blocker report is exemplary: exact errors (`403 Permission … denied`, `Resource not accessible by integration`, `Pushing files to GitHub is not allowed`, `401 Bad credentials`), plus the contradictory `push: true` from the REST API. It never claimed a push succeeded.</span><span id="L40"></span><span id="L41">Minor overconfidence:</span><span id="L42">- The summary lists unverified behaviour as fact: &quot;Adaptive quality … step up/down&quot;, &quot;iterations auto-scale … up to ~760&quot;, hand-pinch support.</span><span id="L43">- &quot;All checks pass. The file is complete&quot; reads stronger than the checks justify.</span><span id="L44">- The size is given as both ~43 KB and 42 KB (trivial).</span><span id="L45"></span><span id="L46">**5. Communication &amp; handoff (6).**</span><span id="L47">- The first final message (l.62–76) is clear and well structured. But it delivered the file to `/workspace/…`, which the user cannot reach, and only offered GitHub. The user had to ask how to get it (l.85).</span><span id="L48">- In turn 3 it asked again whether to paste the file instead of just pasting it, which cost another round trip. The user had to restate it (l.148).</span><span id="L49">- The final turn did deliver: the full HTML inline, a README, and a git recipe.</span><span id="L50">- The README&#x27;s run instructions are wrong for the target devices. `python3 -m http.server` plus &quot;open http://&lt;host&gt;:8000/…&quot; from a headset or phone is a plain-HTTP LAN origin. That is not a secure context, so `navigator.xr` will be unavailable and &quot;Enter VR&quot; will not work. The headset case needs HTTPS (or adb reverse / localhost tunnelling), which is not mentioned.</span><span id="L51">- The manual push recipe sends the owner to a `vibe/…` branch plus a PR for an empty repo they own. The user had asked for a push to the repo, with a PR only as fallback.</span><span id="L52"></span><span id="L53">**6. Expected deliverable quality (6).** From the description, the scope is impressive for a single file with no dependencies:</span><span id="L54">- Raw WebGL2 with a half-float FBO, a tonemapping pass, fog, particles, a grid floor and light rings.</span><span id="L55">- An escape-time heightfield with normal mapping, fresnel and specular shading.</span><span id="L56">- Controller and hand-pinch grab, stick zoom into the set, and an in-world help panel.</span><span id="L57">- Adaptive resolution, AR passthrough placement, and a touch/gyro fallback.</span><span id="L58"></span><span id="L59">If it runs, the wow factor is plausibly good. The risks:</span><span id="L60">- It was never executed against a real GL driver or XR runtime, and hand-written raw WebXR code has many ways to fail silently: wrong framebuffer binding, missing `makeXRCompatible`, projection or viewport errors.</span><span id="L61">- &quot;Zoom-into-the-set&quot; with fp32 shaders will block-pixelate after roughly a 1e4–1e5× zoom, and nothing in the transcript addresses that.</span><span id="L62">- The 3D representation is a relief slab, not a volumetric or truly spatial fractal.</span><span id="L63"></span><span id="L64">## Top 5 issues</span><span id="L65"></span><span id="L66">1. **Major: the serving instructions defeat WebXR on the target devices.** README (l.183–187): &quot;python3 -m http.server 8000 … open http://&lt;host&gt;:8000/…&quot;. From a Quest, Pico or phone, `&lt;host&gt;` is a LAN IP over plain HTTP, which is not a secure context, so there is no WebXR. **Fix:** document an HTTPS route (GitHub Pages on the repo just created, `npx http-server -S` with a cert, a tunnel such as cloudflared or ngrok, or `adb reverse tcp:8000` so the device itself can use localhost). Have the in-page UI detect `!isSecureContext` and say why the VR button is missing.</span><span id="L67">2. **Major: no real-browser or GPU verification.** l.72: &quot;no headless browser in the sandbox; … stubbed-DOM/WebGL2 harness&quot;. Visual output, FBO completeness and XR session setup were never exercised. **Fix:** install headless Chromium with SwiftShader (or Playwright) and take a screenshot of the flat path, run it with the WebXR emulator / Immersive Web Emulator extension, and list device testing as an open item.</span><span id="L68">3. **Major: delivery friction cost extra user turns.** l.62–76 finished with the file only in `/workspace`. l.139 asked &quot;Want me to do that?&quot; instead of pasting. The user had to step in at l.85 and l.148. **Fix:** say at the first finish that the sandbox file is not reachable and offer the inline paste immediately. Once a push fails, fall back to the paste without asking again.</span><span id="L69">4. **Minor: the iOS and other platform limits are not spelled out.** The phone fallback is described, but the transcript never says that iPhones cannot enter immersive VR or AR in Safari, or what the user gets on Vision Pro, Steam Frame or Pico. **Fix:** add a short per-device compatibility matrix to the README and the final message: immersive VR / AR / fallback per platform.</span><span id="L70">5. **Minor: deep-zoom precision is unaddressed, and unverified features are listed as fact.** l.69 promises &quot;zoom-into-the-set (iterations auto-scale … up to ~760)&quot; with no mention of the fp32 limit. Adaptive quality and hand pinch are presented as working. **Fix:** clamp the zoom near the fp32 floor or implement a double-single / perturbation mode, and label features &quot;implemented, untested on device&quot;.</span><span id="L71"></span><span id="L72">## Strengths</span><span id="L73"></span><span id="L74">1. A layered static verification chain (node, glslang, a stubbed harness, a Python reference) that caught and fixed a real infinite-recursion bug in the FBO fallback (l.54).</span><span id="L75">2. Unusually precise, honest failure reporting during delivery, with exact error messages and no claim of success (l.130–137, l.159–163).</span><span id="L76">3. Good coverage of the device spectrum: VR, AR passthrough, and a touch/gyro magic window that includes the iOS motion-permission flow.</span><span id="L77">4. A zero-dependency single file, which fits the &quot;standalone HTML&quot; constraint exactly, with adaptive quality aimed at mobile and standalone-headset GPUs.</span><span id="L78">5. A usable final handoff: the full file inline, a README, and a copy-paste git recipe, so the user was not left empty-handed despite the blocked integration.</span><span id="L79"></span><span id="L80">## Verdict</span><span id="L81"></span><span id="L82">A capable, honest session: a feature-rich, dependency-free WebXR Mandelbrot room built with more verification effort than usual, and limits stated openly. But every check was static or stubbed, so none of the &quot;wow&quot; or the XR behaviour was ever seen working. The handoff took four user turns and ended with serving instructions that would leave the VR button missing on the very headsets targeted.</span></code></pre></details>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../../../../data/">Data &amp; schema</a> · <a href="../../../../data/changelog/">Changelog</a> · <a href="../../../../feed.xml">Atom feed</a> · <a href="../../../../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REVIEW.md · Review/TRANSCRIPT-Review/Google-Web-Gemini4Argon-High-v1 · MandelbrotXR results</title>
+<meta name="description" content="Rendered copy of Review/TRANSCRIPT-Review/Google-Web-Gemini4Argon-High-v1/REVIEW.md from the MandelbrotXR repository.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/source/Review/TRANSCRIPT-Review/Google-Web-Gemini4Argon-High-v1/REVIEW.md.html">
+<link rel="icon" href="../../../../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../../../../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../../../../feed.xml">
+<script src="../../../../assets/js/theme.js?v=7a718e6155"></script>
+<script src="../../../../assets/js/transcripts.js?v=54e22884d0" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../../../../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../../../../">Home</a></li><li><a href="../../../../rankings/">Rankings</a></li><li><a href="../../../../candidates/">Candidates</a></li><li><a href="../../../../compare/">Compare</a></li><li><a href="../../../../techniques/">Techniques</a></li><li><a href="../../../../judges/" aria-current="page">Judges &amp; reviews</a></li><li><a href="../../../../transcripts/">Transcripts</a></li><li><a href="../../../../methodology/">Methodology</a></li><li><a href="../../../../data/">Data</a></li><li><a href="../../../../search/">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../">Home</a></li><li><a href="../../../../judges/">Judges &amp; reviews</a></li><li><a href="../../../../source/">Source files</a></li><li><a href="../../../../source/Review/">Review</a></li><li><a href="../../../../source/Review/TRANSCRIPT-Review/">TRANSCRIPT-Review</a></li><li><a href="../../../../source/Review/TRANSCRIPT-Review/Google-Web-Gemini4Argon-High-v1/">Google-Web-Gemini4Argon-High-v1</a></li><li><span aria-current="page">REVIEW.md</span></li></ol></nav>
+<h1 class="src-path">REVIEW.md</h1><ul class="tx-meta src-meta"><li><code>Review/<wbr>TRANSCRIPT-<wbr>Review/<wbr>Google-<wbr>Web-<wbr>Gemini4Argon-<wbr>High-<wbr>v1/<wbr>REVIEW.md</code></li><li>51 lines · 5.6 kB</li><li>in <a href="../../../../source/Review/TRANSCRIPT-Review/Google-Web-Gemini4Argon-High-v1/">Review/TRANSCRIPT-Review/Google-Web-Gemini4Argon-High-v1/</a></li><li><a href="https://github.com/mpuchstein/MandelbrotXR/blob/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a/Review/TRANSCRIPT-Review/Google-Web-Gemini4Argon-High-v1/REVIEW.md" rel="noopener">Original on GitHub at 75d36a0</a></li></ul><section class="src-doc" aria-label="Rendered Markdown"><div class="md"><h2 id="md-transcript-review-candidate-08">TRANSCRIPT Review — candidate-08</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table class="jr-crit">
+<thead>
+<tr>
+<th>Criterion</th>
+<th class="num">Score</th>
+<th>One-line reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Requirement understanding</td>
+<td class="num">5</td>
+<td>Covers VR, AR, phone and desktop paths, but never mentions HTTPS/secure-context, iOS Safari having no WebXR, or what &quot;standalone&quot; means for dependencies.</td>
+</tr>
+<tr>
+<td>2. Engineering process</td>
+<td class="num">4</td>
+<td>One-shot generation with no visible planning or research. The only iteration was a fix for a shader compile error that the platform&#x27;s automatic error request triggered.</td>
+</tr>
+<tr>
+<td>3. Verification rigor</td>
+<td class="num">2</td>
+<td>No tests, previews or device checks are claimed. The first version shipped with a shader that would not compile.</td>
+</tr>
+<tr>
+<td>4. Honesty &amp; calibration</td>
+<td class="num">4</td>
+<td>The feature list is stated as fact with no caveats (&quot;razor-sharp at any magnification&quot;), the shader bug was never mentioned up front, and no limitations are given.</td>
+</tr>
+<tr>
+<td>5. Communication &amp; handoff</td>
+<td class="num">4</td>
+<td>The feature summary is clear and the file is in a Canvas with export, but there are no instructions for getting it onto a Quest or phone, no controls reference, and two turns were needed (one a silent auto-fix).</td>
+</tr>
+<tr>
+<td>6. Expected deliverable quality</td>
+<td class="num">5</td>
+<td>The design is ambitious (terrain with derivative normals, sphere-traced Mandelbulb, room-scale canyon, two-handed zoom), but it was never verified and the fix it got looks fragile.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Overall score: 4 / 10</strong></p>
+<h3 id="md-top-5-issues">Top 5 issues</h3>
+<ol>
+<li>
+<p><strong>Major: the first version shipped with a shader that would not compile, and the assistant didn&#x27;t catch it.</strong></p>
+<ul>
+<li>Evidence: turn 2 is an empty user message &quot;consistent with Canvas&#x27;s automatic &#x27;fix error&#x27; request&quot;. The assistant then fixes &quot;the invalid fragment-shader reference to <code>modelMatrix</code> and <code>inverse()</code>&quot;.</li>
+<li>So the turn-1 claim that &quot;I have created the … application&quot; with a working &quot;Real-time volumetric sphere-traced 3D Mandelbulb&quot; was false when it was made.</li>
+<li>Fix: compile and run the page (or at least its shaders) before declaring it done, and be specific about what was actually checked.</li>
+</ul>
+</li>
+<li>
+<p><strong>Major: the shader fix only accounts for moving the object, not rotating or scaling it.</strong></p>
+<ul>
+<li>Evidence: the new ray origin is <code>cameraPosition - (vWorldPos - vLocalPos)</code>. That subtraction gives the model&#x27;s translation only when the model matrix has no rotation or scale.</li>
+<li>The same transcript advertises &quot;direct hologram grab-to-pan, two-handed pinch-to-zoom&quot; and &quot;live&quot; interaction. If any of those scale or rotate the Mandelbulb mesh, the ray-marched bulb will be distorted or misplaced.</li>
+<li>Fix: pass <code>inverse(modelMatrix)</code> as a custom uniform computed on the CPU (<code>object.matrixWorld.clone().invert()</code>). Then transform both the ray origin and the ray direction into local space.</li>
+</ul>
+</li>
+<li>
+<p><strong>Major: nothing says how to actually open it on the target devices.</strong></p>
+<ul>
+<li>WebXR immersive sessions need a secure context (HTTPS or localhost). Opening a downloaded HTML file from local storage on a Quest, Pico or phone usually won&#x27;t offer &quot;Enter VR/AR&quot;.</li>
+<li>Nothing covers hosting, export from Canvas, or whether three.js is inlined or loaded from a CDN (which matters for &quot;standalone&quot; and offline use).</li>
+<li>Fix: add a short &quot;How to run&quot; section covering export, serving over HTTPS (any static host or a tunnel), and how to open it per device.</li>
+</ul>
+</li>
+<li>
+<p><strong>Major: no honest statement about iPhone support.</strong></p>
+<ul>
+<li>The done-when names Apple phones, but iOS Safari has no WebXR.</li>
+<li>The answer says phones get &quot;a Gyroscope Magic Window mode&quot; without saying this is a non-immersive fallback on iOS. It also doesn&#x27;t say whether the iOS 13+ <code>DeviceOrientationEvent.requestPermission()</code> user-gesture prompt is handled.</li>
+<li>Fix: state the per-platform support matrix explicitly (immersive-vr/ar on Quest, Pico and Android Chrome; magic window only on iOS) and confirm the permission flow.</li>
+</ul>
+</li>
+<li>
+<p><strong>Minor: overclaiming in the feature copy.</strong></p>
+<ul>
+<li>Evidence: &quot;ridges and spirals remain razor-sharp at any magnification&quot;. GPU float32 math visibly breaks down around 1e-5 to 1e-6 zoom, so &quot;any magnification&quot; can&#x27;t be true without perturbation or double-emulation.</li>
+<li>The answer also gives no performance figures for a 240×240 displaced grid plus per-pixel ray marching on a Quest-class mobile GPU at headset refresh rates.</li>
+<li>Fix: give a realistic zoom-depth limit, add adaptive quality or resolution scaling, and drop the absolute claims.</li>
+</ul>
+</li>
+</ol>
+<h3 id="md-strengths">Strengths</h3>
+<ul>
+<li>Ambitious, high-wow design that goes past a flat 2D texture: a 3D terrain pedestal, a ray-marched Mandelbulb with orbit-trap coloring and ambient occlusion, and a room-scale &quot;Cathedral Canyon&quot; mode.</li>
+<li>Thinks about input on every platform: laser pointers with reticles, grab-to-pan, two-handed pinch zoom and thumbsticks in XR; touch orbit, pinch and a dive pad on phones.</li>
+<li>Handles AR passthrough deliberately (&quot;automatic room hiding in AR passthrough mode&quot;), which fits the &quot;AR glasses&quot; part of the done-when.</li>
+<li>The compile-error fix was found quickly and explained correctly. Fragment shaders don&#x27;t get <code>modelMatrix</code> in Three.js, and <code>inverse()</code> is the problem with GLSL ES 1.0.</li>
+<li>The turn-1 summary is concise and organized by mode and device.</li>
+</ul>
+<h3 id="md-verdict">Verdict</h3>
+<p>The design is ambitious and well aimed at the visual-impact goal, but the process was a single generation pass with no verification. The first version had a shader that wouldn&#x27;t compile, the assistant only fixed it after the platform&#x27;s automatic error request, and the fix itself is likely wrong once the hologram is scaled or rotated. There&#x27;s no deployment guidance (HTTPS/secure context) and nothing honest about iOS&#x27;s lack of WebXR, so whether the done-when criterion is met on real headsets and phones is unproven.</p>
+</div></section><details class="src-view"><summary>Source with line numbers</summary><pre class="src"><code><span id="L1"># TRANSCRIPT Review — candidate-08</span><span id="L2"></span><span id="L3">| Criterion | Score | One-line reason |</span><span id="L4">|---|---|---|</span><span id="L5">| 1. Requirement understanding | 5 | Covers VR, AR, phone and desktop paths, but never mentions HTTPS/secure-context, iOS Safari having no WebXR, or what &quot;standalone&quot; means for dependencies. |</span><span id="L6">| 2. Engineering process | 4 | One-shot generation with no visible planning or research. The only iteration was a fix for a shader compile error that the platform&#x27;s automatic error request triggered. |</span><span id="L7">| 3. Verification rigor | 2 | No tests, previews or device checks are claimed. The first version shipped with a shader that would not compile. |</span><span id="L8">| 4. Honesty &amp; calibration | 4 | The feature list is stated as fact with no caveats (&quot;razor-sharp at any magnification&quot;), the shader bug was never mentioned up front, and no limitations are given. |</span><span id="L9">| 5. Communication &amp; handoff | 4 | The feature summary is clear and the file is in a Canvas with export, but there are no instructions for getting it onto a Quest or phone, no controls reference, and two turns were needed (one a silent auto-fix). |</span><span id="L10">| 6. Expected deliverable quality | 5 | The design is ambitious (terrain with derivative normals, sphere-traced Mandelbulb, room-scale canyon, two-handed zoom), but it was never verified and the fix it got looks fragile. |</span><span id="L11"></span><span id="L12">**Overall score: 4 / 10**</span><span id="L13"></span><span id="L14">## Top 5 issues</span><span id="L15"></span><span id="L16">1. **Major: the first version shipped with a shader that would not compile, and the assistant didn&#x27;t catch it.**</span><span id="L17">   - Evidence: turn 2 is an empty user message &quot;consistent with Canvas&#x27;s automatic &#x27;fix error&#x27; request&quot;. The assistant then fixes &quot;the invalid fragment-shader reference to `modelMatrix` and `inverse()`&quot;.</span><span id="L18">   - So the turn-1 claim that &quot;I have created the … application&quot; with a working &quot;Real-time volumetric sphere-traced 3D Mandelbulb&quot; was false when it was made.</span><span id="L19">   - Fix: compile and run the page (or at least its shaders) before declaring it done, and be specific about what was actually checked.</span><span id="L20"></span><span id="L21">2. **Major: the shader fix only accounts for moving the object, not rotating or scaling it.**</span><span id="L22">   - Evidence: the new ray origin is `cameraPosition - (vWorldPos - vLocalPos)`. That subtraction gives the model&#x27;s translation only when the model matrix has no rotation or scale.</span><span id="L23">   - The same transcript advertises &quot;direct hologram grab-to-pan, two-handed pinch-to-zoom&quot; and &quot;live&quot; interaction. If any of those scale or rotate the Mandelbulb mesh, the ray-marched bulb will be distorted or misplaced.</span><span id="L24">   - Fix: pass `inverse(modelMatrix)` as a custom uniform computed on the CPU (`object.matrixWorld.clone().invert()`). Then transform both the ray origin and the ray direction into local space.</span><span id="L25"></span><span id="L26">3. **Major: nothing says how to actually open it on the target devices.**</span><span id="L27">   - WebXR immersive sessions need a secure context (HTTPS or localhost). Opening a downloaded HTML file from local storage on a Quest, Pico or phone usually won&#x27;t offer &quot;Enter VR/AR&quot;.</span><span id="L28">   - Nothing covers hosting, export from Canvas, or whether three.js is inlined or loaded from a CDN (which matters for &quot;standalone&quot; and offline use).</span><span id="L29">   - Fix: add a short &quot;How to run&quot; section covering export, serving over HTTPS (any static host or a tunnel), and how to open it per device.</span><span id="L30"></span><span id="L31">4. **Major: no honest statement about iPhone support.**</span><span id="L32">   - The done-when names Apple phones, but iOS Safari has no WebXR.</span><span id="L33">   - The answer says phones get &quot;a Gyroscope Magic Window mode&quot; without saying this is a non-immersive fallback on iOS. It also doesn&#x27;t say whether the iOS 13+ `DeviceOrientationEvent.requestPermission()` user-gesture prompt is handled.</span><span id="L34">   - Fix: state the per-platform support matrix explicitly (immersive-vr/ar on Quest, Pico and Android Chrome; magic window only on iOS) and confirm the permission flow.</span><span id="L35"></span><span id="L36">5. **Minor: overclaiming in the feature copy.**</span><span id="L37">   - Evidence: &quot;ridges and spirals remain razor-sharp at any magnification&quot;. GPU float32 math visibly breaks down around 1e-5 to 1e-6 zoom, so &quot;any magnification&quot; can&#x27;t be true without perturbation or double-emulation.</span><span id="L38">   - The answer also gives no performance figures for a 240×240 displaced grid plus per-pixel ray marching on a Quest-class mobile GPU at headset refresh rates.</span><span id="L39">   - Fix: give a realistic zoom-depth limit, add adaptive quality or resolution scaling, and drop the absolute claims.</span><span id="L40"></span><span id="L41">## Strengths</span><span id="L42"></span><span id="L43">- Ambitious, high-wow design that goes past a flat 2D texture: a 3D terrain pedestal, a ray-marched Mandelbulb with orbit-trap coloring and ambient occlusion, and a room-scale &quot;Cathedral Canyon&quot; mode.</span><span id="L44">- Thinks about input on every platform: laser pointers with reticles, grab-to-pan, two-handed pinch zoom and thumbsticks in XR; touch orbit, pinch and a dive pad on phones.</span><span id="L45">- Handles AR passthrough deliberately (&quot;automatic room hiding in AR passthrough mode&quot;), which fits the &quot;AR glasses&quot; part of the done-when.</span><span id="L46">- The compile-error fix was found quickly and explained correctly. Fragment shaders don&#x27;t get `modelMatrix` in Three.js, and `inverse()` is the problem with GLSL ES 1.0.</span><span id="L47">- The turn-1 summary is concise and organized by mode and device.</span><span id="L48"></span><span id="L49">## Verdict</span><span id="L50"></span><span id="L51">The design is ambitious and well aimed at the visual-impact goal, but the process was a single generation pass with no verification. The first version had a shader that wouldn&#x27;t compile, the assistant only fixed it after the platform&#x27;s automatic error request, and the fix itself is likely wrong once the hologram is scaled or rotated. There&#x27;s no deployment guidance (HTTPS/secure context) and nothing honest about iOS&#x27;s lack of WebXR, so whether the done-when criterion is met on real headsets and phones is unproven.</span></code></pre></details>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../../../../data/">Data &amp; schema</a> · <a href="../../../../data/changelog/">Changelog</a> · <a href="../../../../feed.xml">Atom feed</a> · <a href="../../../../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>

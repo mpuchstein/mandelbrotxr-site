@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Mandelverse — WebXR Mandelbrot Room</title>
+<style>
+  html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#04060e;color:#dfe9ff;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-user-select:none;user-select:none;}
+  #c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab;}
+  #c:active{cursor:grabbing;}
+  #hud{position:fixed;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;
+    padding:max(14px,env(safe-area-inset-top)) 18px max(14px,env(safe-area-inset-bottom)) 18px;box-sizing:border-box;}
+  #hud.hidden{display:none;}
+  #top{display:flex;flex-direction:column;gap:6px;align-items:flex-start;}
+  #title{font-weight:800;letter-spacing:.18em;font-size:clamp(15px,2.4vw,22px);color:#9fdcff;
+    text-shadow:0 0 18px rgba(80,180,255,.55);}
+  #title span{display:block;font-weight:500;letter-spacing:.08em;font-size:.62em;color:#7f93b8;margin-top:2px;}
+  #err{display:none;max-width:min(92vw,560px);background:rgba(60,10,20,.85);border:1px solid #ff5d7a;color:#ffd7de;
+    padding:10px 14px;border-radius:10px;font-size:13px;pointer-events:auto;white-space:pre-wrap;}
+  #err.show{display:block;}
+  #bottom{display:flex;flex-direction:column;align-items:center;gap:10px;}
+  #btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;pointer-events:none;}
+  button{pointer-events:auto;border:1px solid rgba(120,210,255,.45);background:rgba(10,20,40,.55);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#cfeaff;font-weight:700;
+    font-size:15px;letter-spacing:.04em;padding:12px 22px;border-radius:999px;cursor:pointer;
+    box-shadow:0 0 22px rgba(60,160,255,.18), inset 0 0 12px rgba(80,180,255,.08);transition:all .15s;}
+  button:hover{background:rgba(30,60,110,.65);box-shadow:0 0 30px rgba(80,190,255,.4);transform:translateY(-1px);}
+  button:active{transform:translateY(1px);}
+  button.primary{background:linear-gradient(135deg,rgba(40,140,255,.85),rgba(120,60,255,.85));
+    border-color:rgba(180,230,255,.8);color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.5);}
+  #hint{font-size:12.5px;color:#8fa3c8;text-align:center;line-height:1.5;max-width:min(92vw,640px);
+    background:rgba(8,14,30,.45);padding:8px 14px;border-radius:10px;}
+  #btnExit{display:none;font-size:14px;padding:10px 20px;}
+  body.xr #hud{justify-content:flex-end;}
+  body.xr #top,body.xr #hint{display:none;}
+  body.xr #btnExit{display:block;}
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud">
+  <div id="top">
+    <div id="title">MANDELVERSE<span>an explorable 3D Mandelbrot set in a WebXR room</span></div>
+    <div id="err"></div>
+  </div>
+  <div id="bottom">
+    <div id="btns">
+      <button id="btnVR" class="primary">🥽 Enter VR</button>
+      <button id="btnAR" class="primary">🪟 Enter AR</button>
+      <button id="btnMotion">📱 Enable motion sensors</button>
+      <button id="btnExit">✕ Exit XR</button>
+    </div>
+    <div id="hint">Drag&nbsp;=&nbsp;orbit&nbsp;·&nbsp;pinch&nbsp;/&nbsp;wheel&nbsp;=&nbsp;zoom&nbsp;·&nbsp;drag&nbsp;the&nbsp;fractal&nbsp;=&nbsp;move&nbsp;it&nbsp;·&nbsp;two-finger&nbsp;drag&nbsp;=&nbsp;pan&nbsp;·&nbsp;double-tap&nbsp;=&nbsp;reset<br>
+    WebXR needs a secure context (HTTPS or localhost). Serving this file with e.g. <i>python3&nbsp;-m&nbsp;http.server</i> also works when opened directly.</div>
+  </div>
+</div>
+<script>
+(function(){
+'use strict';
+
+var canvas=document.getElementById('c');
+var hud=document.getElementById('hud');
+var errBox=document.getElementById('err');
+function showErr(m){errBox.textContent=m;errBox.classList.add('show');}
+
+var gl=canvas.getContext('webgl2',{antialias:true,alpha:true,depth:true,stencil:false,powerPreference:'high-performance',xrCompatible:true});
+if(!gl){showErr('WebGL2 is not available in this browser, so the 3D view cannot start.');return;}
+
+var isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+function sh(type,src){var s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);
+  if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){var log=gl.getShaderInfoLog(s);showErr('Shader error:\n'+log);throw new Error(log);}return s;}
+function prog(vs,fs){var p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,vs));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);
+  if(!gl.getProgramParameter(p,gl.LINK_STATUS)){var log=gl.getProgramInfoLog(p);showErr('Program error:\n'+log);throw new Error(log);}return p;}
+function locs(p,names){var o={};for(var i=0;i<names.length;i++)o[names[i]]=gl.getUniformLocation(p,names[i]);return o;}
+
+var HEAD='#version 300 es\nprecision highp float;\n';
+var TONEMAP='vec3 tonemap(vec3 c){c=max(c,vec3(0.0));c=(c*(2.51*c+0.03))/(c*(2.43*c+0.59)+0.14);return pow(c,vec3(1.0/2.2));}\n';
+
+var FS_VS=HEAD+'layout(location=0) in vec2 aP;out vec2 vUv;void main(){vUv=aP*0.5+0.5;gl_Position=vec4(aP,0.0,1.0);}';
+
+var MANDEL_FS=HEAD+
+'in vec2 vUv;out vec4 o;uniform vec2 uMin;uniform vec2 uSize;uniform int uMaxIter;'+
+'vec3 pal(float t){return vec3(0.5)+vec3(0.5)*cos(6.28318*(t+vec3(0.00,0.10,0.20)));}'+
+'void main(){'+
+'vec2 c=uMin+vUv*uSize;vec2 z=vec2(0.0);float n=0.0;bool esc=false;'+
+'for(int i=0;i<1024;i++){if(i>=uMaxIter)break;z=vec2(z.x*z.x-z.y*z.y,2.0*z.x*z.y)+c;n=float(i)+1.0;if(dot(z,z)>1048576.0){esc=true;break;}}'+
+'float h;vec3 col;'+
+'if(esc){float lz=log(dot(z,z))*0.5;float nu=log2(lz/6.93147);float t=n+1.0-nu;float f=t/float(uMaxIter);'+
+'col=pal(f*3.0+0.03);col=pow(col,vec3(0.72));h=clamp(pow(f,0.35),0.0,1.0);}'+
+'else{col=vec3(0.004,0.002,0.014);h=0.0;}'+
+'o=vec4(col,h);}';
+
+var MESH_VS=HEAD+
+'layout(location=0) in vec2 aP;'+
+'uniform mat4 uProj;uniform mat4 uView;uniform mat4 uModel;uniform sampler2D uTex;uniform vec2 uTexel;uniform vec2 uPlane;uniform float uHScale;'+
+'out vec3 vN;out vec3 vW;out vec3 vC;out float vH;out vec2 vUv;'+
+'void main(){vec2 uv=aP*0.5+0.5;'+
+'float h=texture(uTex,uv).a;float hx=texture(uTex,uv+vec2(uTexel.x,0.0)).a;float hz=texture(uTex,uv+vec2(0.0,uTexel.y)).a;'+
+'vec3 p=vec3(aP.x*uPlane.x,h*uHScale,aP.y*uPlane.y);'+
+'float dhdx=(hx-h)/uTexel.x*0.5/uPlane.x*uHScale;float dhdz=(hz-h)/uTexel.y*0.5/uPlane.y*uHScale;'+
+'vN=normalize(vec3(-dhdx,1.0,-dhdz));vec4 c4=texture(uTex,uv);vC=c4.rgb;vH=h;vUv=uv;'+
+'vec4 w=uModel*vec4(p,1.0);vW=w.xyz;gl_Position=uProj*uView*w;}';
+
+var MESH_FS=HEAD+TONEMAP+
+'in vec3 vN;in vec3 vW;in vec3 vC;in float vH;in vec2 vUv;'+
+'uniform vec3 uCam;uniform vec3 uLight;uniform vec3 uFogColor;uniform float uFog;uniform float uTime;uniform vec3 uGlowPos;out vec4 o;'+
+'void main(){vec3 N=normalize(vN);vec3 V=normalize(uCam-vW);vec3 L=normalize(uLight);'+
+'float diff=max(dot(N,L),0.0);vec3 H=normalize(L+V);float spec=pow(max(dot(N,H),0.0),64.0);'+
+'float fres=pow(1.0-max(dot(N,V),0.0),3.0);'+
+'vec3 col=vC*(0.22+0.85*diff);'+
+'col+=spec*vec3(0.7,0.85,1.0)*0.45;'+
+'col+=fres*vec3(0.10,0.30,0.55)*0.9;'+
+'if(vH<=0.0001&&dot(vC,vC)<0.002){col=vec3(0.012,0.005,0.035)*(0.5+0.5*diff)+fres*vec3(0.45,0.15,0.75)*0.7;}'+
+'vec3 gp=uGlowPos-vW;float gd=length(gp);float att=1.0/(1.0+1.1*gd*gd);'+
+'col+=vec3(0.15,0.45,0.95)*att*0.4*max(dot(N,gp/max(gd,0.001)),0.0);'+
+'float band=abs(fract(vUv.x*0.35+vUv.y*0.6+uTime*0.05)-0.5);'+
+'col+=vec3(0.10,0.25,0.45)*smoothstep(0.07,0.0,band)*0.4;'+
+'float dist=length(uCam-vW);float fog=1.0-exp(-uFog*uFog*dist*dist*0.018);'+
+'col=mix(col,uFogColor,clamp(fog,0.0,1.0));'+
+'o=vec4(tonemap(col),1.0);}';
+
+var ROOM_VS=HEAD+
+'layout(location=0) in vec3 aPos;layout(location=1) in vec3 aN;'+
+'uniform mat4 uProj;uniform mat4 uView;uniform mat4 uModel;'+
+'out vec3 vW;out vec3 vN;void main(){vW=(uModel*vec4(aPos,1.0)).xyz;vN=mat3(uModel)*aN;gl_Position=uProj*uView*vec4(vW,1.0);}';
+
+var ROOM_FS=HEAD+TONEMAP+
+'in vec3 vW;in vec3 vN;'+
+'uniform vec3 uCam;uniform int uKind;uniform float uTime;uniform vec3 uFogColor;uniform float uFog;out vec4 o;'+
+'void main(){vec3 col=vec3(0.0);'+
+'if(uKind==0){vec2 p=vW.xz;float r=length(p);vec2 g=abs(fract(p/0.5)-0.5);float line=smoothstep(0.47,0.5,max(g.x,g.y));'+
+'float fade=exp(-r*0.28);col=vec3(0.012,0.02,0.045);col+=vec3(0.05,0.16,0.36)*line*fade*1.5;'+
+'col+=vec3(0.20,0.55,1.0)*exp(-pow((r-1.45)*5.0,2.0))*1.3;col+=vec3(0.08,0.22,0.45)*exp(-r*1.4)*0.8;}'+
+'else if(uKind==1){float a=atan(vW.z,vW.x);float strips=pow(0.5+0.5*cos(a*24.0),8.0);float h=clamp(vW.y/3.6,0.0,1.0);'+
+'col=vec3(0.010,0.016,0.040)*(1.0-h*0.4);col+=vec3(0.04,0.14,0.32)*strips*exp(-abs(vW.y-1.5)*1.8);col+=vec3(0.02,0.06,0.15)*exp(-vW.y*1.4);}'+
+'else if(uKind==2){float r=length(vW.xz);col=vec3(0.008,0.012,0.030);'+
+'col+=vec3(0.35,0.75,1.0)*exp(-pow((r-1.1)*4.0,2.0))*2.4;col+=vec3(0.05,0.12,0.26)*exp(-r*0.9)*0.6;}'+
+'else if(uKind==3){vec3 N=normalize(vN);float diff=max(dot(N,normalize(vec3(0.4,1.0,0.3))),0.0);float r=length(vW.xz);'+
+'col=vec3(0.030,0.036,0.062)*(0.4+0.6*diff);float top=smoothstep(0.48,0.5,vW.y);'+
+'col+=vec3(0.20,0.60,1.0)*exp(-pow((r-1.27)*28.0,2.0))*(0.35+0.65*top);col+=vec3(0.10,0.30,0.60)*top*0.9;}'+
+'else{float pulse=0.75+0.25*sin(uTime*2.2);col=vec3(0.25,0.70,1.0)*pulse*1.6;}'+
+'float dist=length(uCam-vW);float fog=1.0-exp(-uFog*uFog*dist*dist*0.018);'+
+'col=mix(col,uFogColor,clamp(fog,0.0,1.0));o=vec4(tonemap(col),1.0);}';
+
+var PTS_VS=HEAD+
+'layout(location=0) in vec3 aPos;layout(location=1) in float aSeed;'+
+'uniform mat4 uProj;uniform mat4 uView;uniform float uTime;uniform float uPix;out float vS;'+
+'void main(){vec3 p=aPos;p.y=mod(aPos.y+uTime*(0.04+0.10*aSeed),3.4);p.x+=sin(uTime*0.3+aSeed*40.0)*0.18;p.z+=cos(uTime*0.24+aSeed*31.0)*0.18;'+
+'vec4 mv=uView*vec4(p,1.0);gl_Position=uProj*mv;gl_PointSize=(1.5+2.5*aSeed)*uPix/max(0.1,-mv.z);vS=aSeed;}';
+
+var PTS_FS=HEAD+TONEMAP+
+'in float vS;uniform float uTime;out vec4 o;'+
+'void main(){vec2 d=gl_PointCoord-0.5;float a=smoothstep(0.5,0.05,length(d));'+
+'float tw=0.6+0.4*sin(uTime*(1.0+3.0*vS)+vS*50.0);'+
+'vec3 col=mix(vec3(0.30,0.60,1.0),vec3(0.70,0.40,1.0),vS)*a*tw;o=vec4(tonemap(col*1.5),a*0.75);}';
+
+var PANEL_VS=HEAD+
+'layout(location=0) in vec3 aPos;layout(location=1) in vec2 aUv;uniform mat4 uProj;uniform mat4 uView;out vec2 vUv;'+
+'void main(){vUv=aUv;gl_Position=uProj*uView*vec4(aPos,1.0);}';
+
+var PANEL_FS=HEAD+TONEMAP+
+'in vec2 vUv;uniform sampler2D uTex;uniform float uAlpha;out vec4 o;'+
+'void main(){vec4 t=texture(uTex,vUv);o=vec4(tonemap(t.rgb*1.35),t.a*uAlpha);}';
+
+var pMandel=prog(FS_VS,MANDEL_FS);var LM=locs(pMandel,['uMin','uSize','uMaxIter']);
+var pMesh=prog(MESH_VS,MESH_FS);var LMe=locs(pMesh,['uProj','uView','uModel','uTex','uTexel','uPlane','uHScale','uCam','uLight','uFogColor','uFog','uTime','uGlowPos']);
+var pRoom=prog(ROOM_VS,ROOM_FS);var LR=locs(pRoom,['uProj','uView','uModel','uCam','uKind','uTime','uFogColor','uFog']);
+var pPts=prog(PTS_VS,PTS_FS);var LP=locs(pPts,['uProj','uView','uTime','uPix']);
+var pPanel=prog(PANEL_VS,PANEL_FS);var LPa=locs(pPanel,['uProj','uView','uTex','uAlpha']);
+
+function vao(setup){var v=gl.createVertexArray();gl.bindVertexArray(v);setup();gl.bindVertexArray(null);return v;}
+var fsVao=vao(function(){var b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);});
+
+function gridVAO(div){
+  var n=(div+1)*(div+1),pos=new Float32Array(n*2),k=0,i,j;
+  for(j=0;j<=div;j++)for(i=0;i<=div;i++){pos[k++]=i/div*2-1;pos[k++]=j/div*2-1;}
+  var idx=new Uint32Array(div*div*6),q=0;
+  for(j=0;j<div;j++)for(i=0;i<div;i++){var a=j*(div+1)+i,b=a+1,c=a+div+1,d=c+1;idx[q++]=a;idx[q++]=c;idx[q++]=b;idx[q++]=b;idx[q++]=c;idx[q++]=d;}
+  var v=vao(function(){
+    var pb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,pb);gl.bufferData(gl.ARRAY_BUFFER,pos,gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+    var ib=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,idx,gl.STATIC_DRAW);
+  });
+  return {vao:v,count:idx.length};
+}
+
+function discVAO(radius,seg,y,up){
+  var pos=[0,y,0],nor=[0,up?1:-1,0],i;
+  for(i=0;i<=seg;i++){var a=i/seg*Math.PI*2;pos.push(Math.cos(a)*radius,y,Math.sin(a)*radius);nor.push(0,up?1:-1,0);}
+  var idx=[];for(i=1;i<=seg;i++){if(up)idx.push(0,i+1,i);else idx.push(0,i,i+1);}
+  var v=vao(function(){
+    var pb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,pb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(pos),gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);
+    var nb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,nb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(nor),gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,3,gl.FLOAT,false,0,0);
+    var ib=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint32Array(idx),gl.STATIC_DRAW);
+  });
+  return {vao:v,count:idx.length};
+}
+
+function cylVAO(r,h,seg,y0){
+  var pos=[],nor=[],idx=[],i,a;
+  for(i=0;i<=seg;i++){a=i/seg*Math.PI*2;var cx=Math.cos(a),sz=Math.sin(a);
+    pos.push(cx*r,y0,sz*r,cx*r,y0+h,sz*r);nor.push(cx,0,sz,cx,0,sz);}
+  for(i=0;i<seg;i++){var b=i*2;idx.push(b,b+2,b+1,b+1,b+2,b+3);}
+  var top=pos.length/3;
+  pos.push(0,y0+h,0);nor.push(0,1,0);
+  for(i=0;i<=seg;i++){a=i/seg*Math.PI*2;pos.push(Math.cos(a)*r,y0+h,Math.sin(a)*r);nor.push(0,1,0);}
+  for(i=0;i<seg;i++){idx.push(top,top+1+i+1,top+1+i);}
+  var v=vao(function(){
+    var pb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,pb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(pos),gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);
+    var nb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,nb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(nor),gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,3,gl.FLOAT,false,0,0);
+    var ib=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint32Array(idx),gl.STATIC_DRAW);
+  });
+  return {vao:v,count:idx.length};
+}
+
+function ringVAO(R,r,seg,tseg){
+  var pos=[],nor=[],idx=[],i,j;
+  for(i=0;i<=seg;i++){var u=i/seg*Math.PI*2,cu=Math.cos(u),su=Math.sin(u);
+    for(j=0;j<=tseg;j++){var v=j/tseg*Math.PI*2,cv=Math.cos(v),sv=Math.sin(v);
+      pos.push((R+r*cv)*cu,r*sv,(R+r*cv)*su);nor.push(cv*cu,sv,cv*su);}}
+  for(i=0;i<seg;i++)for(j=0;j<tseg;j++){var a=i*(tseg+1)+j,b=a+tseg+1;idx.push(a,b,a+1,b,b+1,a+1);}
+  var v=vao(function(){
+    var pb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,pb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(pos),gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);
+    var nb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,nb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(nor),gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,3,gl.FLOAT,false,0,0);
+    var ib=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint32Array(idx),gl.STATIC_DRAW);
+  });
+  return {vao:v,count:idx.length};
+}
+
+function panelVAO(){
+  var x0=-0.85,x1=0.85,y0=1.10,y1=1.98,z=-1.75;
+  var pos=[x0,y0,z,x1,y0,z,x1,y1,z,x0,y0,z,x1,y1,z,x0,y1,z];
+  var uv=[0,0,1,0,1,1,0,0,1,1,0,1];
+  var v=vao(function(){
+    var pb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,pb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(pos),gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);
+    var ub=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,ub);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(uv),gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,2,gl.FLOAT,false,0,0);
+  });
+  return {vao:v,count:6};
+}
+
+var NPTS=1400;
+var ptsVAO=vao(function(){
+  var pos=new Float32Array(NPTS*3),seed=new Float32Array(NPTS),i;
+  for(i=0;i<NPTS;i++){var a=Math.random()*Math.PI*2,r=Math.sqrt(Math.random())*6.2;
+    pos[i*3]=Math.cos(a)*r;pos[i*3+1]=Math.random()*3.4;pos[i*3+2]=Math.sin(a)*r;seed[i]=Math.random();}
+  var pb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,pb);gl.bufferData(gl.ARRAY_BUFFER,pos,gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);
+  var sb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,sb);gl.bufferData(gl.ARRAY_BUFFER,seed,gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,1,gl.FLOAT,false,0,0);
+});
+
+var floorG=discVAO(7,72,0,true);
+var ceilG=discVAO(7,72,3.6,false);
+var wallG=cylVAO(7,3.6,72,0);
+var pedG=cylVAO(1.3,0.5,64,0);
+var ringG=ringVAO(1.55,0.025,96,10);
+var panelG=panelVAO();
+
+function makePanelTexture(){
+  var pc=document.createElement('canvas');pc.width=1024;pc.height=512;
+  var g=pc.getContext('2d');
+  g.clearRect(0,0,1024,512);
+  g.fillStyle='rgba(6,11,24,0.86)';
+  g.beginPath();g.roundRect(8,8,1008,496,28);g.fill();
+  g.strokeStyle='rgba(110,205,255,0.85)';g.lineWidth=5;g.beginPath();g.roundRect(8,8,1008,496,28);g.stroke();
+  g.textAlign='center';g.fillStyle='#aee4ff';g.font='bold 58px system-ui,sans-serif';
+  g.fillText('MANDELVERSE',512,86);
+  g.font='33px system-ui,sans-serif';g.fillStyle='#e6efff';
+  var lines=['Left stick: move      Right stick: turn / zoom into the fractal',
+    'Trigger (hold): fly forward',
+    'Squeeze or pinch: grab the fractal and move it',
+    'While grabbing: right stick rotates and scales it',
+    'X / A button: reset the view'];
+  for(var i=0;i<lines.length;i++)g.fillText(lines[i],512,170+i*62);
+  var tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tex);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,pc);
+  gl.generateMipmap(gl.TEXTURE_2D);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  return tex;
+}
+var panelTex=makePanelTexture();
+
+var floatOK=!!(gl.getExtension('EXT_color_buffer_float')&&gl.getExtension('OES_texture_float_linear'));
+var texSize=0,mandelTex=null,mandelFBO=null;
+function setTexSize(n){
+  if(mandelTex){gl.deleteTexture(mandelTex);gl.deleteFramebuffer(mandelFBO);}
+  texSize=n;
+  mandelTex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,mandelTex);
+  if(floatOK){
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA16F,n,n,0,gl.RGBA,gl.HALF_FLOAT,null);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  }else{
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,n,n,0,gl.RGBA,gl.UNSIGNED_BYTE,null);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  }
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  mandelFBO=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,mandelFBO);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,mandelTex,0);
+  if(floatOK&&gl.checkFramebufferStatus(gl.FRAMEBUFFER)!==gl.FRAMEBUFFER_COMPLETE){
+    floatOK=false;
+    gl.deleteTexture(mandelTex);gl.deleteFramebuffer(mandelFBO);
+    mandelTex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,mandelTex);
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,n,n,0,gl.RGBA,gl.UNSIGNED_BYTE,null);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    mandelFBO=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,mandelFBO);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,mandelTex,0);
+  }
+  gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+}
+
+function m4Mul(a,b){var o=new Float32Array(16);for(var c=0;c<4;c++)for(var r=0;r<4;r++){var s=0;for(var k=0;k<4;k++)s+=a[k*4+r]*b[c*4+k];o[c*4+r]=s;}return o;}
+function m4Perspective(fovy,aspect,near,far){var f=1/Math.tan(fovy/2),o=new Float32Array(16);
+  o[0]=f/aspect;o[5]=f;o[10]=(far+near)/(near-far);o[11]=-1;o[14]=2*far*near/(near-far);return o;}
+function m4Invert(m){var o=new Float32Array(16);
+  var a00=m[0],a01=m[1],a02=m[2],a03=m[3],a10=m[4],a11=m[5],a12=m[6],a13=m[7],a20=m[8],a21=m[9],a22=m[10],a23=m[11],a30=m[12],a31=m[13],a32=m[14],a33=m[15];
+  var b00=a00*a11-a01*a10,b01=a00*a12-a02*a10,b02=a00*a13-a03*a10,b03=a01*a12-a02*a11,b04=a01*a13-a03*a11,b05=a02*a13-a03*a12;
+  var b06=a20*a31-a21*a30,b07=a20*a32-a22*a30,b08=a20*a33-a23*a30,b09=a21*a32-a22*a31,b10=a21*a33-a23*a31,b11=a22*a33-a23*a32;
+  var det=b00*b11-b01*b10+b02*b09+b03*b08-b04*b07+b05*b06;det=1.0/det;
+  o[0]=(a11*b11-a12*b10+a13*b09)*det;o[1]=(a02*b10-a01*b11-a03*b09)*det;o[2]=(a31*b05-a32*b04+a33*b03)*det;o[3]=(a22*b04-a21*b05-a23*b03)*det;
+  o[4]=(a12*b08-a10*b11-a13*b07)*det;o[5]=(a00*b11-a02*b08+a03*b07)*det;o[6]=(a32*b02-a30*b05-a33*b01)*det;o[7]=(a20*b05-a22*b02+a23*b01)*det;
+  o[8]=(a10*b10-a11*b08+a13*b06)*det;o[9]=(a01*b08-a00*b10-a03*b06)*det;o[10]=(a30*b04-a31*b02+a33*b00)*det;o[11]=(a21*b02-a20*b04-a23*b00)*det;
+  o[12]=(a11*b07-a10*b09-a12*b06)*det;o[13]=(a00*b09-a01*b07+a02*b06)*det;o[14]=(a31*b01-a30*b03-a32*b00)*det;o[15]=(a20*b03-a21*b01+a22*b00)*det;
+  return o;}
+function m4T(x,y,z){var o=new Float32Array(16);o[0]=o[5]=o[10]=o[15]=1;o[12]=x;o[13]=y;o[14]=z;return o;}
+function m4RotY(a){var c=Math.cos(a),s=Math.sin(a),o=new Float32Array(16);o[0]=c;o[2]=-s;o[5]=1;o[8]=s;o[10]=c;o[15]=1;return o;}
+function m4RotX(a){var c=Math.cos(a),s=Math.sin(a),o=new Float32Array(16);o[0]=1;o[5]=c;o[6]=s;o[9]=-s;o[10]=c;o[15]=1;return o;}
+function m4RotZ(a){var c=Math.cos(a),s=Math.sin(a),o=new Float32Array(16);o[0]=c;o[1]=s;o[4]=-s;o[5]=c;o[10]=1;o[15]=1;return o;}
+function m4S(s){var o=new Float32Array(16);o[0]=o[5]=o[10]=s;o[15]=1;return o;}
+function m4Ident(){var o=new Float32Array(16);o[0]=o[5]=o[10]=o[15]=1;return o;}
+function qMul(a,b){return [
+  a[3]*b[0]+a[0]*b[3]+a[1]*b[2]-a[2]*b[1],
+  a[3]*b[1]-a[0]*b[2]+a[1]*b[3]+a[2]*b[0],
+  a[3]*b[2]+a[0]*b[1]-a[1]*b[0]+a[2]*b[3],
+  a[3]*b[3]-a[0]*b[0]-a[1]*b[1]-a[2]*b[2]];}
+function qAxis(axis,a){var s=Math.sin(a/2),o=[0,0,0,Math.cos(a/2)];o[axis]=s;return o;}
+function qRotV(q,v){var x=q[0],y=q[1],z=q[2],w=q[3];
+  var tx=2*(y*v[2]-z*v[1]),ty=2*(z*v[0]-x*v[2]),tz=2*(x*v[1]-y*v[0]);
+  return [v[0]+w*tx+(y*tz-z*ty),v[1]+w*ty+(z*tx-x*tz),v[2]+w*tz+(x*ty-y*tx)];}
+function qYawPitch(yaw,pitch){return qMul(qAxis(1,yaw),qAxis(0,pitch));}
+function viewFromPosQuat(p,q){var x=q[0],y=q[1],z=q[2],w=q[3];
+  var c0=[1-2*(y*y+z*z),2*(x*y+w*z),2*(x*z-w*y)];
+  var c1=[2*(x*y-w*z),1-2*(x*x+z*z),2*(y*z+w*x)];
+  var c2=[2*(x*z+w*y),2*(y*z-w*x),1-2*(x*x+y*y)];
+  var o=new Float32Array(16);
+  o[0]=c0[0];o[1]=c1[0];o[2]=c2[0];o[3]=0;
+  o[4]=c0[1];o[5]=c1[1];o[6]=c2[1];o[7]=0;
+  o[8]=c0[2];o[9]=c1[2];o[10]=c2[2];o[11]=0;
+  o[12]=-(c0[0]*p[0]+c0[1]*p[1]+c0[2]*p[2]);
+  o[13]=-(c1[0]*p[0]+c1[1]*p[1]+c1[2]*p[2]);
+  o[14]=-(c2[0]*p[0]+c2[1]*p[1]+c2[2]*p[2]);o[15]=1;return o;}
+function quatFromDeviceOrientation(alpha,beta,gamma,screenAngle){
+  var x=beta*Math.PI/180,y=alpha*Math.PI/180,z=-gamma*Math.PI/180;
+  var q=qMul(qMul(qAxis(1,y),qAxis(0,x)),qAxis(2,z));
+  return qMul(q,qAxis(2,-screenAngle*Math.PI/180));
+}
+
+var S={
+  mode:'flat',
+  cx:-0.75,cy:0.0,half:1.7,
+  maxIter:320,
+  objPos:[0,0.5,0],objYaw:0,objTilt:-0.55,objScale:1,autoRot:true,
+  texDirty:true,
+  rigPos:[0,0,2.4],rigYaw:Math.PI,
+  camYaw:0,camPitch:-0.22,camDist:3.3,camTarget:[0,0.85,0],
+  grab:null,panelAlpha:1,panelT:0,arPlaced:false,resetLatch:false
+};
+function baseMaxIter(){return Math.round(Math.min(760,Math.max(320,320+Math.log2(1.7/S.half)*110)));}
+function setHalf(h){S.half=Math.min(3.5,Math.max(0.00002,h));var mi=baseMaxIter();if(mi!==S.maxIter){S.maxIter=mi;S.texDirty=true;}}
+function resetView(){
+  S.cx=-0.75;S.cy=0;setHalf(1.7);
+  S.objPos=[0,0.5,0];S.objYaw=0;S.objScale=1;S.grab=null;
+  S.camYaw=0;S.camPitch=-0.22;S.camDist=3.3;S.camTarget=[0,0.85,0];
+  S.rigPos=[0,0,2.4];S.rigYaw=Math.PI;
+  S.texDirty=true;
+}
+
+var QUALITY=[{tex:1024,div:256},{tex:768,div:192},{tex:512,div:128},{tex:384,div:96}];
+var qStep=isMobile?1:0;
+var grid=gridVAO(QUALITY[qStep].div);
+setTexSize(QUALITY[qStep].tex);
+
+function renderMandel(){
+  gl.bindFramebuffer(gl.FRAMEBUFFER,mandelFBO);
+  gl.viewport(0,0,texSize,texSize);
+  gl.disable(gl.DEPTH_TEST);
+  gl.useProgram(pMandel);
+  gl.uniform2f(LM.uMin,S.cx-S.half,S.cy-S.half);
+  gl.uniform2f(LM.uSize,S.half*2,S.half*2);
+  gl.uniform1i(LM.uMaxIter,S.maxIter);
+  gl.bindVertexArray(fsVao);
+  gl.drawArrays(gl.TRIANGLES,0,3);
+  gl.bindVertexArray(null);
+  gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+  gl.enable(gl.DEPTH_TEST);
+  S.texDirty=false;
+}
+
+function modelMatrix(){
+  return m4Mul(m4T(S.objPos[0],S.objPos[1],S.objPos[2]),
+    m4Mul(m4RotY(S.objYaw),m4Mul(m4RotX(S.objTilt),m4S(S.objScale))));
+}
+
+function renderScene(proj,view,camPos,t){
+  if(S.texDirty)renderMandel();
+  var time=t/1000;
+  var fogColor=[0.008,0.012,0.030],fog=1.0;
+  gl.disable(gl.CULL_FACE);
+  gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.depthMask(true);gl.disable(gl.BLEND);
+
+  if(S.mode!=='ar'){
+    gl.useProgram(pRoom);
+    gl.uniformMatrix4fv(LR.uProj,false,proj);gl.uniformMatrix4fv(LR.uView,false,view);
+    gl.uniform3fv(LR.uCam,camPos);gl.uniform3fv(LR.uFogColor,fogColor);gl.uniform1f(LR.uFog,fog);gl.uniform1f(LR.uTime,time);
+    gl.uniformMatrix4fv(LR.uModel,false,m4Ident());gl.uniform1i(LR.uKind,0);
+    gl.bindVertexArray(floorG.vao);gl.drawElements(gl.TRIANGLES,floorG.count,gl.UNSIGNED_INT,0);
+    gl.uniform1i(LR.uKind,2);
+    gl.bindVertexArray(ceilG.vao);gl.drawElements(gl.TRIANGLES,ceilG.count,gl.UNSIGNED_INT,0);
+    gl.uniform1i(LR.uKind,1);
+    gl.bindVertexArray(wallG.vao);gl.drawElements(gl.TRIANGLES,wallG.count,gl.UNSIGNED_INT,0);
+    gl.uniform1i(LR.uKind,3);
+    gl.bindVertexArray(pedG.vao);gl.drawElements(gl.TRIANGLES,pedG.count,gl.UNSIGNED_INT,0);
+    gl.uniform1i(LR.uKind,4);
+    gl.uniformMatrix4fv(LR.uModel,false,m4Mul(m4T(0,1.15,0),m4RotX(time*0.35)));
+    gl.bindVertexArray(ringG.vao);gl.drawElements(gl.TRIANGLES,ringG.count,gl.UNSIGNED_INT,0);
+    gl.bindVertexArray(null);
+  }
+
+  gl.useProgram(pMesh);
+  gl.uniformMatrix4fv(LMe.uProj,false,proj);gl.uniformMatrix4fv(LMe.uView,false,view);
+  gl.uniformMatrix4fv(LMe.uModel,false,modelMatrix());
+  gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,mandelTex);gl.uniform1i(LMe.uTex,0);
+  gl.uniform2f(LMe.uTexel,1/texSize,1/texSize);
+  gl.uniform2f(LMe.uPlane,1.1,1.1);
+  gl.uniform1f(LMe.uHScale,0.5);
+  gl.uniform3fv(LMe.uCam,camPos);
+  gl.uniform3f(LMe.uLight,0.35,0.9,0.28);
+  gl.uniform3fv(LMe.uFogColor,fogColor);gl.uniform1f(LMe.uFog,fog);
+  gl.uniform1f(LMe.uTime,time);
+  gl.uniform3f(LMe.uGlowPos,S.objPos[0],S.objPos[1]+0.1,S.objPos[2]);
+  gl.bindVertexArray(grid.vao);gl.drawElements(gl.TRIANGLES,grid.count,gl.UNSIGNED_INT,0);
+  gl.bindVertexArray(null);
+
+  gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE);gl.depthMask(false);
+  gl.useProgram(pPts);
+  gl.uniformMatrix4fv(LP.uProj,false,proj);gl.uniformMatrix4fv(LP.uView,false,view);
+  gl.uniform1f(LP.uTime,time);
+  gl.uniform1f(LP.uPix,gl.drawingBufferHeight/700);
+  gl.bindVertexArray(ptsVAO);gl.drawArrays(gl.POINTS,0,NPTS);
+  gl.bindVertexArray(null);
+
+  if(S.mode!=='ar'&&S.panelAlpha>0.002){
+    gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+    gl.useProgram(pPanel);
+    gl.uniformMatrix4fv(LPa.uProj,false,proj);gl.uniformMatrix4fv(LPa.uView,false,view);
+    gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,panelTex);gl.uniform1i(LPa.uTex,0);
+    gl.uniform1f(LPa.uAlpha,S.panelAlpha);
+    gl.bindVertexArray(panelG.vao);gl.drawArrays(gl.TRIANGLES,0,6);
+    gl.bindVertexArray(null);
+  }
+  gl.depthMask(true);gl.disable(gl.BLEND);
+}
+
+var session=null,refSpace=null,xrRAF=0,lastXR=0;
+var emaMs=16,frameCount=0;
+
+function rigMatrix(){return m4Mul(m4T(S.rigPos[0],S.rigPos[1],S.rigPos[2]),m4RotY(S.rigYaw));}
+
+function dist3(a,b){var dx=a.x-b.x,dy=a.y-b.y,dz=a.z-b.z;return Math.sqrt(dx*dx+dy*dy+dz*dz);}
+
+function updateXRInput(frame,pose,dt){
+  var headFwd=[0,0,-1];
+  if(pose.views.length){headFwd=qRotV(pose.views[0].transform.orientation,[0,0,-1]);}
+  var sources=session.inputSources;
+  for(var si=0;si<sources.length;si++){
+    var src=sources[si],gp=src.gamepad;
+    var ax=0,ay=0;
+    if(gp&&gp.axes&&gp.axes.length>=4){ax=gp.axes[2];ay=gp.axes[3];}
+    if(Math.abs(ax)<0.14)ax=0;if(Math.abs(ay)<0.14)ay=0;
+    var pinch=false,pinchPos=null;
+    if(src.hand){
+      try{
+        var jT=frame.getJointPose(src.hand.get('thumb-tip'),refSpace);
+        var jI=frame.getJointPose(src.hand.get('index-finger-tip'),refSpace);
+        if(jT&&jI&&dist3(jT.transform.position,jI.transform.position)<0.03){pinch=true;pinchPos=jI.transform.position;}
+      }catch(e){}
+    }
+    var squeeze=!!(gp&&gp.buttons[1]&&gp.buttons[1].pressed);
+    var trigger=!!(gp&&gp.buttons[0]&&gp.buttons[0].pressed);
+    var btnA=!!(gp&&gp.buttons[4]&&gp.buttons[4].pressed);
+    if(src._sel)pinch=true;
+    var p=pinchPos;
+    if(!p&&(squeeze||src._sel)&&src.gripSpace){var ps=frame.getPose(src.gripSpace,refSpace);if(ps)p=ps.transform.position;}
+    var grabNow=pinch||squeeze||!!src._sel;
+
+    var hand=src.handedness;
+    if(grabNow&&!S.grab&&p){
+      S.grab={src:src,ox:S.objPos[0]-p.x,oy:S.objPos[1]-p.y,oz:S.objPos[2]-p.z};
+      S.panelAlpha=0;
+    }
+    if(!grabNow&&S.grab&&S.grab.src===src)S.grab=null;
+    if(S.grab&&S.grab.src===src&&p){
+      S.objPos[0]=p.x+S.grab.ox;S.objPos[1]=p.y+S.grab.oy;S.objPos[2]=p.z+S.grab.oz;
+      S.objPos[1]=Math.min(3.0,Math.max(0.1,S.objPos[1]));
+      var rr=Math.hypot(S.objPos[0],S.objPos[2]);if(rr>5.5){S.objPos[0]*=5.5/rr;S.objPos[2]*=5.5/rr;}
+    }
+    if(hand==='left'||hand==='none'&&!src._usedRight){
+      var f=[Math.sin(S.rigYaw),Math.cos(S.rigYaw)],r=[-f[1],f[0]];
+      var sp=2.1*dt;
+      S.rigPos[0]+=(f[0]*(-ay)+r[0]*ax)*sp;
+      S.rigPos[2]+=(f[1]*(-ay)+r[1]*ax)*sp;
+    }else{
+      S.rigYaw-=ax*dt*2.1;
+      if(S.grab&&S.grab.src===src){
+        S.objYaw+=ax*dt*2.0;
+        S.objScale=Math.min(3,Math.max(0.3,S.objScale*Math.exp(ay*dt*1.2)));
+      }else{
+        setHalf(S.half*Math.exp(ay*dt*1.5));
+      }
+    }
+    if(trigger){
+      var fl=1.4*dt;
+      S.rigPos[0]+=headFwd[0]*fl;S.rigPos[1]+=headFwd[1]*fl;S.rigPos[2]+=headFwd[2]*fl;
+      S.rigPos[1]=Math.min(3.1,Math.max(0.15,S.rigPos[1]));
+    }
+    if(btnA&&!S.resetLatch){resetView();S.resetLatch=true;}
+    if(!btnA)S.resetLatch=false;
+    var rad=Math.hypot(S.rigPos[0],S.rigPos[2]);
+    if(rad>5.6){S.rigPos[0]*=5.6/rad;S.rigPos[2]*=5.6/rad;}
+  }
+  if(!S.grab&&S.autoRot)S.objYaw+=dt*0.07;
+  S.panelT+=dt;
+  if(S.panelT>26)S.panelAlpha=Math.max(0,S.panelAlpha-dt*0.5);
+}
+
+function onXRFrame(t,frame){
+  xrRAF=session.requestAnimationFrame(onXRFrame);
+  var dt=Math.min(0.1,(t-lastXR)/1000||0.016);lastXR=t;
+  var pose=frame.getViewerPose(refSpace);
+  if(!pose)return;
+  updateXRInput(frame,pose,dt);
+  if(S.mode==='ar'&&!S.arPlaced&&pose.views.length){
+    var v=pose.views[0].transform;
+    var f=qRotV(v.orientation,[0,0,-1]);
+    S.objPos=[v.position.x+f[0]*1.5,Math.max(0.15,v.position.y-0.3),v.position.z+f[2]*1.5];
+    S.objScale=0.6;S.arPlaced=true;
+  }
+  var layer=session.renderState.baseLayer;
+  gl.bindFramebuffer(gl.FRAMEBUFFER,layer.framebuffer);
+  if(S.mode==='ar')gl.clearColor(0,0,0,0);else gl.clearColor(0.008,0.012,0.030,1);
+  gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+  var rig=rigMatrix();
+  for(var i=0;i<pose.views.length;i++){
+    var view=pose.views[i];
+    var vp=layer.getViewport(view);
+    gl.viewport(vp.x,vp.y,vp.width,vp.height);
+    var camWorld=m4Mul(rig,view.transform.matrix);
+    var viewM=m4Invert(camWorld);
+    renderScene(view.projectionMatrix,viewM,[camWorld[12],camWorld[13],camWorld[14]],t);
+  }
+  gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+  emaMs=emaMs*0.95+dt*1000*0.05;frameCount++;
+  if(frameCount%50===0)adjustQuality(dt*1000);
+}
+
+function adjustQuality(ms){
+  if(ms>21&&qStep<QUALITY.length-1){qStep++;applyQuality();}
+  else if(ms<12.5&&qStep>0){qStep--;applyQuality();}
+}
+function applyQuality(){
+  setTexSize(QUALITY[qStep].tex);
+  grid=gridVAO(QUALITY[qStep].div);
+  S.texDirty=true;
+}
+
+function onSessionEnd(){
+  if(xrRAF&&session)session.cancelAnimationFrame(xrRAF);
+  session=null;S.mode='flat';S.grab=null;S.arPlaced=false;
+  document.body.classList.remove('xr');
+  hud.classList.remove('hidden');
+  resize();
+}
+
+async function startSession(mode){
+  if(!navigator.xr){showErr('WebXR is not available in this browser/context.');return;}
+  var init={optionalFeatures:['local-floor','bounded-floor','hand-tracking','layers','handedness','dom-overlay','passthrough']};
+  var sess;
+  try{sess=await navigator.xr.requestSession(mode,Object.assign({domOverlay:{root:hud}},init));}
+  catch(e){
+    try{sess=await navigator.xr.requestSession(mode,init);}
+    catch(e2){showErr('Could not start '+mode+':\n'+e2.message);return;}
+  }
+  session=sess;S.mode=mode==='immersive-ar'?'ar':'vr';
+  var layer=new XRWebGLLayer(sess,gl,{antialias:true,depth:true,stencil:false,alpha:true});
+  sess.updateRenderState({baseLayer:layer,depthNear:0.05,depthFar:120});
+  try{refSpace=await sess.requestReferenceSpace('local-floor');}
+  catch(e){
+    try{refSpace=await sess.requestReferenceSpace('local');}
+    catch(e2){refSpace=await sess.requestReferenceSpace('viewer');}
+  }
+  sess.addEventListener('end',onSessionEnd);
+  sess.addEventListener('selectstart',function(e){e.target._sel=true;});
+  sess.addEventListener('selectend',function(e){e.target._sel=false;});
+  document.body.classList.add('xr');
+  hud.classList.add('hidden');
+  canvas.width=layer.framebufferWidth;canvas.height=layer.framebufferHeight;
+  lastXR=performance.now();
+  xrRAF=sess.requestAnimationFrame(onXRFrame);
+}
+
+var devQuat=null;
+window.addEventListener('deviceorientation',function(e){
+  if(e.alpha===null&&e.beta===null&&e.gamma===null)return;
+  var so=(window.screen&&screen.orientation)?screen.orientation.angle:(window.orientation||0);
+  devQuat=quatFromDeviceOrientation(e.alpha||0,e.beta||0,e.gamma||0,so);
+},true);
+
+var renderScale=1;
+var RS=[1,0.85,0.7,0.55],rsStep=0;
+function resize(){
+  if(session)return;
+  var dpr=Math.min(window.devicePixelRatio||1,2)*RS[rsStep];
+  var w=Math.max(1,Math.round(canvas.clientWidth*dpr)),h=Math.max(1,Math.round(canvas.clientHeight*dpr));
+  if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;}
+}
+window.addEventListener('resize',resize);
+
+function camBasis(){
+  var q=devQuat?qMul(qYawPitch(S.camYaw,S.camPitch),devQuat):qYawPitch(S.camYaw,S.camPitch);
+  return {q:q,f:qRotV(q,[0,0,-1]),r:qRotV(q,[1,0,0]),u:qRotV(q,[0,1,0])};
+}
+
+function rayFromScreen(px,py){
+  var b=camBasis();
+  var aspect=canvas.clientWidth/Math.max(1,canvas.clientHeight);
+  var tanF=Math.tan(60*Math.PI/360);
+  var nx=(px/canvas.clientWidth)*2-1,ny=1-(py/canvas.clientHeight)*2;
+  var d=[b.f[0]+b.r[0]*nx*tanF*aspect+b.u[0]*ny*tanF,
+         b.f[1]+b.r[1]*nx*tanF*aspect+b.u[1]*ny*tanF,
+         b.f[2]+b.r[2]*nx*tanF*aspect+b.u[2]*ny*tanF];
+  var l=Math.hypot(d[0],d[1],d[2]);return {o:camPosFlat(),d:[d[0]/l,d[1]/l,d[2]/l]};
+}
+function camPosFlat(){
+  var b=camBasis();
+  return [S.camTarget[0]-b.f[0]*S.camDist,S.camTarget[1]-b.f[1]*S.camDist,S.camTarget[2]-b.f[2]*S.camDist];
+}
+function raySphere(ray,c,r){
+  var ox=ray.o[0]-c[0],oy=ray.o[1]-c[1],oz=ray.o[2]-c[2];
+  var b=ox*ray.d[0]+oy*ray.d[1]+oz*ray.d[2];
+  var cc=ox*ox+oy*oy+oz*oz-r*r;
+  var disc=b*b-cc;if(disc<0)return false;return true;
+}
+function rayPlane(ray,p,n){
+  var den=ray.d[0]*n[0]+ray.d[1]*n[1]+ray.d[2]*n[2];
+  if(Math.abs(den)<1e-6)return null;
+  var t=((p[0]-ray.o[0])*n[0]+(p[1]-ray.o[1])*n[1]+(p[2]-ray.o[2])*n[2])/den;
+  if(t<0)return null;
+  return [ray.o[0]+ray.d[0]*t,ray.o[1]+ray.d[1]*t,ray.o[2]+ray.d[2]*t];
+}
+
+var pointers=new Map();
+var dragMode=null,lastX=0,lastY=0,pinchD=0,pinchMX=0,pinchMY=0;
+canvas.addEventListener('pointerdown',function(e){
+  canvas.setPointerCapture(e.pointerId);
+  pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(pointers.size===1){
+    var ray=rayFromScreen(e.clientX,e.clientY);
+    if(raySphere(ray,S.objPos,1.6*S.objScale)){dragMode='obj';}
+    else{dragMode='orbit';}
+    lastX=e.clientX;lastY=e.clientY;
+  }else if(pointers.size===2){
+    dragMode='pinch';
+    var pts=Array.from(pointers.values());
+    pinchD=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y);
+    pinchMX=(pts[0].x+pts[1].x)/2;pinchMY=(pts[0].y+pts[1].y)/2;
+  }
+});
+canvas.addEventListener('pointermove',function(e){
+  if(!pointers.has(e.pointerId))return;
+  pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  var dx=e.clientX-lastX,dy=e.clientY-lastY;
+  if(pointers.size===1&&dragMode){
+    if(dragMode==='orbit'){
+      S.camYaw-=dx*0.0052;S.camPitch=Math.min(1.35,Math.max(-1.35,S.camPitch-dy*0.0052));
+    }else if(dragMode==='obj'){
+      var ray=rayFromScreen(e.clientX,e.clientY);
+      var hit=rayPlane(ray,S.objPos,camBasis().f);
+      if(hit){S.objPos[0]=Math.min(5,Math.max(-5,hit[0]));S.objPos[1]=Math.min(3,Math.max(0.1,hit[1]));S.objPos[2]=Math.min(5,Math.max(-5,hit[2]));S.panelAlpha=0;}
+    }
+    lastX=e.clientX;lastY=e.clientY;
+  }else if(pointers.size===2&&dragMode==='pinch'){
+    var pts=Array.from(pointers.values());
+    var d=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y);
+    if(pinchD>0)S.camDist=Math.min(14,Math.max(0.5,S.camDist*pinchD/Math.max(1,d)));
+    var mx=(pts[0].x+pts[1].x)/2,my=(pts[0].y+pts[1].y)/2;
+    var mdx=mx-pinchMX,mdy=my-pinchMY;
+    if(Math.abs(mdx)+Math.abs(mdy)>0){
+      var b=camBasis();
+      var worldPerPx=2*Math.tan(60*Math.PI/360)*S.camDist/Math.max(1,canvas.clientHeight);
+      var k=S.half/1.1*worldPerPx;
+      S.cx-=(b.r[0]*mdx+b.u[0]*mdy)*k;
+      S.cy-=(b.r[2]*mdx+b.u[2]*mdy)*k;
+      S.texDirty=true;
+    }
+    pinchD=d;pinchMX=mx;pinchMY=my;
+    lastX=e.clientX;lastY=e.clientY;
+  }
+});
+function endPointer(e){
+  pointers.delete(e.pointerId);
+  if(pointers.size<2&&dragMode==='pinch'){dragMode=null;}
+  if(pointers.size===0)dragMode=null;
+  if(pointers.size===1){var p=Array.from(pointers.values())[0];lastX=p.x;lastY=p.y;}
+}
+canvas.addEventListener('pointerup',endPointer);
+canvas.addEventListener('pointercancel',endPointer);
+canvas.addEventListener('wheel',function(e){
+  e.preventDefault();
+  S.camDist=Math.min(14,Math.max(0.5,S.camDist*Math.exp(e.deltaY*0.0012)));
+},{passive:false});
+canvas.addEventListener('dblclick',function(){resetView();});
+canvas.addEventListener('contextmenu',function(e){e.preventDefault();});
+
+var keys={};
+window.addEventListener('keydown',function(e){keys[e.key.toLowerCase()]=true;if(e.key.toLowerCase()==='r')resetView();});
+window.addEventListener('keyup',function(e){keys[e.key.toLowerCase()]=false;});
+
+function updateFlat(dt){
+  var b=camBasis();
+  var sp=2.2*dt;
+  var f=[b.f[0],b.f[2]],r=[b.r[0],b.r[2]];
+  var fl=0,st=0;
+  if(keys['w']||keys['arrowup'])fl+=1;if(keys['s']||keys['arrowdown'])fl-=1;
+  if(keys['a']||keys['arrowleft'])st-=1;if(keys['d']||keys['arrowright'])st+=1;
+  var fl2=fl*Math.cos(S.camYaw)-st*Math.sin(S.camYaw),st2=fl*Math.sin(S.camYaw)+st*Math.cos(S.camYaw);
+  S.camTarget[0]+=fl2*sp;S.camTarget[2]+=st2*sp;
+  if(keys['+']||keys['='])setHalf(S.half*Math.exp(-dt*1.5));
+  if(keys['-']||keys['_'])setHalf(S.half*Math.exp(dt*1.5));
+  if(!S.grab&&S.autoRot)S.objYaw+=dt*0.07;
+  S.panelT+=dt;
+  if(S.panelT>26)S.panelAlpha=Math.max(0,S.panelAlpha-dt*0.5);
+}
+
+var lastT=0,emaFlat=16,fcFlat=0;
+function loop(t){
+  requestAnimationFrame(loop);
+  if(session)return;
+  var dt=Math.min(0.05,(t-lastT)/1000||0.016);lastT=t;
+  resize();
+  updateFlat(dt);
+  var b=camBasis();
+  var pos=[S.camTarget[0]-b.f[0]*S.camDist,S.camTarget[1]-b.f[1]*S.camDist,S.camTarget[2]-b.f[2]*S.camDist];
+  pos[1]=Math.max(0.12,pos[1]);
+  var aspect=canvas.width/Math.max(1,canvas.height);
+  var proj=m4Perspective(60*Math.PI/180,aspect,0.05,120);
+  var view=viewFromPosQuat(pos,b.q);
+  gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+  gl.viewport(0,0,canvas.width,canvas.height);
+  gl.clearColor(0.008,0.012,0.030,1);
+  gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+  renderScene(proj,view,pos,t);
+  emaFlat=emaFlat*0.95+dt*1000*0.05;fcFlat++;
+  if(fcFlat%50===0){
+    if(emaFlat>24&&rsStep<RS.length-1){rsStep++;resize();}
+    else if(emaFlat<13&&rsStep>0){rsStep--;resize();}
+  }
+}
+
+var btnVR=document.getElementById('btnVR'),btnAR=document.getElementById('btnAR'),
+    btnMotion=document.getElementById('btnMotion'),btnExit=document.getElementById('btnExit');
+btnVR.addEventListener('click',function(){startSession('immersive-vr');});
+btnAR.addEventListener('click',function(){startSession('immersive-ar');});
+btnExit.addEventListener('click',function(){if(session)session.end();});
+if(navigator.xr){
+  navigator.xr.isSessionSupported('immersive-vr').then(function(ok){btnVR.style.display=ok?'':'none';}).catch(function(){btnVR.style.display='none';});
+  navigator.xr.isSessionSupported('immersive-ar').then(function(ok){btnAR.style.display=ok?'':'none';}).catch(function(){btnAR.style.display='none';});
+}else{
+  btnVR.style.display='none';btnAR.style.display='none';
+  showErr('WebXR not detected (needs HTTPS/localhost on most browsers). The 3D magic-window view below still works.');
+}
+if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
+  btnMotion.style.display='';
+  btnMotion.addEventListener('click',function(){
+    DeviceOrientationEvent.requestPermission().then(function(r){
+      if(r==='granted'){btnMotion.style.display='none';}
+      else showErr('Motion permission denied — touch controls still work.');
+    }).catch(function(){btnMotion.style.display='none';});
+  });
+}else btnMotion.style.display='none';
+
+resize();
+requestAnimationFrame(loop);
+
+window.__dbg={S:S,gl:gl,renderMandel:renderMandel,getFBO:function(){return mandelFBO;},getTexSize:function(){return texSize;},startSession:startSession};
+})();
+</script>
+</body>
+</html>

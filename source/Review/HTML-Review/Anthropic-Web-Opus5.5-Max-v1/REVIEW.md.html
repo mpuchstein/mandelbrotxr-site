@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REVIEW.md · Review/HTML-Review/Anthropic-Web-Opus5.5-Max-v1 · MandelbrotXR results</title>
+<meta name="description" content="Rendered copy of Review/HTML-Review/Anthropic-Web-Opus5.5-Max-v1/REVIEW.md from the MandelbrotXR repository.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/source/Review/HTML-Review/Anthropic-Web-Opus5.5-Max-v1/REVIEW.md.html">
+<link rel="icon" href="../../../../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../../../../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../../../../feed.xml">
+<script src="../../../../assets/js/theme.js?v=7a718e6155"></script>
+<script src="../../../../assets/js/transcripts.js?v=54e22884d0" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../../../../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../../../../">Home</a></li><li><a href="../../../../rankings/">Rankings</a></li><li><a href="../../../../candidates/">Candidates</a></li><li><a href="../../../../compare/">Compare</a></li><li><a href="../../../../techniques/">Techniques</a></li><li><a href="../../../../judges/" aria-current="page">Judges &amp; reviews</a></li><li><a href="../../../../transcripts/">Transcripts</a></li><li><a href="../../../../methodology/">Methodology</a></li><li><a href="../../../../data/">Data</a></li><li><a href="../../../../search/">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../">Home</a></li><li><a href="../../../../judges/">Judges &amp; reviews</a></li><li><a href="../../../../source/">Source files</a></li><li><a href="../../../../source/Review/">Review</a></li><li><a href="../../../../source/Review/HTML-Review/">HTML-Review</a></li><li><a href="../../../../source/Review/HTML-Review/Anthropic-Web-Opus5.5-Max-v1/">Anthropic-Web-Opus5.5-Max-v1</a></li><li><span aria-current="page">REVIEW.md</span></li></ol></nav>
+<h1 class="src-path">REVIEW.md</h1><ul class="tx-meta src-meta"><li><code>Review/<wbr>HTML-<wbr>Review/<wbr>Anthropic-<wbr>Web-<wbr>Opus5.5-<wbr>Max-<wbr>v1/<wbr>REVIEW.md</code></li><li>122 lines · 13.9 kB</li><li>in <a href="../../../../source/Review/HTML-Review/Anthropic-Web-Opus5.5-Max-v1/">Review/HTML-Review/Anthropic-Web-Opus5.5-Max-v1/</a></li><li><a href="https://github.com/mpuchstein/MandelbrotXR/blob/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a/Review/HTML-Review/Anthropic-Web-Opus5.5-Max-v1/REVIEW.md" rel="noopener">Original on GitHub at 75d36a0</a></li></ul><section class="src-doc" aria-label="Rendered Markdown"><div class="md"><h2 id="md-html-review-candidate-02">HTML Review — candidate-02</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table class="jr-crit">
+<thead>
+<tr>
+<th>Criterion</th>
+<th class="num">Score</th>
+<th>One-line reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Done-when fulfilment</td>
+<td class="num">8</td>
+<td>Immersive VR and AR sessions place a 3D Mandelbrot heightfield &quot;hologram&quot; on a pedestal in a sky-domed arena; iPhones get a gyro and Cardboard fallback. It is an open arena, not an enclosed room.</td>
+</tr>
+<tr>
+<td>2. Device/XR compatibility</td>
+<td class="num">8</td>
+<td>No required features, <code>local-floor</code>→<code>local</code> fallback, optional hand-tracking, transient-pointer, screen-space AR with hit-test and dom-overlay, xr-standard gamepads, WebGL2 float-format fallbacks.</td>
+</tr>
+<tr>
+<td>3. Visual wow effect</td>
+<td class="num">9</td>
+<td>GPU perturbation deep zoom (~43 octaves), distance-estimate terrain, procedural nebula cubemap with env reflections and fresnel, ACES tonemap, palette cycling, glows, particles, build/scan animations, Julia inset.</td>
+</tr>
+<tr>
+<td>4. Usability &amp; controls</td>
+<td class="num">8</td>
+<td>Clear landing page, per-input-type help, a world-space panel that follows the head, grab-pan, two-hand zoom and rotate, tap-to-dive, history, guided &quot;Dive&quot; tour, haptics, audio. No comfort vignette.</td>
+</tr>
+<tr>
+<td>5. Code quality &amp; robustness</td>
+<td class="num">7</td>
+<td>Strong engineering (async PBO readback, adaptive GPU budget, scissored progressive rendering), but dense one-liner style, a leaked XR session on the error path, synchronous CPU probes and leftover debug hooks.</td>
+</tr>
+<tr>
+<td>6. Prompt adherence</td>
+<td class="num">9</td>
+<td>Truly standalone: one file with zero external requests (raw WebGL2 + WebXR, no three.js) and an XR-first design.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Overall score: 8.5 / 10</strong></p>
+<h3 id="md-summary-of-what-the-file-is">Summary of what the file is</h3>
+<ul>
+<li>1826 lines and ~112 KB. A single inline IIFE script (L102–1823) that passes <code>node --check</code>. It has no CDN, import or network dependency (grep for <code>http</code>/<code>&lt;link</code>/<code>import(</code> finds nothing).</li>
+<li>Custom matrix and quaternion helpers (L120–185) and 12 GLSL ES 3.0 programs (L214–592) on hand-written WebGL2. No engine.</li>
+<li>The fractal is computed into 640² / 160² float textures by <code>FS_MANDEL</code> (L241). It uses perturbation iteration with Zhuoran-style rebasing, a float64 reference orbit (<code>uploadRef</code>, L781), dual-number derivative distance estimation and interior detection. A height-mapped 256² disc mesh then displaces it (<code>VS_TERRAIN</code>, L354).</li>
+</ul>
+<h3 id="md-1-done-when-fulfilment-8">1. Done-when fulfilment — 8</h3>
+<ul>
+<li><code>detect()</code> (L1798) calls <code>isSessionSupported</code> for <code>immersive-vr</code> and <code>immersive-ar</code> and shows &quot;Enter VR&quot; / &quot;Enter AR&quot;. <code>startXR()</code> (L1753) creates the session, <code>XRWebGLLayer</code> and reference space, then drives <code>onXRFrame</code> (L1725).</li>
+<li>In VR the scene has a procedural nebula skybox (<code>FS_SKYGEN</code>, L306), a reflective grid floor with animated rings (<code>FS_FLOOR</code>, L491), 8 emissive pillars, a halo ring, a pedestal (<code>drawRoom</code>, L1322), dust particles and the fractal hologram on the pedestal. &quot;Immerse&quot; (<code>toggleImmerse</code>, L1650) scales the landscape to 36 m around the user.</li>
+<li>In AR on headsets the hologram is auto-placed in front of the user (L1733). On Android phones in AR it uses hit-test reticle placement (L1735, <code>placeAR</code> L1645).</li>
+<li>On iPhones (no WebXR) the status text says so explicitly (L1810). The in-browser explorer offers &quot;Look around&quot; (DeviceOrientation with the iOS permission request, L1599) and a &quot;Cardboard&quot; side-by-side stereo mode (L1611, L1522).</li>
+<li>Deductions:
+<ul>
+<li>The &quot;room&quot; is an open arena (sky, floor, pillars) rather than an enclosed room.</li>
+<li>The iPhone path is not a WebXR session and has no lens distortion.</li>
+<li>WebXR needs HTTPS or localhost. This is correctly detected and explained (L1809), but it means the file cannot simply be opened from a plain-HTTP LAN server.</li>
+</ul>
+</li>
+</ul>
+<h3 id="md-2-device-xr-compatibility-8">2. Device/XR compatibility — 8</h3>
+<ul>
+<li><strong>Session features:</strong> only <code>optionalFeatures</code> are requested: <code>local-floor</code> and <code>hand-tracking</code>, plus <code>hit-test</code> and <code>dom-overlay</code> for AR (L1758–1759). No required features, so nothing hard-fails. The <code>local</code> fallback with a −1.6 m offset is at L1767.</li>
+<li><strong>Quest 3 / Pico 4 Ultra:</strong>
+<ul>
+<li>Controllers: trigger, grip and stick via <code>gamepadInput</code> (L1238), using the xr-standard indices <code><span class="nw">axes[2</span>/<wbr><span class="nw">3]</span></code> and <code><span class="nw">buttons[4</span>/<wbr><span class="nw">5]</span></code>.</li>
+<li>Hands: <code>fillPoses</code>/<code>fillJointRadii</code> with a <code>getJointPose</code> fallback (L1252), rendered as joint spheres.</li>
+<li>Other: haptics (L1183), <code>fixedFoveation = 0.5</code> (L1764), passthrough AR with an <code>alpha</code> layer and a clear alpha of 0 (L1742).</li>
+</ul>
+</li>
+<li><strong>Gaze-and-pinch (Vision Pro style):</strong> <code>transient-pointer</code> is handled, with thresholds (L1214) and help text (L1484).</li>
+<li><strong>Android phone AR:</strong> <code>interactionMode === &#x27;screen-space&#x27;</code> → <code>arHandheld</code>. It adds a viewer-space hit-test source, a DOM-overlay HUD and <code>beforexrselect</code> suppression on HUD taps (L1817).</li>
+<li><strong>GPU:</strong> WebGL2 is required. A friendly error is shown if it is missing (L190). Texture format degrades RGBA32F → RGBA16F → RGBA8 depending on <code>EXT_color_buffer_float</code> / <code>OES_texture_float_linear</code> (L193, L706). The sky resolution is reduced on touch, Quest and Pico devices (L720).</li>
+<li><strong>Risks:</strong>
+<ul>
+<li><code>gamepadInput</code> falls back to <code><span class="nw">axes[0]</span>/<wbr><span class="nw">[1]</span></code> when fewer than 4 axes exist (L1241). Any non-xr-standard gamepad, possibly including Chrome&#x27;s screen-space AR input source, would be read as a thumbstick.</li>
+<li>Steam Frame is only covered generically, which is fine.</li>
+</ul>
+</li>
+</ul>
+<h3 id="md-3-visual-wow-effect-9">3. Visual wow effect — 9</h3>
+<ul>
+<li><strong>Fractal fidelity:</strong>
+<ul>
+<li>The perturbation engine reaches <code>MIN_SPAN = 2.5e-13</code> (~2^43 zoom), with adaptive <code>maxIter</code> up to 16000 from CPU float64 probe percentiles (L805).</li>
+<li>Heights come from a normalised log distance estimate (L276–279), so ridges trace the boundary instead of showing escape-time staircases.</li>
+<li>Interior points are flagged via the period-derivative test and shaded as glossy black glass with env reflections and specular (L409).</li>
+</ul>
+</li>
+<li><strong>Shading:</strong>
+<ul>
+<li>Finite-difference normals with correct non-uniform-scale handling (<code>uK</code>, L380–384), Lambert lighting, fresnel cubemap reflections, ACES-style tonemap.</li>
+<li>Analytic anti-aliased iso-lines from the phase (<code>fwidth</code>, L393–399), palette cycling, a radial &quot;pulse&quot; when a refined tile lands (L406), a scan line while computing (L413) and a rim-light build-up ring (L412).</li>
+<li>A skirt mesh gives the hologram a solid edge (L421–449).</li>
+</ul>
+</li>
+<li><strong>Atmosphere:</strong>
+<ul>
+<li>Domain-warped fbm nebula with 3 star layers baked into a mipmapped cubemap, one face per frame (L1441).</li>
+<li>Floor rings, a volumetric-looking tube glow (<code>FS_GLOW</code> mode 0), 1400 dust motes, 240 sparks, distance fog that hides the edge in immersive mode (L415–416), and a live Julia set for the pointed-at c.</li>
+</ul>
+</li>
+<li><strong>Smooth transitions:</strong>
+<ul>
+<li>van Wijk–Nuij optimal zoom paths (<code>zoomInterp</code>, L930).</li>
+<li>A collapse/rebuild animation for long jumps (L960–968).</li>
+<li>Cross-fading between fractal tiles (<code>disp.mix</code>).</li>
+</ul>
+</li>
+<li><strong>Missing:</strong> bloom/post-processing and true shadows. Glow is faked additively.</li>
+</ul>
+<h3 id="md-4-usability-controls-8">4. Usability &amp; controls — 8</h3>
+<ul>
+<li><strong>Onboarding:</strong> the landing copy adapts to device capability (L1806–1811), and a timed hint shows on explore entry (L1699).</li>
+<li><strong>In-XR panel:</strong> a canvas texture with 10 buttons, readouts, a progress bar and context help that changes with the input type (L1483–1485). It sits beside the pedestal and swings to face the user, follows the head yaw in immersive mode (L1051–1067), and freezes while hovered.</li>
+<li><strong>Interaction model:</strong>
+<ul>
+<li>Select-tap dives ×3 (<code>tapZoom</code>).</li>
+<li>Select or grip and drag pans on the grabbed height plane (<code>updateGrabs</code>, L1207).</li>
+<li>Two grabs zoom and twist the hologram (L1227–1235).</li>
+<li>Stick-Y zooms toward the hit point; stick-X rotates.</li>
+<li>A/X = Back, B/Y = Immerse.</li>
+</ul>
+</li>
+<li><strong>Browser and phone:</strong> orbit, pinch-dolly, grab-pan, wheel zoom-at-cursor, keyboard shortcuts (L1586), gyro look and Cardboard mode.</li>
+<li><strong>Extras:</strong> generative ambient audio with depth-dependent filter and chimes (L1136), a history stack, the guided tour of famous locations, and table-height auto-adjust to the user&#x27;s head (L1732).</li>
+<li><strong>Weaknesses:</strong>
+<ul>
+<li>Immersive-mode zoom flights scale the world around the user with no vignette or comfort option.</li>
+<li>The XR help text never mentions the A/X / B/Y shortcuts or stick-X rotation.</li>
+<li>In Cardboard mode a tap always dives, and the only exit is the DOM bar.</li>
+</ul>
+</li>
+</ul>
+<h3 id="md-5-code-quality-robustness-7">5. Code quality &amp; robustness — 7</h3>
+<ul>
+<li><strong>Good:</strong>
+<ul>
+<li>Async 128² height readback via PBO + <code>fenceSync</code> with no pipeline stall (<code>doReadback</code>, L900), used for CPU ray-marching against the hologram (<code>hitTerrain</code>, L1017).</li>
+<li>An adaptive per-frame GPU iteration budget driven by frame-time jitter (<code>adaptBudget</code>, L1462).</li>
+<li>Scissored progressive tile rendering (<code>runJob</code>, L824).</li>
+<li>A tile cache scored by coverage and effective resolution (<code>score</code>/<code>chooseDisplay</code>).</li>
+<li>Graceful fatal messages for WebGL2, shader and FBO failures.</li>
+<li>Frame loops are separated correctly: window rAF stops while <code>xrSession</code> is set and restarts in <code>onXREnd</code>.</li>
+</ul>
+</li>
+<li><strong>Weak:</strong>
+<ul>
+<li>Extremely dense code, often 150–250 characters per line with many statements, so it is hard to review or maintain.</li>
+<li>Uncaught errors become a full-screen fatal banner (L117), even for non-fatal ones.</li>
+<li>No WebGL context restore (L1820).</li>
+<li>Debug leftovers: <code>window.__mxr</code> (L1822) and <code>evLog</code> (L1189).</li>
+<li><code>startJob</code> runs up to 81 float64 probes × up to 16000 iterations synchronously on the main thread (L803). Up to ~1.3 M JS iterations on a new full job can cause XR frame hitches at deep zoom.</li>
+<li>Per-frame allocations (arrays in <code>xfP</code>, <code>views</code>, <code>{o,d}</code> rays, <code>[...inputs.values()]</code>) are minor GC pressure.</li>
+</ul>
+</li>
+</ul>
+<h3 id="md-6-prompt-adherence-9">6. Prompt adherence — 9</h3>
+<ul>
+<li>The file is a single standalone HTML with no external resources at all. It uses WebXR and puts XR first while still providing a good non-XR path.</li>
+<li>The iOS fallback deviates from WebXR by necessity, and the page explains this (L1810).</li>
+</ul>
+<h3 id="md-bugs-found">Bugs found</h3>
+<ol>
+<li><strong>Leaked XR session on setup failure</strong> (<code>startXR</code>, L1760–1785). If <code>navigator.xr.requestSession</code> succeeds but a later step throws (<code>makeXRCompatible</code>, layer creation, both reference-space requests), the <code>catch</code> never calls <code>s.end()</code>. The session stays active with no <code>requestAnimationFrame</code>, so the user is stuck in a black or frozen immersive view.</li>
+<li><strong>Non-xr-standard gamepads read as thumbsticks</strong> (<code>gamepadInput</code>, L1241). With fewer than 4 axes the code uses <code><span class="nw">axes[0]</span>/<wbr><span class="nw">[1]</span></code> as the stick. A screen or touch input source that exposes touch-position axes, or any 2-axis device, would trigger continuous zoom or rotation while touched.</li>
+<li><strong>Previews suppressed during path flights</strong> (<code>schedule</code>, L873–874). The full destination job starts immediately and <code>if (job …) return;</code> blocks preview jobs. During a zoom-out or panning flight, the uncovered part of the disc fades to flat through <code>covg()</code> until the 640² job finishes, which shows as visible blank edges.</li>
+<li><strong>Fullscreen and orientation lock after an await</strong> (<code>toggleStereo</code>, L1613–1617). Both are called after awaiting the motion-permission prompt, so transient user activation may be consumed. iPhone Safari also supports neither, so Cardboard mode on iPhone stays portrait with browser UI, and the toast tells the user to turn the phone sideways.</li>
+<li><strong>Squeeze and select share one grab slot</strong> (<code>pressLogic</code>/<code>beginGrab</code>, L1196). Pressing squeeze while a select-grab is active on the same controller overwrites <code>s.grab</code>. On release of the first button the grab kind no longer matches, so the original press is silently lost.</li>
+<li><strong>Error handler is too broad</strong> (L117). Any uncaught error, including a benign error from a promise or extension, shows a permanent &quot;Something broke&quot; banner over the UI.</li>
+<li><strong>Contextual help is incomplete</strong> (L1483–1485). It omits the A/X (Back), B/Y (Immerse) and stick-X (rotate) bindings.</li>
+</ol>
+<h3 id="md-top-5-issues">Top 5 issues</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table>
+<thead>
+<tr>
+<th class="num">#</th>
+<th>Severity</th>
+<th>Location / evidence</th>
+<th>Suggested fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="num">1</td>
+<td>major</td>
+<td><code>startXR</code> L1760–1785: no <code>s.end()</code> in the <code>catch</code> after a successful <code>requestSession</code></td>
+<td>Keep a reference to the session and call <code>s.end()</code> in the <code>catch</code>. Set <code>xrSession</code> before the awaits, or wrap the post-request setup in its own try/catch.</td>
+</tr>
+<tr>
+<td class="num">2</td>
+<td>major</td>
+<td><code>startJob</code> L803 + <code>uploadRef</code> L781: synchronous CPU probes with caps up to 16000 iterations run inside the XR frame</td>
+<td>Cap probe iterations for preview jobs, spread probes across frames, or move probes and the reference orbit to a Worker.</td>
+</tr>
+<tr>
+<td class="num">3</td>
+<td>minor</td>
+<td><code>gamepadInput</code> L1241: fallback to <code><span class="nw">axes[0]</span>/<wbr><span class="nw">[1]</span></code></td>
+<td>Only read sticks when <code>gp.mapping === &#x27;xr-standard&#x27;</code> and <code>targetRayMode === &#x27;tracked-pointer&#x27;</code>.</td>
+</tr>
+<tr>
+<td class="num">4</td>
+<td>minor</td>
+<td><code>schedule</code> L874: no preview jobs during path flights</td>
+<td>Allow a cheap preview job while the destination full job is pending, or render the flight&#x27;s bounding region as the preview.</td>
+</tr>
+<tr>
+<td class="num">5</td>
+<td>minor</td>
+<td>Comfort in immersive mode: <code>toggleImmerse</code> + <code>flyTo</code> world-scaling around the user, no vignette</td>
+<td>Add a fading vignette or tunnel during flights in immersive VR, or snap zooms with a short fade.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="md-strengths">Strengths</h3>
+<ol>
+<li>A genuinely deep-zoom renderer in a single file: GPU perturbation with rebasing, distance-estimate heights and interior detection, with honest claims (&quot;forty doublings&quot; ≈ the 2^43 limit).</li>
+<li>Broad, carefully reasoned input coverage: controllers, hands with joint rendering, transient-pointer, screen-space AR with hit-test and DOM overlay, mouse, touch, gyro and Cardboard.</li>
+<li>A rich, cohesive aesthetic: procedural nebula cubemap, reflective rings floor, glows and particles, palette cycling, build and pulse animations, Julia inset and generative audio.</li>
+<li>Performance-aware architecture: async readback, progressive scissored tiles, an adaptive budget, a tile cache with cross-fade, and sky generation spread over frames.</li>
+<li>Zero dependencies and a clear device-aware landing page that explains what is and isn&#x27;t possible (secure context, iOS).</li>
+</ol>
+<h3 id="md-verdict">Verdict</h3>
+<p>This is a technically ambitious, dependency-free WebXR experience. Its fractal engine (perturbation deep zoom with distance-estimated terrain) and atmospheric presentation should deliver a strong wow effect on Quest and Pico headsets and on Android AR, with sensible fallbacks for iPhones. The main weaknesses are robustness and maintainability: a session leak on setup failure, main-thread probe hitches at deep zoom, and very dense code. None of these block the core done-when scenario.</p>
+</div></section><details class="src-view"><summary>Source with line numbers</summary><pre class="src"><code><span id="L1"># HTML Review — candidate-02</span><span id="L2"></span><span id="L3">| Criterion | Score | One-line reason |</span><span id="L4">|---|---|---|</span><span id="L5">| 1. Done-when fulfilment | 8 | Immersive VR and AR sessions place a 3D Mandelbrot heightfield &quot;hologram&quot; on a pedestal in a sky-domed arena; iPhones get a gyro and Cardboard fallback. It is an open arena, not an enclosed room. |</span><span id="L6">| 2. Device/XR compatibility | 8 | No required features, `local-floor`→`local` fallback, optional hand-tracking, transient-pointer, screen-space AR with hit-test and dom-overlay, xr-standard gamepads, WebGL2 float-format fallbacks. |</span><span id="L7">| 3. Visual wow effect | 9 | GPU perturbation deep zoom (~43 octaves), distance-estimate terrain, procedural nebula cubemap with env reflections and fresnel, ACES tonemap, palette cycling, glows, particles, build/scan animations, Julia inset. |</span><span id="L8">| 4. Usability &amp; controls | 8 | Clear landing page, per-input-type help, a world-space panel that follows the head, grab-pan, two-hand zoom and rotate, tap-to-dive, history, guided &quot;Dive&quot; tour, haptics, audio. No comfort vignette. |</span><span id="L9">| 5. Code quality &amp; robustness | 7 | Strong engineering (async PBO readback, adaptive GPU budget, scissored progressive rendering), but dense one-liner style, a leaked XR session on the error path, synchronous CPU probes and leftover debug hooks. |</span><span id="L10">| 6. Prompt adherence | 9 | Truly standalone: one file with zero external requests (raw WebGL2 + WebXR, no three.js) and an XR-first design. |</span><span id="L11"></span><span id="L12">**Overall score: 8.5 / 10**</span><span id="L13"></span><span id="L14">## Summary of what the file is</span><span id="L15">- 1826 lines and ~112 KB. A single inline IIFE script (L102–1823) that passes `node --check`. It has no CDN, import or network dependency (grep for `http`/`&lt;link`/`import(` finds nothing).</span><span id="L16">- Custom matrix and quaternion helpers (L120–185) and 12 GLSL ES 3.0 programs (L214–592) on hand-written WebGL2. No engine.</span><span id="L17">- The fractal is computed into 640² / 160² float textures by `FS_MANDEL` (L241). It uses perturbation iteration with Zhuoran-style rebasing, a float64 reference orbit (`uploadRef`, L781), dual-number derivative distance estimation and interior detection. A height-mapped 256² disc mesh then displaces it (`VS_TERRAIN`, L354).</span><span id="L18"></span><span id="L19">## 1. Done-when fulfilment — 8</span><span id="L20">- `detect()` (L1798) calls `isSessionSupported` for `immersive-vr` and `immersive-ar` and shows &quot;Enter VR&quot; / &quot;Enter AR&quot;. `startXR()` (L1753) creates the session, `XRWebGLLayer` and reference space, then drives `onXRFrame` (L1725).</span><span id="L21">- In VR the scene has a procedural nebula skybox (`FS_SKYGEN`, L306), a reflective grid floor with animated rings (`FS_FLOOR`, L491), 8 emissive pillars, a halo ring, a pedestal (`drawRoom`, L1322), dust particles and the fractal hologram on the pedestal. &quot;Immerse&quot; (`toggleImmerse`, L1650) scales the landscape to 36 m around the user.</span><span id="L22">- In AR on headsets the hologram is auto-placed in front of the user (L1733). On Android phones in AR it uses hit-test reticle placement (L1735, `placeAR` L1645).</span><span id="L23">- On iPhones (no WebXR) the status text says so explicitly (L1810). The in-browser explorer offers &quot;Look around&quot; (DeviceOrientation with the iOS permission request, L1599) and a &quot;Cardboard&quot; side-by-side stereo mode (L1611, L1522).</span><span id="L24">- Deductions:</span><span id="L25">  - The &quot;room&quot; is an open arena (sky, floor, pillars) rather than an enclosed room.</span><span id="L26">  - The iPhone path is not a WebXR session and has no lens distortion.</span><span id="L27">  - WebXR needs HTTPS or localhost. This is correctly detected and explained (L1809), but it means the file cannot simply be opened from a plain-HTTP LAN server.</span><span id="L28"></span><span id="L29">## 2. Device/XR compatibility — 8</span><span id="L30">- **Session features:** only `optionalFeatures` are requested: `local-floor` and `hand-tracking`, plus `hit-test` and `dom-overlay` for AR (L1758–1759). No required features, so nothing hard-fails. The `local` fallback with a −1.6 m offset is at L1767.</span><span id="L31">- **Quest 3 / Pico 4 Ultra:**</span><span id="L32">  - Controllers: trigger, grip and stick via `gamepadInput` (L1238), using the xr-standard indices `axes[2/3]` and `buttons[4/5]`.</span><span id="L33">  - Hands: `fillPoses`/`fillJointRadii` with a `getJointPose` fallback (L1252), rendered as joint spheres.</span><span id="L34">  - Other: haptics (L1183), `fixedFoveation = 0.5` (L1764), passthrough AR with an `alpha` layer and a clear alpha of 0 (L1742).</span><span id="L35">- **Gaze-and-pinch (Vision Pro style):** `transient-pointer` is handled, with thresholds (L1214) and help text (L1484).</span><span id="L36">- **Android phone AR:** `interactionMode === &#x27;screen-space&#x27;` → `arHandheld`. It adds a viewer-space hit-test source, a DOM-overlay HUD and `beforexrselect` suppression on HUD taps (L1817).</span><span id="L37">- **GPU:** WebGL2 is required. A friendly error is shown if it is missing (L190). Texture format degrades RGBA32F → RGBA16F → RGBA8 depending on `EXT_color_buffer_float` / `OES_texture_float_linear` (L193, L706). The sky resolution is reduced on touch, Quest and Pico devices (L720).</span><span id="L38">- **Risks:**</span><span id="L39">  - `gamepadInput` falls back to `axes[0]/[1]` when fewer than 4 axes exist (L1241). Any non-xr-standard gamepad, possibly including Chrome&#x27;s screen-space AR input source, would be read as a thumbstick.</span><span id="L40">  - Steam Frame is only covered generically, which is fine.</span><span id="L41"></span><span id="L42">## 3. Visual wow effect — 9</span><span id="L43">- **Fractal fidelity:**</span><span id="L44">  - The perturbation engine reaches `MIN_SPAN = 2.5e-13` (~2^43 zoom), with adaptive `maxIter` up to 16000 from CPU float64 probe percentiles (L805).</span><span id="L45">  - Heights come from a normalised log distance estimate (L276–279), so ridges trace the boundary instead of showing escape-time staircases.</span><span id="L46">  - Interior points are flagged via the period-derivative test and shaded as glossy black glass with env reflections and specular (L409).</span><span id="L47">- **Shading:**</span><span id="L48">  - Finite-difference normals with correct non-uniform-scale handling (`uK`, L380–384), Lambert lighting, fresnel cubemap reflections, ACES-style tonemap.</span><span id="L49">  - Analytic anti-aliased iso-lines from the phase (`fwidth`, L393–399), palette cycling, a radial &quot;pulse&quot; when a refined tile lands (L406), a scan line while computing (L413) and a rim-light build-up ring (L412).</span><span id="L50">  - A skirt mesh gives the hologram a solid edge (L421–449).</span><span id="L51">- **Atmosphere:**</span><span id="L52">  - Domain-warped fbm nebula with 3 star layers baked into a mipmapped cubemap, one face per frame (L1441).</span><span id="L53">  - Floor rings, a volumetric-looking tube glow (`FS_GLOW` mode 0), 1400 dust motes, 240 sparks, distance fog that hides the edge in immersive mode (L415–416), and a live Julia set for the pointed-at c.</span><span id="L54">- **Smooth transitions:**</span><span id="L55">  - van Wijk–Nuij optimal zoom paths (`zoomInterp`, L930).</span><span id="L56">  - A collapse/rebuild animation for long jumps (L960–968).</span><span id="L57">  - Cross-fading between fractal tiles (`disp.mix`).</span><span id="L58">- **Missing:** bloom/post-processing and true shadows. Glow is faked additively.</span><span id="L59"></span><span id="L60">## 4. Usability &amp; controls — 8</span><span id="L61">- **Onboarding:** the landing copy adapts to device capability (L1806–1811), and a timed hint shows on explore entry (L1699).</span><span id="L62">- **In-XR panel:** a canvas texture with 10 buttons, readouts, a progress bar and context help that changes with the input type (L1483–1485). It sits beside the pedestal and swings to face the user, follows the head yaw in immersive mode (L1051–1067), and freezes while hovered.</span><span id="L63">- **Interaction model:**</span><span id="L64">  - Select-tap dives ×3 (`tapZoom`).</span><span id="L65">  - Select or grip and drag pans on the grabbed height plane (`updateGrabs`, L1207).</span><span id="L66">  - Two grabs zoom and twist the hologram (L1227–1235).</span><span id="L67">  - Stick-Y zooms toward the hit point; stick-X rotates.</span><span id="L68">  - A/X = Back, B/Y = Immerse.</span><span id="L69">- **Browser and phone:** orbit, pinch-dolly, grab-pan, wheel zoom-at-cursor, keyboard shortcuts (L1586), gyro look and Cardboard mode.</span><span id="L70">- **Extras:** generative ambient audio with depth-dependent filter and chimes (L1136), a history stack, the guided tour of famous locations, and table-height auto-adjust to the user&#x27;s head (L1732).</span><span id="L71">- **Weaknesses:**</span><span id="L72">  - Immersive-mode zoom flights scale the world around the user with no vignette or comfort option.</span><span id="L73">  - The XR help text never mentions the A/X / B/Y shortcuts or stick-X rotation.</span><span id="L74">  - In Cardboard mode a tap always dives, and the only exit is the DOM bar.</span><span id="L75"></span><span id="L76">## 5. Code quality &amp; robustness — 7</span><span id="L77">- **Good:**</span><span id="L78">  - Async 128² height readback via PBO + `fenceSync` with no pipeline stall (`doReadback`, L900), used for CPU ray-marching against the hologram (`hitTerrain`, L1017).</span><span id="L79">  - An adaptive per-frame GPU iteration budget driven by frame-time jitter (`adaptBudget`, L1462).</span><span id="L80">  - Scissored progressive tile rendering (`runJob`, L824).</span><span id="L81">  - A tile cache scored by coverage and effective resolution (`score`/`chooseDisplay`).</span><span id="L82">  - Graceful fatal messages for WebGL2, shader and FBO failures.</span><span id="L83">  - Frame loops are separated correctly: window rAF stops while `xrSession` is set and restarts in `onXREnd`.</span><span id="L84">- **Weak:**</span><span id="L85">  - Extremely dense code, often 150–250 characters per line with many statements, so it is hard to review or maintain.</span><span id="L86">  - Uncaught errors become a full-screen fatal banner (L117), even for non-fatal ones.</span><span id="L87">  - No WebGL context restore (L1820).</span><span id="L88">  - Debug leftovers: `window.__mxr` (L1822) and `evLog` (L1189).</span><span id="L89">  - `startJob` runs up to 81 float64 probes × up to 16000 iterations synchronously on the main thread (L803). Up to ~1.3 M JS iterations on a new full job can cause XR frame hitches at deep zoom.</span><span id="L90">  - Per-frame allocations (arrays in `xfP`, `views`, `{o,d}` rays, `[...inputs.values()]`) are minor GC pressure.</span><span id="L91"></span><span id="L92">## 6. Prompt adherence — 9</span><span id="L93">- The file is a single standalone HTML with no external resources at all. It uses WebXR and puts XR first while still providing a good non-XR path.</span><span id="L94">- The iOS fallback deviates from WebXR by necessity, and the page explains this (L1810).</span><span id="L95"></span><span id="L96">## Bugs found</span><span id="L97">1. **Leaked XR session on setup failure** (`startXR`, L1760–1785). If `navigator.xr.requestSession` succeeds but a later step throws (`makeXRCompatible`, layer creation, both reference-space requests), the `catch` never calls `s.end()`. The session stays active with no `requestAnimationFrame`, so the user is stuck in a black or frozen immersive view.</span><span id="L98">2. **Non-xr-standard gamepads read as thumbsticks** (`gamepadInput`, L1241). With fewer than 4 axes the code uses `axes[0]/[1]` as the stick. A screen or touch input source that exposes touch-position axes, or any 2-axis device, would trigger continuous zoom or rotation while touched.</span><span id="L99">3. **Previews suppressed during path flights** (`schedule`, L873–874). The full destination job starts immediately and `if (job …) return;` blocks preview jobs. During a zoom-out or panning flight, the uncovered part of the disc fades to flat through `covg()` until the 640² job finishes, which shows as visible blank edges.</span><span id="L100">4. **Fullscreen and orientation lock after an await** (`toggleStereo`, L1613–1617). Both are called after awaiting the motion-permission prompt, so transient user activation may be consumed. iPhone Safari also supports neither, so Cardboard mode on iPhone stays portrait with browser UI, and the toast tells the user to turn the phone sideways.</span><span id="L101">5. **Squeeze and select share one grab slot** (`pressLogic`/`beginGrab`, L1196). Pressing squeeze while a select-grab is active on the same controller overwrites `s.grab`. On release of the first button the grab kind no longer matches, so the original press is silently lost.</span><span id="L102">6. **Error handler is too broad** (L117). Any uncaught error, including a benign error from a promise or extension, shows a permanent &quot;Something broke&quot; banner over the UI.</span><span id="L103">7. **Contextual help is incomplete** (L1483–1485). It omits the A/X (Back), B/Y (Immerse) and stick-X (rotate) bindings.</span><span id="L104"></span><span id="L105">## Top 5 issues</span><span id="L106">| # | Severity | Location / evidence | Suggested fix |</span><span id="L107">|---|---|---|---|</span><span id="L108">| 1 | major | `startXR` L1760–1785: no `s.end()` in the `catch` after a successful `requestSession` | Keep a reference to the session and call `s.end()` in the `catch`. Set `xrSession` before the awaits, or wrap the post-request setup in its own try/catch. |</span><span id="L109">| 2 | major | `startJob` L803 + `uploadRef` L781: synchronous CPU probes with caps up to 16000 iterations run inside the XR frame | Cap probe iterations for preview jobs, spread probes across frames, or move probes and the reference orbit to a Worker. |</span><span id="L110">| 3 | minor | `gamepadInput` L1241: fallback to `axes[0]/[1]` | Only read sticks when `gp.mapping === &#x27;xr-standard&#x27;` and `targetRayMode === &#x27;tracked-pointer&#x27;`. |</span><span id="L111">| 4 | minor | `schedule` L874: no preview jobs during path flights | Allow a cheap preview job while the destination full job is pending, or render the flight&#x27;s bounding region as the preview. |</span><span id="L112">| 5 | minor | Comfort in immersive mode: `toggleImmerse` + `flyTo` world-scaling around the user, no vignette | Add a fading vignette or tunnel during flights in immersive VR, or snap zooms with a short fade. |</span><span id="L113"></span><span id="L114">## Strengths</span><span id="L115">1. A genuinely deep-zoom renderer in a single file: GPU perturbation with rebasing, distance-estimate heights and interior detection, with honest claims (&quot;forty doublings&quot; ≈ the 2^43 limit).</span><span id="L116">2. Broad, carefully reasoned input coverage: controllers, hands with joint rendering, transient-pointer, screen-space AR with hit-test and DOM overlay, mouse, touch, gyro and Cardboard.</span><span id="L117">3. A rich, cohesive aesthetic: procedural nebula cubemap, reflective rings floor, glows and particles, palette cycling, build and pulse animations, Julia inset and generative audio.</span><span id="L118">4. Performance-aware architecture: async readback, progressive scissored tiles, an adaptive budget, a tile cache with cross-fade, and sky generation spread over frames.</span><span id="L119">5. Zero dependencies and a clear device-aware landing page that explains what is and isn&#x27;t possible (secure context, iOS).</span><span id="L120"></span><span id="L121">## Verdict</span><span id="L122">This is a technically ambitious, dependency-free WebXR experience. Its fractal engine (perturbation deep zoom with distance-estimated terrain) and atmospheric presentation should deliver a strong wow effect on Quest and Pico headsets and on Android AR, with sensible fallbacks for iPhones. The main weaknesses are robustness and maintainability: a session leak on setup failure, main-thread probe hitches at deep zoom, and very dense code. None of these block the core done-when scenario.</span></code></pre></details>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../../../../data/">Data &amp; schema</a> · <a href="../../../../data/changelog/">Changelog</a> · <a href="../../../../feed.xml">Atom feed</a> · <a href="../../../../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>

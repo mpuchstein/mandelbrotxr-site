@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>blind.py · ReviewOrchestrator/tools · MandelbrotXR results</title>
+<meta name="description" content="Rendered copy of ReviewOrchestrator/tools/blind.py from the MandelbrotXR repository.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/source/ReviewOrchestrator/tools/blind.py.html">
+<link rel="icon" href="../../../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../../../feed.xml">
+<script src="../../../assets/js/theme.js?v=7a718e6155"></script>
+<script src="../../../assets/js/transcripts.js?v=54e22884d0" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../../../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../../../">Home</a></li><li><a href="../../../rankings/">Rankings</a></li><li><a href="../../../candidates/">Candidates</a></li><li><a href="../../../compare/">Compare</a></li><li><a href="../../../techniques/">Techniques</a></li><li><a href="../../../judges/" aria-current="page">Judges &amp; reviews</a></li><li><a href="../../../transcripts/">Transcripts</a></li><li><a href="../../../methodology/">Methodology</a></li><li><a href="../../../data/">Data</a></li><li><a href="../../../search/">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../../">Home</a></li><li><a href="../../../judges/">Judges &amp; reviews</a></li><li><a href="../../../source/">Source files</a></li><li><a href="../../../source/ReviewOrchestrator/">ReviewOrchestrator</a></li><li><a href="../../../source/ReviewOrchestrator/tools/">tools</a></li><li><span aria-current="page">blind.py</span></li></ol></nav>
+<h1 class="src-path">blind.py</h1><ul class="tx-meta src-meta"><li><code>ReviewOrchestrator/<wbr>tools/<wbr>blind.py</code></li><li>46 lines · 2.3 kB</li><li>in <a href="../../../source/ReviewOrchestrator/tools/">ReviewOrchestrator/tools/</a></li><li><a href="https://github.com/mpuchstein/MandelbrotXR/blob/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a/ReviewOrchestrator/tools/blind.py" rel="noopener">Original on GitHub at 75d36a0</a></li></ul><pre class="src"><code><span id="L1">&quot;&quot;&quot;Build anonymized candidate copies: blind/candidate-NN/{index.html,TRANSCRIPT.md}; writes blind/mapping.json.&quot;&quot;&quot;</span><span id="L2">import json, os, random, re, shutil, sys</span><span id="L3"></span><span id="L4">SUBS = [</span><span id="L5">    (r&quot;Gemini hat gesagt&quot;, &quot;Assistant said&quot;), (r&quot;ChatGPT said:&quot;, &quot;Assistant said:&quot;),</span><span id="L6">    (r&quot;ChatGPT can make mistakes\.[^\n]*&quot;, &quot;&quot;),</span><span id="L7">    (r&quot;mistral-vibe-code-web&quot;, &quot;assistant-output&quot;),</span><span id="L8">    (r&quot;gpt-5\.6-luna|GPT-?6(\.\d)?( Pro)?|claude-opus-5-5|Opus 5\.5|Gemini 4 Argon|4 Argon|Mistral Large 4&quot;, &quot;[model]&quot;),</span><span id="L9">    (r&quot;Claude\.ai|claude\.ai|ChatGPT|Claude|Anthropic|OpenAI|Gemini|Mistral|Le Chat|GitHub Copilot|Copilot|Vibe&quot;, &quot;[assistant]&quot;),</span><span id="L10">]</span><span id="L11">VENDOR = re.compile(r&quot;ChatGPT|Claude|Gemini|Copilot|Mistral|OpenAI|Anthropic&quot;)</span><span id="L12"></span><span id="L13">def anonymize(md):</span><span id="L14">    body = md.split(&quot;\n---\n&quot;, 1)[1]  # drop identifying header block</span><span id="L15">    for pat, rep in SUBS:</span><span id="L16">        body = re.sub(pat, rep, body)</span><span id="L17">    return &quot;# Chat transcript (anonymized)\n\nProduct, model and vendor names are replaced with [assistant]/[model]. The HTML deliverable is reviewed separately.\n\n---\n&quot; + body</span><span id="L18"></span><span id="L19">def candidates(R):</span><span id="L20">    names = sorted(d for d in os.listdir(R) if re.search(r&quot;-v[01]$&quot;, d))</span><span id="L21">    assert len(names) == 8, names</span><span id="L22">    return names</span><span id="L23"></span><span id="L24">if __name__ == &quot;__main__&quot;:</span><span id="L25">    R, OUT = sys.argv[1], sys.argv[2]</span><span id="L26">    names = candidates(R)</span><span id="L27">    random.seed(20261029)</span><span id="L28">    order = random.sample(names, len(names))</span><span id="L29"></span><span id="L30">    mapping = {}</span><span id="L31">    for i, name in enumerate(order, 1):</span><span id="L32">        cid = f&quot;candidate-{i:02d}&quot;</span><span id="L33">        d = os.path.join(OUT, cid); os.makedirs(d, exist_ok=True)</span><span id="L34">        src = os.path.join(R, name)</span><span id="L35">        html = [f for f in os.listdir(src) if f.endswith(&quot;.html&quot;)]</span><span id="L36">        assert len(html) == 1, (name, html)</span><span id="L37">        shutil.copyfile(os.path.join(src, html[0]), os.path.join(d, &quot;index.html&quot;))</span><span id="L38">        with open(os.path.join(src, &quot;TRANSCRIPTION.md&quot;)) as f: t = anonymize(f.read())</span><span id="L39">        with open(os.path.join(d, &quot;TRANSCRIPT.md&quot;), &quot;w&quot;) as f: f.write(t)</span><span id="L40">        mapping[cid] = {&quot;name&quot;: name, &quot;prompt&quot;: &quot;prompt&quot; + name[-1] + &quot;.txt&quot;, &quot;original_html&quot;: html[0]}</span><span id="L41">    with open(os.path.join(OUT, &quot;..&quot;, &quot;blind-mapping.json&quot;), &quot;w&quot;) as f: json.dump(mapping, f, indent=1)</span><span id="L42">    # self-check: no vendor names left in transcripts</span><span id="L43">    for cid in mapping:</span><span id="L44">        t = open(os.path.join(OUT, cid, &quot;TRANSCRIPT.md&quot;)).read()</span><span id="L45">        assert not VENDOR.search(t), cid</span><span id="L46">    print(json.dumps(mapping, indent=1))</span></code></pre>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../../../data/">Data &amp; schema</a> · <a href="../../../data/changelog/">Changelog</a> · <a href="../../../feed.xml">Atom feed</a> · <a href="../../../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>

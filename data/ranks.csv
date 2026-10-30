@@ -1,0 +1,41 @@
+judge,judge_label,letter,slug,folder,prompt,rank
+html,HTML,H,opus55-max-v1,Anthropic-Web-Opus5.5-Max-v1,v1,1
+html,HTML,E,opus55-max-v0,Anthropic-Web-Opus5.5-Max-v0,v0,2
+html,HTML,D,gpt6-pro-v1,OpenAI-Web-GPT6-Pro-v1,v1,3
+html,HTML,G,gpt6-pro-v0,OpenAI-Web-GPT6-Pro-v0,v0,4
+html,HTML,B,gemini4-argon-high-v1,Google-Web-Gemini4Argon-High-v1,v1,5
+html,HTML,F,mistral-large4-v1,Mistral-VibeCode-MistralLarge4-Default-v1,v1,6
+html,HTML,C,copilot-autopilot-v1,GitHub-CopilotTasks-Auto-Autopilot-v1,v1,7
+html,HTML,A,copilot-interactive-v1,GitHub-CopilotTasks-Auto-Interactive-v1,v1,8
+transcript,Transcript,F,opus55-max-v0,Anthropic-Web-Opus5.5-Max-v0,v0,1
+transcript,Transcript,E,opus55-max-v1,Anthropic-Web-Opus5.5-Max-v1,v1,2
+transcript,Transcript,A,gpt6-pro-v0,OpenAI-Web-GPT6-Pro-v0,v0,3
+transcript,Transcript,D,gpt6-pro-v1,OpenAI-Web-GPT6-Pro-v1,v1,4
+transcript,Transcript,B,mistral-large4-v1,Mistral-VibeCode-MistralLarge4-Default-v1,v1,5
+transcript,Transcript,H,copilot-autopilot-v1,GitHub-CopilotTasks-Auto-Autopilot-v1,v1,6
+transcript,Transcript,C,copilot-interactive-v1,GitHub-CopilotTasks-Auto-Interactive-v1,v1,7
+transcript,Transcript,G,gemini4-argon-high-v1,Google-Web-Gemini4Argon-High-v1,v1,8
+html_transcript,HTML + Transcript,B,opus55-max-v1,Anthropic-Web-Opus5.5-Max-v1,v1,1
+html_transcript,HTML + Transcript,A,opus55-max-v0,Anthropic-Web-Opus5.5-Max-v0,v0,2
+html_transcript,HTML + Transcript,D,gpt6-pro-v0,OpenAI-Web-GPT6-Pro-v0,v0,3
+html_transcript,HTML + Transcript,E,gpt6-pro-v1,OpenAI-Web-GPT6-Pro-v1,v1,4
+html_transcript,HTML + Transcript,G,gemini4-argon-high-v1,Google-Web-Gemini4Argon-High-v1,v1,5
+html_transcript,HTML + Transcript,C,mistral-large4-v1,Mistral-VibeCode-MistralLarge4-Default-v1,v1,6
+html_transcript,HTML + Transcript,F,copilot-autopilot-v1,GitHub-CopilotTasks-Auto-Autopilot-v1,v1,7
+html_transcript,HTML + Transcript,H,copilot-interactive-v1,GitHub-CopilotTasks-Auto-Interactive-v1,v1,8
+browser,Browser,H,gpt6-pro-v1,OpenAI-Web-GPT6-Pro-v1,v1,1
+browser,Browser,C,opus55-max-v0,Anthropic-Web-Opus5.5-Max-v0,v0,2
+browser,Browser,G,gpt6-pro-v0,OpenAI-Web-GPT6-Pro-v0,v0,3
+browser,Browser,A,opus55-max-v1,Anthropic-Web-Opus5.5-Max-v1,v1,4
+browser,Browser,D,gemini4-argon-high-v1,Google-Web-Gemini4Argon-High-v1,v1,5
+browser,Browser,E,mistral-large4-v1,Mistral-VibeCode-MistralLarge4-Default-v1,v1,6
+browser,Browser,F,copilot-autopilot-v1,GitHub-CopilotTasks-Auto-Autopilot-v1,v1,7
+browser,Browser,B,copilot-interactive-v1,GitHub-CopilotTasks-Auto-Interactive-v1,v1,8
+browser_html,Browser + HTML,G,opus55-max-v1,Anthropic-Web-Opus5.5-Max-v1,v1,1
+browser_html,Browser + HTML,H,opus55-max-v0,Anthropic-Web-Opus5.5-Max-v0,v0,2
+browser_html,Browser + HTML,B,gpt6-pro-v1,OpenAI-Web-GPT6-Pro-v1,v1,3
+browser_html,Browser + HTML,C,gpt6-pro-v0,OpenAI-Web-GPT6-Pro-v0,v0,4
+browser_html,Browser + HTML,E,gemini4-argon-high-v1,Google-Web-Gemini4Argon-High-v1,v1,5
+browser_html,Browser + HTML,D,mistral-large4-v1,Mistral-VibeCode-MistralLarge4-Default-v1,v1,6
+browser_html,Browser + HTML,A,copilot-autopilot-v1,GitHub-CopilotTasks-Auto-Autopilot-v1,v1,7
+browser_html,Browser + HTML,F,copilot-interactive-v1,GitHub-CopilotTasks-Auto-Interactive-v1,v1,8

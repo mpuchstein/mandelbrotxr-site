@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PLAN.md · ReviewOrchestrator · MandelbrotXR results</title>
+<meta name="description" content="Rendered copy of ReviewOrchestrator/PLAN.md from the MandelbrotXR repository.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://mandelbrotxr.puchstein.dev/source/ReviewOrchestrator/PLAN.md.html">
+<link rel="icon" href="../../assets/favicon.svg?v=b76f13b317" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css?v=e79937244c">
+<link rel="alternate" type="application/atom+xml" title="MandelbrotXR changes" href="../../feed.xml">
+<script src="../../assets/js/theme.js?v=7a718e6155"></script>
+<script src="../../assets/js/transcripts.js?v=54e22884d0" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="bar">
+<a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span>MandelbrotXR <span class="brand-sub">results</span></a>
+<button class="theme-toggle js-only" type="button" id="theme-toggle" aria-pressed="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-label">Dark theme<span class="theme-state" aria-hidden="true">: off</span></span></button>
+</div>
+<nav class="site-nav" aria-label="Main"><ul><li><a href="../../">Home</a></li><li><a href="../../rankings/">Rankings</a></li><li><a href="../../candidates/">Candidates</a></li><li><a href="../../compare/">Compare</a></li><li><a href="../../techniques/">Techniques</a></li><li><a href="../../judges/" aria-current="page">Judges &amp; reviews</a></li><li><a href="../../transcripts/">Transcripts</a></li><li><a href="../../methodology/">Methodology</a></li><li><a href="../../data/">Data</a></li><li><a href="../../search/">Search</a></li></ul></nav>
+</header>
+<main id="main" class="">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../">Home</a></li><li><a href="../../judges/">Judges &amp; reviews</a></li><li><a href="../../source/">Source files</a></li><li><a href="../../source/ReviewOrchestrator/">ReviewOrchestrator</a></li><li><span aria-current="page">PLAN.md</span></li></ol></nav>
+<h1 class="src-path">PLAN.md</h1><ul class="tx-meta src-meta"><li><code>ReviewOrchestrator/<wbr>PLAN.md</code></li><li>67 lines · 7.2 kB</li><li>in <a href="../../source/ReviewOrchestrator/">ReviewOrchestrator/</a></li><li><a href="https://github.com/mpuchstein/MandelbrotXR/blob/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a/ReviewOrchestrator/PLAN.md" rel="noopener">Original on GitHub at 75d36a0</a></li></ul><section class="src-doc" aria-label="Rendered Markdown"><div class="md"><h2 id="md-plan-extract-8-mandelbrotxr-chats-then-run-a-24-agent-blind-review">Plan: Extract 8 MandelbrotXR chats, then run a 24-agent blind review</h2>
+<h3 id="md-context">Context</h3>
+<p>The user had 8 web AI tools (ChatGPT, Claude, Mistral Vibe Code, Gemini Canvas, GitHub Copilot tasks) build a standalone WebXR Mandelbrot room HTML file from two prompt versions. The repo <code>/<wbr><span class="nw">home</span>/<wbr><span class="nw">mpuchstein</span>/<wbr><span class="nw">Dev</span>/<wbr><span class="nw">AI</span>/<wbr><span class="nw">MandelbrotXR</span></code> (only an empty README, remote <code><span class="nw">git@github.com:mpuchstein</span>/<wbr><span class="nw">MandelbrotXR.git</span></code>) collects each result plus its chat transcript, then 3 kinds of review (HTML source, transcript, live browser) per result.</p>
+<p><strong>Done when:</strong> 8 extraction folders, each with its <code>.html</code> and <code>TRANSCRIPTION.md</code>, plus <code>prompt0.txt</code>/<code>prompt1.txt</code>, committed and pushed; <code>Review/{HTML,TRANSCRIPT,Browser}-Review/&lt;name&gt;/{REVIEW.md,TRANSCRIPT.md,PROMPT.txt}</code> × 8 = 24 sets; <code><span class="nw">ReviewOrchestrator</span>/<wbr><span class="nw">{PROMPT,TRANSCRIPT}.md</span></code>; second commit pushed.</p>
+<h3 id="md-what-the-survey-found-read-only">What the survey found (read-only)</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table (scrolls horizontally)"><table>
+<thead>
+<tr>
+<th class="num">#</th>
+<th>URL</th>
+<th>Prompt</th>
+<th>Provider/Tool/Model/Effort</th>
+<th>Where the HTML is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="num">1</td>
+<td>chatgpt …355ca</td>
+<td>v0</td>
+<td>OpenAI-Web-GPT6-Pro (given by user)</td>
+<td>file attachment <code>mandelbrot-room.html</code> (~630 KB)</td>
+</tr>
+<tr>
+<td class="num">2</td>
+<td>claude.ai …09e85d21</td>
+<td>v0</td>
+<td>Anthropic-Web-Opus5.5-Max (composer chip; to confirm)</td>
+<td>artifact &quot;Mandelbrot room · Code · HTML&quot;</td>
+</tr>
+<tr>
+<td class="num">3</td>
+<td>claude.ai …0a5ff96f</td>
+<td>v1</td>
+<td>Anthropic-Web-Opus5.5-Max (to confirm)</td>
+<td>artifact &quot;Mandelbrot xr&quot;</td>
+</tr>
+<tr>
+<td class="num">4</td>
+<td>chatgpt …356bd</td>
+<td>v1</td>
+<td>? (navigation blocked, will retry)</td>
+<td>likely file attachment</td>
+</tr>
+<tr>
+<td class="num">5</td>
+<td>mistral …/code/…</td>
+<td>v1</td>
+<td>Mistral-VibeCode-?-?</td>
+<td>in chat (<code><span class="nw">mistral-vibe-code-web</span>/<wbr><span class="nw">mandelbrot-xr.html</span></code>, code block)</td>
+</tr>
+<tr>
+<td class="num">6</td>
+<td>gemini …bb0b8f</td>
+<td>v1</td>
+<td>Google-Web-?-Hoch (&quot;Argon · Hoch&quot; in composer)</td>
+<td>Canvas <code>index.html</code> (code view / Export)</td>
+</tr>
+<tr>
+<td class="num">7</td>
+<td>github copilot task b471892c</td>
+<td>v1</td>
+<td>GitHub-CopilotTasks-?-?</td>
+<td>Artifacts panel (<code>/<wbr><span class="nw">root</span>/<wbr><span class="nw">mandelbrot-xr.html</span></code>)</td>
+</tr>
+<tr>
+<td class="num">8</td>
+<td>github copilot task 1976d0f6</td>
+<td>v1</td>
+<td>GitHub-CopilotTasks-?-?</td>
+<td>Artifacts panel (<code>/<wbr><span class="nw">root</span>/<wbr><span class="nw">mandelbrot-xr.html</span></code>)</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>prompt0 = ChatGPT v0 user message (three.js + three.xr.js version); prompt1 = Copilot user message (WebXR + &quot;highest possible visual wow effect&quot;). Both captured verbatim.</li>
+<li>Claude chat #3 has an unsent draft &quot;Continuer&quot; in its input box: do not touch it.</li>
+<li>Chrome extension site permission seems to be granted per visit (chatgpt.com refused on the 2nd visit), so the user may need to click &quot;allow&quot; for it.</li>
+</ul>
+<h3 id="md-steps">Steps</h3>
+<h4 id="md-1-extraction-i-do-this-myself-via-claude-in-chrome-one-chat-at-a-time">1. Extraction (I do this myself via Claude in Chrome, one chat at a time)</h4>
+<p>For each chat:</p>
+<ol>
+<li>Read the model/effort from the message metadata, the model chip or a hover tooltip (ChatGPT &quot;Thinking effort&quot;/model slug, Copilot session info, Mistral session details, Gemini model menu).</li>
+<li>Get the HTML: download the attachment (ChatGPT) and move it from <code><span class="nw">~</span>/<wbr><span class="nw">Downloads</span></code>; for Claude artifacts, Gemini Canvas, Copilot Artifacts and Mistral code blocks, read the source through <code>javascript_tool</code>/<code>get_page_text</code> and write it out exactly. Keep the provider&#x27;s original filename. Check: the file starts with <code>&lt;!doctype</code>/<code>&lt;html</code> and ends with <code><span class="nw">&lt;</span>/<wbr><span class="nw">html&gt;</span></code>, and its size is plausible.</li>
+<li>TRANSCRIPTION.md = &quot;everything visible&quot;: expand collapsed thinking / tool-call sections (without sending anything), then record User/Assistant turns, thinking and tool steps in Markdown. The full HTML body is not repeated; a pointer to the file is used instead.</li>
+<li><strong>Confirmation gate:</strong> before creating the folders, show the user the full list of 8 folder names (<code>{Provider}-{Tool}-{Model}-{Effort}-{v0|v1}</code>) and wait for an OK.</li>
+<li>Write <code>prompt0.txt</code> and <code>prompt1.txt</code> to the repo root.</li>
+</ol>
+<h4 id="md-2-first-commit-push">2. First commit + push</h4>
+<p><code>git add -A &amp;&amp; git commit -m &quot;feat: add extracted MandelbrotXR outputs and transcripts&quot;</code> (plain conventional commit, no trailer, per the user&#x27;s CLAUDE.md), then <code>git push origin main</code>.</p>
+<h4 id="md-3-review-setup">3. Review setup</h4>
+<ul>
+<li>Create <code>Review/{HTML-Review,TRANSCRIPT-Review,Browser-Review}/&lt;name&gt;/</code> and <code><span class="nw">ReviewOrchestrator</span>/<wbr></code>.</li>
+<li><strong>Blind copies</strong> in the scratchpad: <code>/<wbr><span class="nw">tmp</span>/<wbr><span class="nw">claude-1000</span>/<wbr><span class="nw">...</span>/<wbr><span class="nw">scratchpad</span>/<wbr><span class="nw">blind</span>/<wbr><span class="nw">candidate-NN</span>/<wbr><span class="nw">{index.html,TRANSCRIPT.md}</span></code>, NN shuffled. In the transcripts, speaker labels and product names (ChatGPT/Claude/Gemini/Copilot/Mistral/Vibe) are replaced by &quot;Assistant&quot;; the mapping is kept only in the orchestrator&#x27;s notes. Caveat: the HTML/transcript text itself may still hint at the vendor, so the blinding is best effort.</li>
+<li>Shared rubric in every reviewer prompt: the matching prompt version (v0/v1 text), then 1–10 scores with justification for: meets &quot;Done when&quot;, HMD/phone compatibility (Quest 3, Steam Frame, Pico 4 Ultra, Android, iOS), visual wow, usability/controls, code quality/robustness, plus a top-5 issues list and an overall score. The output is REVIEW.md written to the absolute target path.</li>
+<li>Each reviewer prompt gets saved verbatim to <code><span class="nw">&lt;target&gt;</span>/<wbr><span class="nw">PROMPT.txt</span></code> before its launch.</li>
+</ul>
+<h4 id="md-4-html-transcript-reviews-16-agents-parallel">4. HTML + transcript reviews (16 agents, parallel)</h4>
+<p><code>Agent(subagent_type=&quot;general-purpose&quot;, model=&quot;opus&quot;, effort=&quot;xhigh&quot;)</code>, all in one message. HTML reviewers may read only their <code><span class="nw">candidate-NN</span>/<wbr><span class="nw">index.html</span></code>; transcript reviewers only their <code><span class="nw">candidate-NN</span>/<wbr><span class="nw">TRANSCRIPT.md</span></code>. They may not open a browser or look at other candidates.</p>
+<h4 id="md-5-browser-reviews-8-agents-sequential">5. Browser reviews (8 agents, sequential)</h4>
+<p>For each candidate in turn:</p>
+<ol>
+<li>Start <code>python3 -m http.server 8765 --bind 127.0.0.1 -d &lt;scratchpad&gt;/blind/candidate-NN</code> (in the background).</li>
+<li>Start one <code>general-purpose</code>/opus/xhigh agent: it opens <code><span class="nw">http:</span>/<wbr>/<wbr><span class="nw">localhost:8765</span>/<wbr></code> in a new Claude in Chrome tab, checks rendering, console errors and controls, uses Chrome&#x27;s mobile viewport if available, tries Enter VR/AR (if available; no XR emulator required), takes screenshots, writes REVIEW.md and closes its tab.</li>
+<li>Wait for it to finish, stop the server, continue with the next one.</li>
+</ol>
+<h4 id="md-6-saving-agent-transcripts">6. Saving agent transcripts</h4>
+<p>Subagent JSONL logs are in <code>~/.claude/projects/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-…/subagents/</code> (I verify the path after the first launch). A small converter <code><span class="nw">scratchpad</span>/<wbr><span class="nw">jsonl2md.py</span></code> (stdlib, run with <code>python3 -I</code>) turns each one into TRANSCRIPT.md (user/assistant text, thinking, tool calls + truncated results), with the agentId → folder mapping taken from the Agent results. The same script converts this session&#x27;s <code>14a78f0a-….jsonl</code> into <code><span class="nw">ReviewOrchestrator</span>/<wbr><span class="nw">TRANSCRIPT.md</span></code>; <code><span class="nw">ReviewOrchestrator</span>/<wbr><span class="nw">PROMPT.md</span></code> = the user&#x27;s original message verbatim. The orchestrator transcript is generated as the last step before the commit, so it ends there.</p>
+<h4 id="md-7-second-commit-push">7. Second commit + push</h4>
+<p><code>git add Review ReviewOrchestrator &amp;&amp; git commit -m &quot;docs: add blind reviews of MandelbrotXR outputs&quot; &amp;&amp; git push</code>.</p>
+<h3 id="md-verification">Verification</h3>
+<ul>
+<li><code>find . -name &#x27;*.html&#x27; -path &#x27;*-v?/*&#x27;</code> → 8 files, each ends with <code><span class="nw">&lt;</span>/<wbr><span class="nw">html&gt;</span></code>; 8 TRANSCRIPTION.md files.</li>
+<li><code>find Review -name REVIEW.md | wc -l</code> = 24, same for TRANSCRIPT.md and PROMPT.txt.</li>
+<li><code>git log --oneline</code> shows 2 new commits; <code>git status</code> is clean; <code>git ls-remote origin main</code> = local HEAD.</li>
+<li>Spot check: open one REVIEW.md per review type and one converted TRANSCRIPT.md.</li>
+</ul>
+<h3 id="md-risks-user-interaction">Risks / user interaction</h3>
+<ul>
+<li>Chrome site-permission prompts (chatgpt.com, localhost) need a click from the user.</li>
+<li>Downloading the ChatGPT attachments counts as a file download that the request already approved.</li>
+<li>24 opus/xhigh agents are expensive (7d quota at 96%); <code>ai-quota --brief --for claude --fresh</code> gets checked before step 4.</li>
+</ul>
+</div></section><details class="src-view"><summary>Source with line numbers</summary><pre class="src"><code><span id="L1"># Plan: Extract 8 MandelbrotXR chats, then run a 24-agent blind review</span><span id="L2"></span><span id="L3">## Context</span><span id="L4">The user had 8 web AI tools (ChatGPT, Claude, Mistral Vibe Code, Gemini Canvas, GitHub Copilot tasks) build a standalone WebXR Mandelbrot room HTML file from two prompt versions. The repo `/home/mpuchstein/Dev/AI/MandelbrotXR` (only an empty README, remote `git@github.com:mpuchstein/MandelbrotXR.git`) collects each result plus its chat transcript, then 3 kinds of review (HTML source, transcript, live browser) per result.</span><span id="L5"></span><span id="L6">**Done when:** 8 extraction folders, each with its `.html` and `TRANSCRIPTION.md`, plus `prompt0.txt`/`prompt1.txt`, committed and pushed; `Review/{HTML,TRANSCRIPT,Browser}-Review/&lt;name&gt;/{REVIEW.md,TRANSCRIPT.md,PROMPT.txt}` × 8 = 24 sets; `ReviewOrchestrator/{PROMPT,TRANSCRIPT}.md`; second commit pushed.</span><span id="L7"></span><span id="L8">## What the survey found (read-only)</span><span id="L9">| # | URL | Prompt | Provider/Tool/Model/Effort | Where the HTML is |</span><span id="L10">|---|-----|--------|-----------|------------|</span><span id="L11">| 1 | chatgpt …355ca | v0 | OpenAI-Web-GPT6-Pro (given by user) | file attachment `mandelbrot-room.html` (~630 KB) |</span><span id="L12">| 2 | claude.ai …09e85d21 | v0 | Anthropic-Web-Opus5.5-Max (composer chip; to confirm) | artifact &quot;Mandelbrot room · Code · HTML&quot; |</span><span id="L13">| 3 | claude.ai …0a5ff96f | v1 | Anthropic-Web-Opus5.5-Max (to confirm) | artifact &quot;Mandelbrot xr&quot; |</span><span id="L14">| 4 | chatgpt …356bd | v1 | ? (navigation blocked, will retry) | likely file attachment |</span><span id="L15">| 5 | mistral …/code/… | v1 | Mistral-VibeCode-?-? | in chat (`mistral-vibe-code-web/mandelbrot-xr.html`, code block) |</span><span id="L16">| 6 | gemini …bb0b8f | v1 | Google-Web-?-Hoch (&quot;Argon · Hoch&quot; in composer) | Canvas `index.html` (code view / Export) |</span><span id="L17">| 7 | github copilot task b471892c | v1 | GitHub-CopilotTasks-?-? | Artifacts panel (`/root/mandelbrot-xr.html`) |</span><span id="L18">| 8 | github copilot task 1976d0f6 | v1 | GitHub-CopilotTasks-?-? | Artifacts panel (`/root/mandelbrot-xr.html`) |</span><span id="L19"></span><span id="L20">- prompt0 = ChatGPT v0 user message (three.js + three.xr.js version); prompt1 = Copilot user message (WebXR + &quot;highest possible visual wow effect&quot;). Both captured verbatim.</span><span id="L21">- Claude chat #3 has an unsent draft &quot;Continuer&quot; in its input box: do not touch it.</span><span id="L22">- Chrome extension site permission seems to be granted per visit (chatgpt.com refused on the 2nd visit), so the user may need to click &quot;allow&quot; for it.</span><span id="L23"></span><span id="L24">## Steps</span><span id="L25"></span><span id="L26">### 1. Extraction (I do this myself via Claude in Chrome, one chat at a time)</span><span id="L27">For each chat:</span><span id="L28">1. Read the model/effort from the message metadata, the model chip or a hover tooltip (ChatGPT &quot;Thinking effort&quot;/model slug, Copilot session info, Mistral session details, Gemini model menu).</span><span id="L29">2. Get the HTML: download the attachment (ChatGPT) and move it from `~/Downloads`; for Claude artifacts, Gemini Canvas, Copilot Artifacts and Mistral code blocks, read the source through `javascript_tool`/`get_page_text` and write it out exactly. Keep the provider&#x27;s original filename. Check: the file starts with `&lt;!doctype`/`&lt;html` and ends with `&lt;/html&gt;`, and its size is plausible.</span><span id="L30">3. TRANSCRIPTION.md = &quot;everything visible&quot;: expand collapsed thinking / tool-call sections (without sending anything), then record User/Assistant turns, thinking and tool steps in Markdown. The full HTML body is not repeated; a pointer to the file is used instead.</span><span id="L31">4. **Confirmation gate:** before creating the folders, show the user the full list of 8 folder names (`{Provider}-{Tool}-{Model}-{Effort}-{v0|v1}`) and wait for an OK.</span><span id="L32">5. Write `prompt0.txt` and `prompt1.txt` to the repo root.</span><span id="L33"></span><span id="L34">### 2. First commit + push</span><span id="L35">`git add -A &amp;&amp; git commit -m &quot;feat: add extracted MandelbrotXR outputs and transcripts&quot;` (plain conventional commit, no trailer, per the user&#x27;s CLAUDE.md), then `git push origin main`.</span><span id="L36"></span><span id="L37">### 3. Review setup</span><span id="L38">- Create `Review/{HTML-Review,TRANSCRIPT-Review,Browser-Review}/&lt;name&gt;/` and `ReviewOrchestrator/`.</span><span id="L39">- **Blind copies** in the scratchpad: `/tmp/claude-1000/.../scratchpad/blind/candidate-NN/{index.html,TRANSCRIPT.md}`, NN shuffled. In the transcripts, speaker labels and product names (ChatGPT/Claude/Gemini/Copilot/Mistral/Vibe) are replaced by &quot;Assistant&quot;; the mapping is kept only in the orchestrator&#x27;s notes. Caveat: the HTML/transcript text itself may still hint at the vendor, so the blinding is best effort.</span><span id="L40">- Shared rubric in every reviewer prompt: the matching prompt version (v0/v1 text), then 1–10 scores with justification for: meets &quot;Done when&quot;, HMD/phone compatibility (Quest 3, Steam Frame, Pico 4 Ultra, Android, iOS), visual wow, usability/controls, code quality/robustness, plus a top-5 issues list and an overall score. The output is REVIEW.md written to the absolute target path.</span><span id="L41">- Each reviewer prompt gets saved verbatim to `&lt;target&gt;/PROMPT.txt` before its launch.</span><span id="L42"></span><span id="L43">### 4. HTML + transcript reviews (16 agents, parallel)</span><span id="L44">`Agent(subagent_type=&quot;general-purpose&quot;, model=&quot;opus&quot;, effort=&quot;xhigh&quot;)`, all in one message. HTML reviewers may read only their `candidate-NN/index.html`; transcript reviewers only their `candidate-NN/TRANSCRIPT.md`. They may not open a browser or look at other candidates.</span><span id="L45"></span><span id="L46">### 5. Browser reviews (8 agents, sequential)</span><span id="L47">For each candidate in turn:</span><span id="L48">1. Start `python3 -m http.server 8765 --bind 127.0.0.1 -d &lt;scratchpad&gt;/blind/candidate-NN` (in the background).</span><span id="L49">2. Start one `general-purpose`/opus/xhigh agent: it opens `http://localhost:8765/` in a new Claude in Chrome tab, checks rendering, console errors and controls, uses Chrome&#x27;s mobile viewport if available, tries Enter VR/AR (if available; no XR emulator required), takes screenshots, writes REVIEW.md and closes its tab.</span><span id="L50">3. Wait for it to finish, stop the server, continue with the next one.</span><span id="L51"></span><span id="L52">### 6. Saving agent transcripts</span><span id="L53">Subagent JSONL logs are in `~/.claude/projects/-home-mpuchstein-Dev-AI-MandelbrotXR/14a78f0a-…/subagents/` (I verify the path after the first launch). A small converter `scratchpad/jsonl2md.py` (stdlib, run with `python3 -I`) turns each one into TRANSCRIPT.md (user/assistant text, thinking, tool calls + truncated results), with the agentId → folder mapping taken from the Agent results. The same script converts this session&#x27;s `14a78f0a-….jsonl` into `ReviewOrchestrator/TRANSCRIPT.md`; `ReviewOrchestrator/PROMPT.md` = the user&#x27;s original message verbatim. The orchestrator transcript is generated as the last step before the commit, so it ends there.</span><span id="L54"></span><span id="L55">### 7. Second commit + push</span><span id="L56">`git add Review ReviewOrchestrator &amp;&amp; git commit -m &quot;docs: add blind reviews of MandelbrotXR outputs&quot; &amp;&amp; git push`.</span><span id="L57"></span><span id="L58">## Verification</span><span id="L59">- `find . -name &#x27;*.html&#x27; -path &#x27;*-v?/*&#x27;` → 8 files, each ends with `&lt;/html&gt;`; 8 TRANSCRIPTION.md files.</span><span id="L60">- `find Review -name REVIEW.md | wc -l` = 24, same for TRANSCRIPT.md and PROMPT.txt.</span><span id="L61">- `git log --oneline` shows 2 new commits; `git status` is clean; `git ls-remote origin main` = local HEAD.</span><span id="L62">- Spot check: open one REVIEW.md per review type and one converted TRANSCRIPT.md.</span><span id="L63"></span><span id="L64">## Risks / user interaction</span><span id="L65">- Chrome site-permission prompts (chatgpt.com, localhost) need a click from the user.</span><span id="L66">- Downloading the ChatGPT attachments counts as a file download that the request already approved.</span><span id="L67">- 24 opus/xhigh agents are expensive (7d quota at 96%); `ai-quota --brief --for claude --fresh` gets checked before step 4.</span></code></pre></details>
+</main>
+<footer class="site-footer">
+<p>Built from commit <a href="https://github.com/mpuchstein/MandelbrotXR/commit/75d36a02e1f0f969e9bc37c6d970cf519fc1f30a" rel="noopener"><code>75d36a02e1f0</code></a> of <a href="https://github.com/mpuchstein/MandelbrotXR" rel="noopener">mpuchstein/MandelbrotXR</a>, committed 2026-10-30.
+Static site; no cookies, no analytics, no third-party requests.</p>
+<p><a href="../../data/">Data &amp; schema</a> · <a href="../../data/changelog/">Changelog</a> · <a href="../../feed.xml">Atom feed</a> · <a href="../../methodology/">Methodology &amp; caveats</a></p>
+</footer>
+</body>
+</html>

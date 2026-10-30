@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#03040b">
+<title>MANDELBROT // LUMEN ROOM</title>
+<style>
+  :root { color-scheme: dark; --cyan:#7df9ff; --violet:#a88bff; --ink:#050611; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; width:100%; height:100%; overflow:hidden; background:var(--ink); font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif; }
+  canvas { display:block; width:100%; height:100%; touch-action:none; }
+  #ui { position:fixed; inset:0; pointer-events:none; display:flex; flex-direction:column; justify-content:space-between; padding:clamp(18px,4vw,48px); z-index:2; }
+  .brand { letter-spacing:.28em; font-size:clamp(10px,1.1vw,14px); color:var(--cyan); text-shadow:0 0 18px #3ff; font-weight:700; }
+  .title { margin-top:10px; font-size:clamp(28px,6vw,78px); line-height:.9; font-weight:800; letter-spacing:-.06em; max-width:9ch; background:linear-gradient(110deg,#fff 15%,#b5faff 48%,#ac8cff 90%); color:transparent; background-clip:text; -webkit-background-clip:text; }
+  .subtitle { margin-top:18px; max-width:350px; color:#c6c7d7; font-size:clamp(11px,1.3vw,16px); line-height:1.55; }
+  .panel { pointer-events:auto; align-self:flex-start; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  button { border:1px solid #83faff99; background:#0b1530cc; color:#edffff; border-radius:999px; padding:13px 20px; font:600 12px/1 inherit; letter-spacing:.12em; text-transform:uppercase; cursor:pointer; box-shadow:0 0 24px #28d6ff22, inset 0 0 20px #28d6ff0b; backdrop-filter:blur(14px); }
+  button:hover,button:focus-visible { background:#173563dd; border-color:#b9ffff; outline:none; box-shadow:0 0 30px #28d6ff55; }
+  #status { color:#b8c2df; font-size:11px; letter-spacing:.12em; text-transform:uppercase; padding:10px 0; }
+  #hint { text-align:right; color:#8990ad; font-size:11px; letter-spacing:.08em; line-height:1.6; }
+  .hide { display:none !important; }
+  #loading { position:fixed; inset:0; display:grid; place-items:center; color:var(--cyan); background:#03040beF; z-index:4; letter-spacing:.24em; font-size:12px; transition:opacity .7s; }
+  #loading.done { opacity:0; pointer-events:none; }
+  @media (max-width:600px) { #ui { padding:24px; } .subtitle { max-width:280px; } #hint { display:none; } }
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div id="loading">INITIALIZING FRACTAL FIELD</div>
+<main id="ui">
+  <div>
+    <div class="brand">LUMEN ROOM / 01</div>
+    <div class="title">THE<br>MANDELBROT<br>SET</div>
+    <div class="subtitle">Step into an infinite equation. The boundary is alive — every color is an escape, every filament a path through complexity.</div>
+  </div>
+  <div class="panel">
+    <button id="enter">Enter immersive room</button>
+    <button id="ar" class="hide">View in AR</button>
+    <div id="status">Drag to orbit · pinch to zoom</div>
+  </div>
+  <div id="hint">VR: turn your head to explore<br>AR: point at a surface · tap to place<br>ESC: return to the portal</div>
+</main>
+<script>
+(() => {
+  'use strict';
+  const canvas = document.getElementById('gl'), status = document.getElementById('status');
+  const loading = document.getElementById('loading'), enter = document.getElementById('enter'), ar = document.getElementById('ar');
+  const gl = canvas.getContext('webgl', { antialias:false, alpha:true, premultipliedAlpha:false });
+  if (!gl) { status.textContent='WebGL is not available in this browser'; return; }
+  const vs = `attribute vec2 p; void main(){gl_Position=vec4(p,0.,1.);}`;
+  const fs = `precision highp float;
+  uniform vec2 r; uniform float t, zoom; uniform vec3 eye, forward, right, up; uniform float eyeMode;
+  #define PI 3.14159265359
+  mat2 rot(float a){float s=sin(a),c=cos(a);return mat2(c,-s,s,c);}
+  vec3 palette(float x){return .5+.5*cos(6.28318*(vec3(.02,.18,.58)+x*vec3(.95,.55,.28)));}
+  float mandel(vec2 c){vec2 z=vec2(0);float m=0.;for(int i=0;i<80;i++){vec2 q=vec2(z.x*z.x-z.y*z.y,2.*z.x*z.y)+c;if(dot(q,q)>256.)break;z=q;m+=1.;}return m;}
+  float scene(vec3 p){
+    // A thick, luminous extrusion of the Mandelbrot boundary, with a sinusoidal breathing edge.
+    vec2 c=p.xz*1.25;
+    float m=mandel(c+vec2(-.52,-.08));
+    float boundary=abs(m-24.0)/24.0;
+    float slab=abs(p.y)-(.23+.10*sin(p.x*7.+t*.7)*sin(p.z*5.-t*.4));
+    return max(boundary-.09, slab);
+  }
+  vec3 backdrop(vec3 rd){
+    float stars=pow(max(0.,sin(rd.x*91.+sin(rd.y*43.))),80.)*.8;
+    return vec3(.004,.006,.02)+vec3(.015,.01,.04)*(1.-max(0.,rd.y)) + stars*vec3(.2,.7,1.);
+  }
+  void main(){
+    vec2 uv=(gl_FragCoord.xy-.5*r)/r.y;
+    vec3 rd=normalize(forward + right*uv.x/zoom + up*uv.y/zoom);
+    vec3 ro=eye; vec3 col=backdrop(rd);
+    float hit=0., glow=0.;
+    for(int i=0;i<96;i++){
+      vec3 p=ro+rd*hit;
+      float d=scene(p);
+      glow+=.006/(.012+abs(d));
+      if(abs(d)<.003 || hit>13.) break;
+      hit+=max(.008,abs(d)*.42);
+    }
+    if(hit<13.){
+      vec3 p=ro+rd*hit; float e=.004;
+      vec3 n=normalize(vec3(scene(p+vec3(e,0,0))-scene(p-vec3(e,0,0)),scene(p+vec3(0,e,0))-scene(p-vec3(0,e,0)),scene(p+vec3(0,0,e))-scene(p-vec3(0,0,e))));
+      float m=mandel(p.xz*1.25+vec2(-.52,-.08)); float hue=.12+m*.021+length(p.xz)*.03;
+      vec3 light=normalize(vec3(-.6,.8,-.4)); float diff=max(0.,dot(n,light));
+      col=palette(hue)*(0.35+diff*1.1)+palette(hue+.18)*pow(max(0.,dot(reflect(-light,n),-rd)),4.)*.7;
+      col+=palette(hue+.35)*glow*.035;
+    } else col+=palette(.58)*glow*.015;
+    // room horizon / floor fog
+    float floorLine=smoothstep(.02,.0,abs(rd.y));
+    col+=vec3(.01,.08,.13)*floorLine;
+    col=1.-exp(-col*1.35); col=pow(col,vec3(.9));
+    gl_FragColor=vec4(col,eyeMode>.5?(hit<13.?1.:0.):1.);
+  }`;
+  function compile(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;}
+  const prog=gl.createProgram(); gl.attachShader(prog,compile(gl.VERTEX_SHADER,vs)); gl.attachShader(prog,compile(gl.FRAGMENT_SHADER,fs)); gl.linkProgram(prog);
+  if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) throw Error(gl.getProgramInfoLog(prog));
+  const buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  const loc={p:gl.getAttribLocation(prog,'p'),r:gl.getUniformLocation(prog,'r'),t:gl.getUniformLocation(prog,'t'),zoom:gl.getUniformLocation(prog,'zoom'),eye:gl.getUniformLocation(prog,'eye'),forward:gl.getUniformLocation(prog,'forward'),right:gl.getUniformLocation(prog,'right'),up:gl.getUniformLocation(prog,'up'),eyeMode:gl.getUniformLocation(prog,'eyeMode')};
+  gl.useProgram(prog); gl.enableVertexAttribArray(loc.p); gl.vertexAttribPointer(loc.p,2,gl.FLOAT,false,0,0); gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+  const state={yaw:.22,pitch:-.08,distance:3.4,started:performance.now(),xr:false,session:null,ref:null};
+  const v3=(x,y,z)=>[x,y,z], norm=a=>{let l=Math.hypot(...a);return a.map(v=>v/l)}, cross=(a,b)=>v3(a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]);
+  function camera(){const cy=Math.cos(state.yaw),sy=Math.sin(state.yaw),cp=Math.cos(state.pitch),sp=Math.sin(state.pitch);const f=v3(sy*cp,sp,cy*cp), r=norm(cross(f,[0,1,0])),u=norm(cross(r,f));return {eye:v3(-f[0]*state.distance,-f[1]*state.distance+.08,-f[2]*state.distance),forward:f,right:r,up:u};}
+  function draw(time, xrView, baseLayer){
+    const w=xrView?baseLayer.framebufferWidth:canvas.width, h=xrView?baseLayer.framebufferHeight:canvas.height;
+    if(xrView){gl.bindFramebuffer(gl.FRAMEBUFFER,baseLayer.framebuffer);gl.viewport(xrView.viewport.x,xrView.viewport.y,xrView.viewport.width,xrView.viewport.height);}
+    else {gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,w,h);}
+    let c=camera();
+    if(xrView){const m=xrView.transform; c.eye=[m.position.x,m.position.y,m.position.z]; const o=m.orientation; const q=o; const f=[2*(q.x*q.z+q.w*q.y),2*(q.y*q.z-q.w*q.x),1-2*(q.x*q.x+q.y*q.y)]; c.forward=norm(f); c.right=norm(cross(c.forward,[0,1,0])); c.up=norm(cross(c.right,c.forward));}
+    gl.uniform2f(loc.r,w,h); gl.uniform1f(loc.t,(time-state.started)/1000); gl.uniform1f(loc.zoom,xrView?1.18:1.02); gl.uniform1f(loc.eyeMode,xrView&&state.session.environmentBlendMode==='alpha-blend'?1:0); gl.uniform3fv(loc.eye,c.eye);gl.uniform3fv(loc.forward,c.forward);gl.uniform3fv(loc.right,c.right);gl.uniform3fv(loc.up,c.up); gl.drawArrays(gl.TRIANGLES,0,3);
+  }
+  function frame(t){if(!state.xr){draw(t);requestAnimationFrame(frame);}}
+  function resize(){const d=Math.min(devicePixelRatio||1,2),w=innerWidth*d,h=innerHeight*d;if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;} }
+  addEventListener('resize',resize); resize(); requestAnimationFrame(frame);
+  let drag=false,lastX=0,lastY=0,pinch=0;
+  canvas.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;lastY=e.clientY;canvas.setPointerCapture(e.pointerId);});
+  canvas.addEventListener('pointermove',e=>{if(!drag)return;state.yaw+=(e.clientX-lastX)*.006;state.pitch=Math.max(-1.3,Math.min(1.3,state.pitch+(e.clientY-lastY)*.005));lastX=e.clientX;lastY=e.clientY;});
+  canvas.addEventListener('pointerup',()=>drag=false);
+  canvas.addEventListener('wheel',e=>{state.distance=Math.max(1.5,Math.min(8,state.distance+e.deltaY*.002));},{passive:true});
+  canvas.addEventListener('touchstart',e=>{if(e.touches.length===2)pinch=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);},{passive:true});
+  canvas.addEventListener('touchmove',e=>{if(e.touches.length===2){let n=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);state.distance=Math.max(1.5,Math.min(8,state.distance-(n-pinch)*.008));pinch=n;}},{passive:true});
+  async function beginXR(mode){
+    if(!navigator.xr){status.textContent='WebXR unavailable — explore in 3D touch mode';return;}
+    try{
+      const session=await navigator.xr.requestSession(mode,{optionalFeatures:['local-floor','bounded-floor','hand-tracking','dom-overlay'],domOverlay:{root:document.body}});
+      await gl.makeXRCompatible(); state.xr=true;state.session=session;const layer=new XRWebGLLayer(session,gl);session.updateRenderState({baseLayer:layer});
+      state.ref=await session.requestReferenceSpace('local-floor');document.getElementById('ui').classList.add('hide');
+      session.addEventListener('end',()=>{state.xr=false;state.session=null;document.getElementById('ui').classList.remove('hide');status.textContent='Drag to orbit · pinch to zoom';requestAnimationFrame(frame);});
+      const loop=(t,frame)=>{const pose=frame.getViewerPose(state.ref);if(pose)for(const view of pose.views)draw(t,view,layer);session.requestAnimationFrame(loop);};session.requestAnimationFrame(loop);
+    }catch(e){status.textContent='XR could not start — try the 3D touch view';console.warn(e);}
+  }
+  enter.addEventListener('click',()=>beginXR('immersive-vr')); ar.addEventListener('click',()=>beginXR('immersive-ar'));
+  if(navigator.xr){navigator.xr.isSessionSupported('immersive-vr').then(ok=>{if(!ok)enter.textContent='Launch 3D room';});navigator.xr.isSessionSupported('immersive-ar').then(ok=>{if(ok)ar.classList.remove('hide');}).catch(()=>{});}
+  setTimeout(()=>loading.classList.add('done'),500);
+})();
+</script>
+</body>
+</html>
